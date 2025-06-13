@@ -1,0 +1,25 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+.idea/
+
+# dependencies
+node_modules/
+build/
+dist/
+
+# credentials
+credentials.json
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*
+
+# typescript
+*.tsbuildinfo
