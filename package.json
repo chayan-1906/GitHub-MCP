@@ -21,6 +21,7 @@
     "package": "ts-node src/scripts/package-script.ts"
   },
   "dependencies": {
+    "axios": "^1.9.0",
     "crypto-js": "^4.2.0",
     "express": "^4.21.2",
     "mongodb": "^6.16.0",
