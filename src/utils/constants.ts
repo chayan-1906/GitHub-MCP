@@ -1,5 +1,7 @@
 const tools = {
     myDetails: 'my-details',
+
+    listRepositories: 'list-repositories',
 }
 
 const constants = {

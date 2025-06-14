@@ -3,15 +3,15 @@ import {tools} from "../../utils/constants";
 import {sendError} from "../../utils/sendError";
 import {transport} from "../../server";
 import {PORT} from "../../config/config";
+import {getDetailsFromSessionToken, getSessionTokenFromSessionFile} from "../../services/OAuth";
 
 export const registerTool = (server: McpServer) => {
     server.tool(
         tools.myDetails,
-        'Fetches the authenticated user\'s github username',
+        'Retrieves details of the authenticated GitHub user, including username, display name, email (if available), avatar URL, and profile link',
         {},
         async ({}) => {
-            // const sessionToken = await getSessionTokenFromSessionFile();
-            const sessionToken = {};
+            const sessionToken = await getSessionTokenFromSessionFile();
             if (!sessionToken) {
                 return {
                     content: [
@@ -23,25 +23,24 @@ export const registerTool = (server: McpServer) => {
                 };
             }
 
-            // const email = await getEmailFromSessionToken();
-            const email = 'Anonymous User';
+            const myDetails = await getDetailsFromSessionToken();
 
             try {
                 return {
                     content: [
                         {
                             type: 'text',
-                            text: `📋 I\'m ${email}`,
+                            text: JSON.stringify(myDetails, null, 2),
                         },
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch myDetails: ${error}`), 'my-details');
+                sendError(transport, new Error(`Failed to fetch my details: ${error}`), 'my-details');
                 return {
                     content: [
                         {
                             type: 'text',
-                            text: `Failed to fetch myDetails ❌: ${error.message}`,
+                            text: `Failed to fetch my details ❌: ${error.message}`,
                         },
                     ],
                 };

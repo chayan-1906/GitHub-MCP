@@ -1,10 +1,10 @@
 import {existsSync, readFileSync, writeFileSync} from 'fs';
+import process from "process";
 import {join} from 'path';
 import os, {platform} from 'os';
 import {printInConsole} from '../utils/printInConsole';
 import {sendError} from "../utils/sendError";
 import {transport} from "../server";
-import process from "process";
 
 type MCPConfig = {
     mcpServers: Record<
@@ -23,17 +23,11 @@ function getClaudeConfigPath(): string {
     switch (process.platform) {
         case 'darwin':
             // macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
-            return join(
-                home,
-                'Library',
-                'Application Support',
-                'Claude',
-                'claude_desktop_config.json'
-            );
+            return join(home, 'Library', 'Application Support', 'Claude', 'claude_desktop_config.json');
 
         case 'win32':
             // Windows: %APPDATA%\Claude\claude_desktop_config.json
-            const appData = process.env.APPDATA || join(home, 'AppData', 'Roaming');
+            const appData = join(home, 'AppData', 'Roaming');
             return join(appData, 'Claude', 'claude_desktop_config.json');
 
         case 'linux':
@@ -48,6 +42,7 @@ function getClaudeConfigPath(): string {
 function loadConfig(path: string): MCPConfig {
     if (!existsSync(path)) {
         sendError(transport, new Error(`File not found: ${path}`), 'update-claude-config');
+        // TODO: Display warning
         process.exit(1);
     }
     const raw = readFileSync(path, 'utf8');

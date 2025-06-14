@@ -1,12 +1,14 @@
 import {connect} from "../config/db";
 import {transport} from "../server";
-import {encryptToken} from "../utils/encryption";
+import {decryptToken, encryptToken} from "../utils/encryption";
 import {v4 as uuidv4} from "uuid";
 import path from "path";
 import fs from "fs/promises";
 import {printInConsole} from "../utils/printInConsole";
 import {constants} from "../utils/constants";
 import {getClaudeConfigDir} from "../utils/directory";
+import {PORT} from "../config/config";
+import axios from "axios";
 
 export async function saveGitHubToken(githubId: number, username: string, token: string) {
     const db = await connect(transport);
@@ -24,8 +26,60 @@ export async function saveGitHubToken(githubId: number, username: string, token:
                 updatedAt: new Date(),
             },
         },
-        {upsert: true}
+        {upsert: true},
     );
+}
+
+export async function getDetailsFromSessionToken() {
+    const sessionToken = await getSessionTokenFromSessionFile();
+    await printInConsole(transport, `sessionToken in getUsernameFromSessionToken: ${sessionToken}`);
+    if (!sessionToken) {
+        return {
+            content: [
+                {
+                    type: 'text',
+                    text: `Please authenticate first in this link "http://localhost:${PORT}/auth". 🔑`,
+                },
+            ],
+        };
+    }
+
+    const db = await connect(transport);
+    const sessions = db.collection('sessions');
+    const session = await sessions.findOne({sessionToken});
+
+    if (!session?.username) {
+        return {
+            response: {
+                content: [{
+                    type: 'text',
+                    text: `Session not found or expired, please authenticate again in this link "http://localhost:${PORT}/auth". 🔑`,
+                }],
+            },
+        };
+    }
+
+    try {
+        const {data} = await axios.get(`https://api.github.com/users/${session.username}`)
+        return {
+            response: {
+                content: [{
+                    type: 'object',
+                    data,
+                }],
+            },
+        };
+    } catch (error: any) {
+        await printInConsole(transport, `Error fetching GitHub user: ${error.message}`)
+        return {
+            response: {
+                content: [{
+                    type: 'text',
+                    text: 'Failed to fetch user details from GitHub.'
+                }],
+            },
+        };
+    }
 }
 
 export async function generateAndSaveSessionToken(username: string): Promise<string> {
@@ -49,4 +103,78 @@ export async function createClaudeFileAndStoreSession(sessionToken: string, user
     await printInConsole(transport, `${claudeDir} folder created`);
     await fs.writeFile(tokenFilePath, JSON.stringify({sessionToken, username}, null, 2), 'utf8');
     await printInConsole(transport, `session token has been added/updated in ${constants.sessionTokenFile}`);
+}
+
+export async function getSessionTokenFromSessionFile() {
+    const filePath = path.join(getClaudeConfigDir(), constants.sessionTokenFile);
+
+    try {
+        const content = await fs.readFile(filePath, 'utf8');
+        const data = JSON.parse(content);
+        return data.sessionToken ?? null;
+    } catch (error) {
+        return null;
+    }
+}
+
+export async function getGitHubAccessToken() {
+    const db = await connect(transport);
+    const sessionToken = await getSessionTokenFromSessionFile();
+    const sessions = db.collection('sessions');
+    const session = await sessions.findOne({sessionToken});
+
+    if (!session || !session?.username) {
+        return {
+            accessToken: null,
+            response: {
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: `Session not found or expired, please authenticate again in this link "http://localhost:${PORT}/auth". 🔑`,
+                    },
+                ],
+            },
+        };
+    }
+
+    const record = await db.collection('user_tokens').findOne({username: session.username});
+    if (!record || !record.token) {
+        return {
+            accessToken: null,
+            response: {
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: `Please authenticate first in this link "http://localhost:${PORT}/auth". 🔑`,
+                    },
+                ],
+            },
+        };
+    }
+
+    return {
+        accessToken: decryptToken(record.token),
+        response: {
+            content: [
+                {
+                    type: 'text' as const,
+                    text: 'Authenticated',
+                },
+            ],
+        },
+    };
+}
+
+export const testFunc = () => {
+    return {
+        accessToken: null,
+        response: {
+            content: [
+                {
+                    type: 'text' as const,
+                    text: `Please authenticate first in this link "http://localhost:${PORT}/auth". 🔑`,
+                },
+            ],
+        },
+    };
 }
