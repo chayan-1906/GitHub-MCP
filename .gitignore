@@ -6,9 +6,6 @@ node_modules/
 build/
 dist/
 
-# credentials
-credentials.json
-
 # debug
 npm-debug.*
 yarn-debug.*

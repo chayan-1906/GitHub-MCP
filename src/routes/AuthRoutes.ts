@@ -36,17 +36,17 @@ router.get('/github/oauth/callback', async (req: Request, res: Response) => {
             headers: {Authorization: `Bearer ${accessToken}`},
         });
 
-        const {login: username, id: githubId} = userResponse.data;
-        if (!username || !githubId) return res.status(500).send('Failed to get user info');
+        const {id: githubId, login: username} = userResponse.data;
+        if (!githubId || !username) return res.status(500).send('Failed to get user info');
 
         // Step 3: Save tokens object in DB
         await saveGitHubToken(githubId, username, accessToken);
 
         // Step 4: Generate and save a session token
-        const sessionToken = await generateAndSaveSessionToken(username);
+        const sessionToken = await generateAndSaveSessionToken(githubId, username);
 
         // Step 5: Save session token locally (Claude-compatible)
-        await createClaudeFileAndStoreSession(sessionToken, username);
+        await createClaudeFileAndStoreSession(sessionToken, githubId, username);
 
         const filledHtml = successHtml
             .replace('{{username}}', username)

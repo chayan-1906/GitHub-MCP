@@ -16,6 +16,7 @@ export async function saveGitHubToken(githubId: number, username: string, token:
 
     const encrypted = encryptToken(token);
 
+    // TODO Arka: Allow 4 sessions per user
     await collection.updateOne(
         {githubId},
         {
@@ -82,26 +83,26 @@ export async function getDetailsFromSessionToken() {
     }
 }
 
-export async function generateAndSaveSessionToken(username: string): Promise<string> {
+export async function generateAndSaveSessionToken(githubId: string, username: string): Promise<string> {
     const sessionToken = uuidv4();
     const db = await connect(transport);
     const collection = db.collection('sessions');
     await collection.updateOne(
         {username},
-        {$set: {sessionToken, username}},
+        {$set: {sessionToken, githubId, username}},
         {upsert: true},
     );
 
     return sessionToken;
 }
 
-export async function createClaudeFileAndStoreSession(sessionToken: string, username: string) {
+export async function createClaudeFileAndStoreSession(sessionToken: string, githubId: string, username: string) {
     const claudeDir = getClaudeConfigDir();
     const tokenFilePath = path.join(claudeDir, constants.sessionTokenFile);
     await printInConsole(transport, `tokenFilePath: ${tokenFilePath}`);
     await fs.mkdir(path.dirname(tokenFilePath), {recursive: true});
     await printInConsole(transport, `${claudeDir} folder created`);
-    await fs.writeFile(tokenFilePath, JSON.stringify({sessionToken, username}, null, 2), 'utf8');
+    await fs.writeFile(tokenFilePath, JSON.stringify({sessionToken, githubId, username}, null, 2), 'utf8');
     await printInConsole(transport, `session token has been added/updated in ${constants.sessionTokenFile}`);
 }
 
@@ -137,7 +138,7 @@ export async function getGitHubAccessToken() {
         };
     }
 
-    const record = await db.collection('user_tokens').findOne({username: session.username});
+    const record = await db.collection('user_tokens').findOne({githubId: session.githubId});
     if (!record || !record.token) {
         return {
             accessToken: null,

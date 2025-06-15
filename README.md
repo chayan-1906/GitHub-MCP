@@ -19,7 +19,7 @@ cd GitHub-MCP
 npm install
 ```
 
-## User Guide -- https://versed-blinker-33e.notion.site/GitHub-MCP-User-Guide-2120c027172280fb81ccda9b88b8e265
+### User Guide -- https://versed-blinker-33e.notion.site/GitHub-MCP-User-Guide-2120c027172280fb81ccda9b88b8e265
 
 ## 🧰 Available Tools
 
@@ -45,10 +45,10 @@ npm run package
 
 • 🟦 **TypeScript** – Type-safe application development
 
-•📄 **GitHub API** – GitHub integration and data access
+• 📄 **GitHub API** – GitHub integration and data access
 
-•🧠 **MCP SDK** – Model Context Protocol server framework
+• 🧠 **MCP SDK** – Model Context Protocol server framework
 
-•✅ **Zod** – Schema-based input validation
+• ✅ **Zod** – Schema-based input validation
 
-•🌱 **dotenv** – Environment variable management
+• 🌱 **dotenv** – Environment variable management
