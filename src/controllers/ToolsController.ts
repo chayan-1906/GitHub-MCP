@@ -7,6 +7,8 @@ import {registerTool as myDetails} from '../tools/profile/my-details';
 import {registerTool as listRepositories} from '../tools/github/list-repositories';
 import {registerTool as getDefaultBranch} from '../tools/github/get-default-branch';
 import {registerTool as listFilesInRepository} from '../tools/github/list-files-in-repository';
+import {registerTool as getFileContent} from '../tools/github/get-file-content';
+import {registerTool as createRepository} from '../tools/github/create-repository';
 
 async function setupMcpTools(server: McpServer) {
     const start = Date.now();
@@ -16,6 +18,8 @@ async function setupMcpTools(server: McpServer) {
     listRepositories(server);
     getDefaultBranch(server);
     listFilesInRepository(server);
+    getFileContent(server);
+    createRepository(server);
 
     await printInConsole(transport, `All tools loaded in ${Date.now() - start}ms`);
 }

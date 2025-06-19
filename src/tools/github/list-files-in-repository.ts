@@ -8,9 +8,7 @@ import {apis, buildHeader} from "../../utils/apis";
 import {getGitHubAccessToken, getSessionTokenFromSessionFile} from "../../services/OAuth";
 import {FileTree} from "../../types";
 
-const listFilesInRepository = async (accessToken: string, repository: string, branch: string) => {
-    const {username} = await getSessionTokenFromSessionFile() || {};
-
+const listFilesInRepository = async (accessToken: string, username: string, repository: string, branch: string) => {
     const listFilesResponse = await axios.get<FileTree>(apis.listFilesApi(username, repository, branch), buildHeader(accessToken));
     const {tree} = listFilesResponse.data || {};
     return tree;
@@ -28,8 +26,10 @@ export const registerTool = (server: McpServer) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
             if (!accessToken) return {content};
 
+            const {username} = await getSessionTokenFromSessionFile() || {};
+
             try {
-                const files = await listFilesInRepository(accessToken, repository, branch);
+                const files = await listFilesInRepository(accessToken, username, repository, branch);
 
                 return {
                     content: [

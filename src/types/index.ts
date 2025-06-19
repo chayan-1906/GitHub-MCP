@@ -230,3 +230,27 @@ export interface FileTree {
     tree: FileItem[];
     truncated: boolean;
 }
+
+// getFileContentApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native/contents/src/index.dt.ts?ref=master
+export interface GitHubContentLink {
+    self: string;
+    git: string;
+    html: string;
+}
+
+export interface GitHubContent {
+    name: string;
+    path: string;
+    sha: string;
+    size: number;
+    url: string;
+    html_url: string;
+    git_url: string;
+    download_url: string | null;
+    type: 'file' | 'dir' | 'symlink' | 'submodule';
+    content?: string; // only in single file response
+    encoding?: 'base64'; // only in single file response
+    _links: GitHubContentLink;
+}
+
+// createRepository:: https://api.github.com/user/repos

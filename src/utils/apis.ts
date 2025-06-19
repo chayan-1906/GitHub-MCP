@@ -16,6 +16,7 @@ const apis = {
     // list of files
     listFilesApi: (username: string, repository: string, branch: string) => `${gitHubBaseUrl}/repos/${username}/${repository}/git/trees/${branch}?recursive=1`,
 
+    getFileContentApi: (username: string, repository: string, path: string, branch: string) => `${gitHubBaseUrl}/repos/${username}/${repository}/contents/${encodeURIComponent(path)}?ref=${branch}`,
 };
 
 const buildHeader = (accessToken: string) => {
