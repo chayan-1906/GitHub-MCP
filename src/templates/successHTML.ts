@@ -50,7 +50,7 @@ export const successHtml = `<!-- This will be auto-generated -->
 <body>
 <div class="card">
     <h1>✅ Authentication Successful</h1>
-    <p><strong>Email:</strong> {{username}}</p>
+    <p><strong>Username:</strong> {{username}}</p>
     <p><strong>Session Token:</strong></p>
     <div class="token">{{token}}</div>
     <p style="margin-top: 1.5rem; color: #555;">

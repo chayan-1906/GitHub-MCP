@@ -7,7 +7,7 @@ import {apis, buildHeader} from "../../utils/apis";
 import {getGitHubAccessToken} from "../../services/OAuth";
 
 const listRepositories = async (accessToken: string) => {
-    const repositories = await axios.get(apis.listRepositories, buildHeader(accessToken));
+    const repositories = await axios.get(apis.listRepositoriesApi, buildHeader(accessToken));
 
     return repositories.data.map((repository: any) => {
         const {name, full_name, description, private: isPrivate, html_url: url, visibility} = repository;
@@ -36,7 +36,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to list out all repositories: ${error}`), 'list-repositories');
+                sendError(transport, new Error(`Failed to list out all repositories: ${error}`), tools.listRepositories);
                 return {
                     content: [
                         {

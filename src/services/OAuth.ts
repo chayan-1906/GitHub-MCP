@@ -32,18 +32,7 @@ export async function saveGitHubToken(githubId: number, username: string, token:
 }
 
 export async function getDetailsFromSessionToken() {
-    const sessionToken = await getSessionTokenFromSessionFile();
-    await printInConsole(transport, `sessionToken in getUsernameFromSessionToken: ${sessionToken}`);
-    if (!sessionToken) {
-        return {
-            content: [
-                {
-                    type: 'text',
-                    text: `Please authenticate first in this link "http://localhost:${PORT}/auth". 🔑`,
-                },
-            ],
-        };
-    }
+    const {sessionToken} = await getSessionTokenFromSessionFile() || {};
 
     const db = await connect(transport);
     const sessions = db.collection('sessions');
@@ -112,7 +101,19 @@ export async function getSessionTokenFromSessionFile() {
     try {
         const content = await fs.readFile(filePath, 'utf8');
         const data = JSON.parse(content);
-        return data.sessionToken ?? null;
+        if (!content) {
+            return {
+                content: [
+                    {
+                        type: 'text',
+                        text: `Please authenticate first in this link "http://localhost:${PORT}/auth". 🔑`,
+                    },
+                ],
+            };
+        }
+        const {sessionToken, username} = data;
+        await printInConsole(transport, `sessionToken, username in getUsernameFromSessionToken: ${sessionToken} ${username}`);
+        return {sessionToken, username};
     } catch (error) {
         return null;
     }
@@ -120,7 +121,7 @@ export async function getSessionTokenFromSessionFile() {
 
 export async function getGitHubAccessToken() {
     const db = await connect(transport);
-    const sessionToken = await getSessionTokenFromSessionFile();
+    const {sessionToken} = await getSessionTokenFromSessionFile() || {};
     const sessions = db.collection('sessions');
     const session = await sessions.findOne({sessionToken});
 
@@ -160,20 +161,6 @@ export async function getGitHubAccessToken() {
                 {
                     type: 'text' as const,
                     text: 'Authenticated',
-                },
-            ],
-        },
-    };
-}
-
-export const testFunc = () => {
-    return {
-        accessToken: null,
-        response: {
-            content: [
-                {
-                    type: 'text' as const,
-                    text: `Please authenticate first in this link "http://localhost:${PORT}/auth". 🔑`,
                 },
             ],
         },
