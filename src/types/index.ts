@@ -1,6 +1,7 @@
 // listRepositoriesApi::
 // TODO: Create interface for listRepositoriesApi, use that listRepositories tool
 
+
 // repositoryDetailsApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native
 interface Owner {
     login: string;
@@ -108,6 +109,7 @@ export interface RepositoryDetails {
     network_count: number;
     subscribers_count: number;
 }
+
 
 // listAllBranchesApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native/branches
 interface CommitInfo {
@@ -217,6 +219,7 @@ export interface BranchInfo {
     protection_url: string;
 }
 
+
 // listFilesApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native/git/trees/master?recursive=1
 interface FileItem {
     path: string;
@@ -233,6 +236,7 @@ export interface FileTree {
     tree: FileItem[];
     truncated: boolean;
 }
+
 
 // getFileContentApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native/contents/src/index.dt.ts?ref=master
 export interface GitHubContentLink {
@@ -255,5 +259,6 @@ export interface GitHubContent {
     encoding?: 'base64'; // only in single file response
     _links: GitHubContentLink;
 }
+
 
 // createRepository:: https://api.github.com/user/repos

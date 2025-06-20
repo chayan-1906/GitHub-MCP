@@ -6,6 +6,10 @@ const tools = {
     listFilesInRepository: 'list-files-in-repository',
     getFileContent: 'get-file-content',
     createRepository: 'create-repository',
+    deleteRepository: 'delete-repository',
+    renameRepository: 'rename-repository',
+    modifyRepositoryVisibility: 'modify-repository-visibility',
+    addRemoveCollaborators: 'add-remove-collaborators',
 }
 
 const constants = {

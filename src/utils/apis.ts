@@ -18,8 +18,20 @@ const apis = {
 
     getFileContentApi: (owner: string, repository: string, path: string, branch: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/contents/${encodeURIComponent(path)}?ref=${branch}`,
 
-    // list of all repositories in a github account
+    // create repository
     createRepositoryApi: () => `${gitHubBaseUrl}/user/repos`,
+
+    // delete repository
+    deleteRepositoryApi: (owner: string, repository: string) => `${gitHubBaseUrl}/${owner}/${repository}`,
+
+    // rename repository
+    renameRepositoryApi: (owner: string, repository: string) => `${gitHubBaseUrl}/${owner}/${repository}`,
+
+    // modify-repository-visibility
+    modifyRepositoryVisibilityApi: (owner: string, repository: string) => `${gitHubBaseUrl}/${owner}/${repository}`,
+
+    // add or remove collaborators
+    addRemoveCollaborators: (owner: string, repository: string, username: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/collaborators/${username}`,
 };
 
 const buildHeader = (accessToken: string) => {

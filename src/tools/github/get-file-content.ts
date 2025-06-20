@@ -24,7 +24,7 @@ export const registerTool = (server: McpServer) => {
         'Reads and returns the raw content of a specific file from a GitHub repository branch',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('GitHub repository name'),
+            repository: z.string().describe('The name of the GitHub repository'),
             filePath: z.string().describe("Relative file path in the repository (e.g., 'src/index.js')"),
             branch: z.string().describe('Branch name'),
         },
