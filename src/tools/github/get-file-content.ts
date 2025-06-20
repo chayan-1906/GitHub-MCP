@@ -5,11 +5,11 @@ import {sendError} from "../../utils/sendError";
 import {transport} from "../../server";
 import axios from "axios";
 import {apis, buildHeader} from "../../utils/apis";
-import {getGitHubAccessToken, getSessionTokenFromSessionFile} from "../../services/OAuth";
+import {getGitHubAccessToken} from "../../services/OAuth";
 import {GitHubContent} from "../../types";
 
-const getFileContent = async (accessToken: string, username: string, repository: string, filePath: string, branch: string) => {
-    const getFileContentResponse = await axios.get<GitHubContent>(apis.getFileContentApi(username, repository, filePath, branch), buildHeader(accessToken));
+const getFileContent = async (accessToken: string, owner: string, repository: string, filePath: string, branch: string) => {
+    const getFileContentResponse = await axios.get<GitHubContent>(apis.getFileContentApi(owner, repository, filePath, branch), buildHeader(accessToken));
     const {content, encoding} = getFileContentResponse.data || {};
     if (encoding === 'base64' && content) {
         return Buffer.from(content, 'base64').toString('utf8');
@@ -23,18 +23,17 @@ export const registerTool = (server: McpServer) => {
         tools.getFileContent,
         'Reads and returns the raw content of a specific file from a GitHub repository branch',
         {
+            owner: z.string().describe('GitHub username or organization that owns the repository'),
             repository: z.string().describe('GitHub repository name'),
             filePath: z.string().describe("Relative file path in the repository (e.g., 'src/index.js')"),
             branch: z.string().describe('Branch name'),
         },
-        async ({repository, filePath, branch}) => {
+        async ({owner, repository, filePath, branch}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
             if (!accessToken) return {content};
 
-            const {username} = await getSessionTokenFromSessionFile() || {};
-
             try {
-                const fileContent = await getFileContent(accessToken, username, repository, filePath, branch);
+                const fileContent = await getFileContent(accessToken, owner, repository, filePath, branch);
 
                 return {
                     content: [

@@ -5,9 +5,10 @@ import {transport} from "../../server";
 import axios from "axios";
 import {apis, buildHeader} from "../../utils/apis";
 import {getGitHubAccessToken} from "../../services/OAuth";
+import {z} from "zod";
 
-const listRepositories = async (accessToken: string) => {
-    const repositories = await axios.get(apis.listRepositoriesApi, buildHeader(accessToken));
+const listRepositories = async (accessToken: string, perPage: number, currentPage: number) => {
+    const repositories = await axios.get(apis.listRepositoriesApi(perPage, currentPage), buildHeader(accessToken));
 
     return repositories.data.map((repository: any) => {
         const {name, full_name, description, private: isPrivate, html_url: url, visibility} = repository;
@@ -18,14 +19,17 @@ const listRepositories = async (accessToken: string) => {
 export const registerTool = (server: McpServer) => {
     server.tool(
         tools.listRepositories,
-        'Fetches and displays all repositories (public & private) of the authenticated GitHub user, including name, visibility, and description',
-        {},
-        async ({}) => {
+        'Fetches repositories of the authenticated GitHub user. Calls repeatedly with increasing currentPage until the result is empty',
+        {
+            perPage: z.number().min(1).max(60).default(30).describe('Maximum number of repositories to return per page (max: 60)'),
+            currentPage: z.number().min(1).default(1).describe('Page number of the results to fetch. Start with 1 and increment this value in each call until the returned list is empty')
+        },
+        async ({perPage, currentPage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
             if (!accessToken) return {content};
 
             try {
-                const repositories = await listRepositories(accessToken);
+                const repositories = await listRepositories(accessToken, perPage, currentPage);
 
                 return {
                     content: [

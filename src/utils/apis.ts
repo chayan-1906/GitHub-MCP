@@ -1,11 +1,11 @@
 const gitHubBaseUrl = 'https://api.github.com';
 
 const apis = {
-    // list of all repositories in a github account
-    listRepositoriesApi: `${gitHubBaseUrl}/user/repos`,
+    // list of all repositories in my github account
+    listRepositoriesApi: (perPage: number, currentPage: number) => `${gitHubBaseUrl}/user/repos?per_page=${perPage}&page=${currentPage}`,
 
     // get repository metadata
-    repositoryDetailsApi: (username: string, repository: string) => `${gitHubBaseUrl}/repos/${username}/${repository}`,
+    repositoryDetailsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
 
     // list of all branches in a repository
     listAllBranchesApi: (username: string, repository: string) => `${gitHubBaseUrl}/repos/${username}/${repository}/branches`,                                        // TODO: Create a new tool
@@ -16,7 +16,10 @@ const apis = {
     // list of files
     listFilesApi: (username: string, repository: string, branch: string) => `${gitHubBaseUrl}/repos/${username}/${repository}/git/trees/${branch}?recursive=1`,
 
-    getFileContentApi: (username: string, repository: string, path: string, branch: string) => `${gitHubBaseUrl}/repos/${username}/${repository}/contents/${encodeURIComponent(path)}?ref=${branch}`,
+    getFileContentApi: (owner: string, repository: string, path: string, branch: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/contents/${encodeURIComponent(path)}?ref=${branch}`,
+
+    // list of all repositories in a github account
+    createRepositoryApi: () => `${gitHubBaseUrl}/user/repos`,
 };
 
 const buildHeader = (accessToken: string) => {

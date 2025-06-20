@@ -8,42 +8,42 @@ import {apis, buildHeader} from "../../utils/apis";
 import {getGitHubAccessToken} from "../../services/OAuth";
 import {RepositoryDetails} from "../../types";
 
-const getDefaultBranch = async (accessToken: string, username: string, repository: string) => {
-    const repositoryDetailsResponse = await axios.get<RepositoryDetails>(apis.repositoryDetailsApi(username, repository), buildHeader(accessToken));
-    const {default_branch} = repositoryDetailsResponse.data || {};
-    return default_branch;
+const repositoryDetails = async (accessToken: string, owner: string, repository: string) => {
+    const repositoryDetailsResponse = await axios.get<RepositoryDetails>(apis.repositoryDetailsApi(owner, repository), buildHeader(accessToken));
+    const repositoryMetadata = repositoryDetailsResponse.data || {};
+    return repositoryMetadata;
 }
 
 export const registerTool = (server: McpServer) => {
     server.tool(
-        tools.getDefaultBranch,
-        'Retrieves the default branch name (e.g., main, master, dev) of a specified GitHub repository. Useful before accessing files or commits from a repo',
+        tools.repositoryDetails,
+        'Fetches metadata of a GitHub repository (e.g., default branch, visibility, description, etc.). Useful before accessing files or commits from a repo',
         {
-            username: z.string().describe('GitHub username or organization that owns the repository'),
+            owner: z.string().describe('GitHub username or organization that owns the repository'),
             repository: z.string().describe('The name of the GitHub repository'),
         },
-        async ({username, repository}) => {
+        async ({owner, repository}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
             if (!accessToken) return {content};
 
             try {
-                const defaultBranch = await getDefaultBranch(accessToken, username, repository);
+                const repositoryMetadata = await repositoryDetails(accessToken, owner, repository);
 
                 return {
                     content: [
                         {
                             type: 'text' as const,
-                            text: defaultBranch,
+                            text: JSON.stringify(repositoryMetadata, null, 2),
                         },
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to get the default branch: ${error}`), tools.getDefaultBranch);
+                sendError(transport, new Error(`Failed to get the repository details: ${error}`), tools.repositoryDetails);
                 return {
                     content: [
                         {
                             type: 'text',
-                            text: `Failed to get the default branch ❌: ${error.message}`,
+                            text: `Failed to get the repository details ❌: ${error.message}`,
                         },
                     ],
                 };

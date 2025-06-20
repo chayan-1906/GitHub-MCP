@@ -1,4 +1,7 @@
-// listRepositoriesApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native
+// listRepositoriesApi::
+// TODO: Create interface for listRepositoriesApi, use that listRepositories tool
+
+// repositoryDetailsApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native
 interface Owner {
     login: string;
     id: number;

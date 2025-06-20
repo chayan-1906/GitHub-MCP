@@ -17,7 +17,7 @@ interface CreateRepoOptions {
 
 const createRepository = async (accessToken: string, options: CreateRepoOptions) => {
     const {name, description, isPrivate, autoInit} = options;
-    const createRepositoryResponse = await axios.post<RepositoryDetails>(apis.listRepositoriesApi, {
+    const createRepositoryResponse = await axios.post<RepositoryDetails>(apis.createRepositoryApi(), {
         name,
         description,
         private: isPrivate ?? true,
