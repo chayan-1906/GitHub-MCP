@@ -9,7 +9,7 @@ import {successHtml} from "../templates/successHTML";
 const router = Router();
 
 router.get('/auth', async (req: Request, res: Response) => {
-    const redirectURL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo,user`;
+    const redirectURL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo,delete_repo,user`;
     res.redirect(redirectURL);
 });
 

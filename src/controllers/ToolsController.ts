@@ -12,6 +12,7 @@ import {registerTool as createRepository} from '../tools/github/create-repositor
 import {registerTool as deleteRepository} from '../tools/github/delete-repository';
 import {registerTool as renameRepository} from '../tools/github/rename-repository';
 import {registerTool as modifyRepositoryVisibility} from '../tools/github/modify-repository-visibility';
+import {registerTool as getAllCollaborators} from '../tools/github/get-all-collaborators';
 import {registerTool as addRemoveCollaborators} from '../tools/github/add-remove-collaborators';
 
 async function setupMcpTools(server: McpServer) {
@@ -27,6 +28,7 @@ async function setupMcpTools(server: McpServer) {
     deleteRepository(server);
     renameRepository(server);
     modifyRepositoryVisibility(server);
+    getAllCollaborators(server);
     addRemoveCollaborators(server);
 
     await printInConsole(transport, `All tools loaded in ${Date.now() - start}ms`);

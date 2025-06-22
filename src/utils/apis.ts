@@ -22,16 +22,25 @@ const apis = {
     createRepositoryApi: () => `${gitHubBaseUrl}/user/repos`,
 
     // delete repository
-    deleteRepositoryApi: (owner: string, repository: string) => `${gitHubBaseUrl}/${owner}/${repository}`,
+    deleteRepositoryApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
 
     // rename repository
-    renameRepositoryApi: (owner: string, repository: string) => `${gitHubBaseUrl}/${owner}/${repository}`,
+    renameRepositoryApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
 
     // modify-repository-visibility
-    modifyRepositoryVisibilityApi: (owner: string, repository: string) => `${gitHubBaseUrl}/${owner}/${repository}`,
+    modifyRepositoryVisibilityApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
+
+    // get-all-collaborators
+    getAllCollaboratorsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/collaborators`,
+
+    // get-all-invitations
+    getAllInvitationsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/invitations`,
 
     // add or remove collaborators
-    addRemoveCollaborators: (owner: string, repository: string, username: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/collaborators/${username}`,
+    addRemoveCollaboratorsApi: (owner: string, repository: string, username: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/collaborators/${username}`,
+
+    // remove invitations
+    cancelInvitationsApi: (owner: string, repository: string, invitationId: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/invitations/${invitationId}`,
 };
 
 const buildHeader = (accessToken: string) => {

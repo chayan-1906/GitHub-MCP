@@ -9,6 +9,7 @@ const tools = {
     deleteRepository: 'delete-repository',
     renameRepository: 'rename-repository',
     modifyRepositoryVisibility: 'modify-repository-visibility',
+    getAllCollaborators: 'get-all-collaborators',
     addRemoveCollaborators: 'add-remove-collaborators',
 }
 

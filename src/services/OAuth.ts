@@ -14,6 +14,8 @@ export async function saveGitHubToken(githubId: number, username: string, token:
     const db = await connect(transport);
     const collection = db.collection('user_tokens');
 
+    await printInConsole(transport, `token: ${token}`);
+
     const encrypted = encryptToken(token);
 
     // TODO Arka: Allow 4 sessions per user

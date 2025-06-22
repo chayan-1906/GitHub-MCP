@@ -17,7 +17,7 @@ export const registerTool = (server: McpServer) => {
         'Deletes a GitHub repository owned by the authenticated user. This action is irreversible',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub repository'),
+            repository: z.string().describe('The name of the GitHub Repository'),
         },
         async ({owner, repository}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
