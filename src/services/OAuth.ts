@@ -1,22 +1,19 @@
-import {connect} from "../config/db";
-import {transport} from "../server";
-import {decryptToken, encryptToken} from "../utils/encryption";
-import {v4 as uuidv4} from "uuid";
 import path from "path";
-import fs from "fs/promises";
-import {printInConsole} from "../utils/printInConsole";
-import {constants} from "../utils/constants";
-import {getClaudeConfigDir} from "../utils/directory";
-import {PORT} from "../config/config";
 import axios from "axios";
+import fs from "fs/promises";
+import {v4 as uuidv4} from "uuid";
+import {connect, decryptToken, encryptToken, getClaudeConfigDir, printInConsole} from "mcp-utils/utils";
+import {transport} from "../server";
+import {constants} from "../utils/constants";
+import {DB_NAME, MONGODB_URI, PORT, TOKEN_SECRET} from "../config/config";
 
 export async function saveGitHubToken(githubId: number, username: string, token: string) {
-    const db = await connect(transport);
+    const db = await connect(transport, MONGODB_URI, DB_NAME);
     const collection = db.collection('user_tokens');
 
     await printInConsole(transport, `token: ${token}`);
 
-    const encrypted = encryptToken(token);
+    const encrypted = encryptToken(TOKEN_SECRET, token);
 
     // TODO Arka: Allow 4 sessions per user
     await collection.updateOne(
@@ -36,7 +33,7 @@ export async function saveGitHubToken(githubId: number, username: string, token:
 export async function getDetailsFromSessionToken() {
     const {sessionToken} = await getSessionTokenFromSessionFile() || {};
 
-    const db = await connect(transport);
+    const db = await connect(transport, MONGODB_URI, DB_NAME);
     const sessions = db.collection('sessions');
     const session = await sessions.findOne({sessionToken});
 
@@ -76,7 +73,7 @@ export async function getDetailsFromSessionToken() {
 
 export async function generateAndSaveSessionToken(githubId: string, username: string): Promise<string> {
     const sessionToken = uuidv4();
-    const db = await connect(transport);
+    const db = await connect(transport, MONGODB_URI, DB_NAME);
     const collection = db.collection('sessions');
     await collection.updateOne(
         {username},
@@ -122,7 +119,7 @@ export async function getSessionTokenFromSessionFile() {
 }
 
 export async function getGitHubAccessToken() {
-    const db = await connect(transport);
+    const db = await connect(transport, MONGODB_URI, DB_NAME);
     const {sessionToken} = await getSessionTokenFromSessionFile() || {};
     const sessions = db.collection('sessions');
     const session = await sessions.findOne({sessionToken});
@@ -157,7 +154,7 @@ export async function getGitHubAccessToken() {
     }
 
     return {
-        accessToken: decryptToken(record.token),
+        accessToken: decryptToken(TOKEN_SECRET, record.token),
         response: {
             content: [
                 {

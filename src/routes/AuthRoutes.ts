@@ -1,10 +1,10 @@
-import {Request, Response, Router} from 'express';
-import {CLIENT_ID, CLIENT_SECRET} from "../config/config";
 import axios from "axios";
-import {sendError} from "../utils/sendError";
+import {Request, Response, Router} from 'express';
+import {sendError} from "mcp-utils/utils";
 import {transport} from "../server";
-import {createClaudeFileAndStoreSession, generateAndSaveSessionToken, saveGitHubToken} from "../services/OAuth";
 import {successHtml} from "../templates/successHTML";
+import {CLIENT_ID, CLIENT_SECRET} from "../config/config";
+import {createClaudeFileAndStoreSession, generateAndSaveSessionToken, saveGitHubToken} from "../services/OAuth";
 
 const router = Router();
 

@@ -1,10 +1,10 @@
-import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {z} from "zod";
-import {tools} from "../../utils/constants";
-import {sendError} from "../../utils/sendError";
-import {transport} from "../../server";
 import axios from "axios";
+import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
+import {transport} from "../../server";
+import {tools} from "../../utils/constants";
 import {apis, buildHeader} from "../../utils/apis";
+import {sendError} from "mcp-utils/utils";
 import {getGitHubAccessToken} from "../../services/OAuth";
 
 const getAllCollaborators = async (accessToken: string, owner: string, repository: string) => {

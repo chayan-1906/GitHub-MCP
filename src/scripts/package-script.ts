@@ -1,5 +1,5 @@
-import {execSync} from 'child_process';
 import {platform} from 'os';
+import {execSync} from 'child_process';
 
 const isMacOS = platform() === 'darwin';
 

@@ -1,6 +1,6 @@
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {transport} from "../server";
-import {printInConsole} from "../utils/printInConsole";
+import {printInConsole} from "mcp-utils/utils";
 
 import {registerTool as myDetails} from '../tools/profile/my-details';
 
