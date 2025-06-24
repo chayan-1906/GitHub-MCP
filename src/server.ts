@@ -4,6 +4,7 @@ import express from 'express';
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {addOrUpdateMCPServer, freezePortOnQuit, killPortOnLaunch, printInConsole, setEntry} from "mcp-utils/utils";
+import {setupMcpTools as setupWeatherTools} from "weather-mcp";
 import {PORT} from "./config/config";
 import AuthRoutes from "./routes/AuthRoutes";
 import {setupMcpTools} from "./controllers/ToolsController";
@@ -26,7 +27,10 @@ const serverName = 'github';
 
 // Start receiving messages on stdin and sending messages on stdout
 async function startMcp() {
-    await setupMcpTools(server);
+    await Promise.all([
+        setupWeatherTools(server),
+        setupMcpTools(server),
+    ]);
     await server.connect(transport);
 }
 
