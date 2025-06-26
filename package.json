@@ -23,7 +23,7 @@
   "dependencies": {
     "axios": "^1.10.0",
     "crypto-js": "^4.2.0",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "mcp-utils": "github:pdas9647/MCP-Utils#master",
     "mongodb": "^6.17.0",
     "nodemon": "^3.1.10",
@@ -32,10 +32,10 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
-    "@modelcontextprotocol/sdk": "^1.11.4",
-    "@types/express": "^4.17.17",
+    "@modelcontextprotocol/sdk": "^1.13.1",
+    "@types/express": "^4.17.23",
     "@vercel/ncc": "^0.38.3",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
