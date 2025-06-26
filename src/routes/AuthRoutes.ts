@@ -13,9 +13,12 @@ router.get('/auth', async (req: Request, res: Response) => {
     res.redirect(redirectURL);
 });
 
-router.get('/github/oauth/callback', async (req: Request, res: Response) => {
+router.get('/github/oauth/callback', async (req: Request, res: Response): Promise<void> => {
     const code = req.query.code as string;
-    if (!code) return res.status(400).send('No code provided');
+    if (!code) {
+        res.status(400).send('No code provided');
+        return;
+    }
 
     try {
         // Step 1: Exchange code for access token
@@ -29,7 +32,10 @@ router.get('/github/oauth/callback', async (req: Request, res: Response) => {
         );
 
         const {access_token: accessToken} = tokenResponse.data;
-        if (!accessToken) return res.status(500).send('Access token not received');
+        if (!accessToken) {
+            res.status(500).send('Access token not received');
+            return;
+        }
 
         // Step 2: Get user info from GitHub
         const userResponse = await axios.get('https://api.github.com/user', {
@@ -37,7 +43,10 @@ router.get('/github/oauth/callback', async (req: Request, res: Response) => {
         });
 
         const {id: githubId, login: username} = userResponse.data;
-        if (!githubId || !username) return res.status(500).send('Failed to get user info');
+        if (!githubId || !username) {
+            res.status(500).send('Failed to get user info');
+            return;
+        }
 
         // Step 3: Save tokens object in DB
         await saveGitHubToken(githubId, username, accessToken);
