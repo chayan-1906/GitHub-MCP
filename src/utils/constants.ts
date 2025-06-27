@@ -24,6 +24,8 @@ const tools = {
 
     /** commits */
     commitRemoteFile: 'commit-remote-file',
+
+    runShellCommand: 'run-shell-command',
 }
 
 const constants = {

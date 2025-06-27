@@ -7,15 +7,15 @@ import {tools} from "../../utils/constants";
 import {getGitHubAccessToken} from "../../services/OAuth";
 import {buildHeader, gitHubBaseUrl} from "../../utils/apis";
 
-const commitRemoteFile = async (accessToken: string, owner: string, repository: string, branch: string, parentCommitSha: string, baseTreeSha: string, filePath: string, fileContent: string, commitMessage: string) => {
-    /* 1️⃣  Create blob for the new/updated file */
+const commitRemoteFile = async (accessToken: string, owner: string, repository: string, branch: string, filePath: string, fileContent: string, commitMessage: string, parentCommitSha?: string, baseTreeSha?: string) => {
+    /* Create blob for the new/updated file */
     const {data: blob} = await axios.post(
         `${gitHubBaseUrl}/repos/${owner}/${repository}/git/blobs`,
         {content: fileContent, encoding: 'utf-8'},
         buildHeader(accessToken),
     );
 
-    /* 2️⃣  Create a new tree that includes the blob */
+    /* Create a new tree that includes the blob */
     const {data: newTree} = await axios.post(
         `${gitHubBaseUrl}/repos/${owner}/${repository}/git/trees`,
         {
@@ -27,18 +27,23 @@ const commitRemoteFile = async (accessToken: string, owner: string, repository: 
         buildHeader(accessToken),
     );
 
-    /* 3️⃣  Create a new commit pointing to that tree */
+    /* Create a new commit pointing to that tree */
+    const commitPayload: any = {
+        message: commitMessage,
+        tree: newTree.sha,
+    };
+    if (parentCommitSha) {
+        commitPayload.parents = [parentCommitSha];
+    }
+
     const {data: newCommit} = await axios.post(
         `${gitHubBaseUrl}/repos/${owner}/${repository}/git/commits`,
-        {
-            message: commitMessage,
-            tree: newTree.sha,
-            parents: [parentCommitSha],
-        },
+        commitPayload,
         buildHeader(accessToken),
     );
 
-    /* 🔄  Update the branch ref to the new commit */
+
+    /* Update the branch ref to the new commit */
     await axios.patch(
         `${gitHubBaseUrl}/repos/${owner}/${repository}/git/refs/heads/${branch}`,
         {sha: newCommit.sha},
@@ -58,23 +63,25 @@ const commitRemoteFile = async (accessToken: string, owner: string, repository: 
 export const registerTool = (server: McpServer) => {
     server.tool(
         tools.commitRemoteFile,
-        'Commits a file (e.g., README.md) to a GitHub Repository using GitHub API. This does not use the local file system',
+        `Commits a file to a GitHub Repository using GitHub API. This does not use the local file system.  
+                    • parentCommitSha & baseTreeSha: must be real SHAs.  
+                    • If the repository is empty, omit these fields (don’t pass 000…000).`,
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
             repository: z.string().describe('The name of the GitHub Repository'),
             branch: z.string().describe('Name of the branch where the file should be committed'),
-            parentCommitSha: z.string().describe("The SHA of the latest commit in the branch (parent commit)"),
-            baseTreeSha: z.string().describe("The SHA of the base tree (usually from the parent commit)"),
             filePath: z.string().describe('Path of the file (e.g., README.md or docs/info.txt)'),
             fileContent: z.string().describe('Content of the file'),
             commitMessage: z.string().describe('Commit message to include'),
+            parentCommitSha: z.string().optional().describe('Latest commit SHA in branch (omit if repo empty)'),
+            baseTreeSha: z.string().optional().describe('Tree SHA of that commit (omit if repo empty)'),
         },
         async ({owner, repository, branch, parentCommitSha, baseTreeSha, filePath, fileContent, commitMessage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
             if (!accessToken) return {content};
 
             try {
-                const committedFile = await commitRemoteFile(accessToken, owner, repository, branch, parentCommitSha, baseTreeSha, filePath, fileContent, commitMessage);
+                const committedFile = await commitRemoteFile(accessToken, owner, repository, branch, filePath, fileContent, commitMessage, parentCommitSha, baseTreeSha);
 
                 return {
                     content: [

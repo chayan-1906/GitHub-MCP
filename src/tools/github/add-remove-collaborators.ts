@@ -64,5 +64,3 @@ export const registerTool = (server: McpServer) => {
         },
     );
 }
-
-// Remove pdas9647 from chayan-1906's MCP-test-repo
