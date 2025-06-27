@@ -5,7 +5,12 @@ import {printInConsole} from "mcp-utils/utils";
 import {registerTool as myDetails} from '../tools/profile/my-details';
 
 import {registerTool as listRepositories} from '../tools/github/list-repositories';
-import {registerTool as repositoryDetails} from '../tools/github/repository-details';
+import {registerTool as getRepositoryDetails} from '../tools/github/get-repository-details';
+import {registerTool as updateRepository} from '../tools/github/update-repository';
+import {registerTool as listBranches} from '../tools/github/list-branches';
+import {registerTool as getBranchDetails} from '../tools/github/get-branch-details';
+import {registerTool as createBranch} from '../tools/github/create-branch';
+import {registerTool as setDefaultBranch} from '../tools/github/set-default-branch';
 import {registerTool as listFilesInRepository} from '../tools/github/list-files-in-repository';
 import {registerTool as getFileContent} from '../tools/github/get-file-content';
 import {registerTool as createRepository} from '../tools/github/create-repository';
@@ -21,7 +26,12 @@ async function setupMcpTools(server: McpServer) {
     myDetails(server);
 
     listRepositories(server);
-    repositoryDetails(server);
+    getRepositoryDetails(server);
+    updateRepository(server);
+    listBranches(server);
+    getBranchDetails(server);
+    createBranch(server);
+    setDefaultBranch(server);
     listFilesInRepository(server);
     getFileContent(server);
     createRepository(server);

@@ -46,7 +46,7 @@ export const registerTool = (server: McpServer) => {
                     content: [
                         {
                             type: 'text' as const,
-                            text: action === 'add' ? `${response?.user} ${response?.action} to ${repository}` : `${response?.user} removed from ${repository}`,
+                            text: action === 'add' ? `${response?.user} ${response?.action} to ${repository} ✅` : `${response?.user} removed from ${repository} ✅`,
                         },
                     ],
                 };
