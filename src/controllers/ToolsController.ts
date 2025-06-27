@@ -6,6 +6,8 @@ import {registerTool as myDetails} from '../tools/profile/my-details';
 
 import {registerTool as listRepositories} from '../tools/github/list-repositories';
 import {registerTool as repositoryDetails} from '../tools/github/repository-details';
+import {registerTool as listBranches} from '../tools/github/list-branches';
+import {registerTool as createBranch} from '../tools/github/create-branch';
 import {registerTool as listFilesInRepository} from '../tools/github/list-files-in-repository';
 import {registerTool as getFileContent} from '../tools/github/get-file-content';
 import {registerTool as createRepository} from '../tools/github/create-repository';
@@ -22,6 +24,8 @@ async function setupMcpTools(server: McpServer) {
 
     listRepositories(server);
     repositoryDetails(server);
+    listBranches(server);
+    createBranch(server);
     listFilesInRepository(server);
     getFileContent(server);
     createRepository(server);

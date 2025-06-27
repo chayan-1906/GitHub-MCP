@@ -3,6 +3,9 @@ const tools = {
 
     listRepositories: 'list-repositories',
     repositoryDetails: 'repository-details',
+    listBranches: 'list-branches',
+    getBranchDetails: 'get-branch-details',
+    createBranch: 'create-branch',
     listFilesInRepository: 'list-files-in-repository',
     getFileContent: 'get-file-content',
     createRepository: 'create-repository',
