@@ -64,7 +64,7 @@ export async function getDetailsFromSessionToken() {
             response: {
                 content: [{
                     type: 'text',
-                    text: 'Failed to fetch user details from GitHub.'
+                    text: 'Failed to fetch user details from GitHub ❌'
                 }],
             },
         };
@@ -159,7 +159,7 @@ export async function getGitHubAccessToken() {
             content: [
                 {
                     type: 'text' as const,
-                    text: 'Authenticated',
+                    text: 'Authenticated ✅',
                 },
             ],
         },

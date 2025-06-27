@@ -35,7 +35,7 @@ export const registerTool = (server: McpServer) => {
                     content: [
                         {
                             type: 'text' as const,
-                            text: `Default branch for ${owner}/${repository} set to ${branch}`,
+                            text: `Default branch for ${owner}/${repository} set to ${branch} ✅`,
                         },
                     ],
                 };

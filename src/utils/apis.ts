@@ -10,6 +10,9 @@ const apis = {
     // get repository metadata
     repositoryDetailsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
 
+    // update repository metadata
+    updateRepositoryApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
+
     // list of all branches in a repository
     listAllBranchesApi: (owner: string, repository: string, perPage: number, currentPage: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/branches??per_page=${perPage}&page=${currentPage}`,
 

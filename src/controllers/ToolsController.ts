@@ -5,7 +5,8 @@ import {printInConsole} from "mcp-utils/utils";
 import {registerTool as myDetails} from '../tools/profile/my-details';
 
 import {registerTool as listRepositories} from '../tools/github/list-repositories';
-import {registerTool as repositoryDetails} from '../tools/github/get-repository-details';
+import {registerTool as getRepositoryDetails} from '../tools/github/get-repository-details';
+import {registerTool as updateRepository} from '../tools/github/update-repository';
 import {registerTool as listBranches} from '../tools/github/list-branches';
 import {registerTool as getBranchDetails} from '../tools/github/get-branch-details';
 import {registerTool as createBranch} from '../tools/github/create-branch';
@@ -25,7 +26,8 @@ async function setupMcpTools(server: McpServer) {
     myDetails(server);
 
     listRepositories(server);
-    repositoryDetails(server);
+    getRepositoryDetails(server);
+    updateRepository(server);
     listBranches(server);
     getBranchDetails(server);
     createBranch(server);

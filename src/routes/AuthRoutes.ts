@@ -37,7 +37,7 @@ router.get('/github/oauth/callback', async (req: Request, res: Response) => {
         });
 
         const {id: githubId, login: username} = userResponse.data;
-        if (!githubId || !username) return res.status(500).send('Failed to get user info');
+        if (!githubId || !username) return res.status(500).send('Failed to get user info ❌');
 
         // Step 3: Save tokens object in DB
         await saveGitHubToken(githubId, username, accessToken);

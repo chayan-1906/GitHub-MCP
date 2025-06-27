@@ -3,6 +3,7 @@ const tools = {
 
     listRepositories: 'list-repositories',
     getRepositoryDetails: 'get-repository-details',
+    updateRepository: 'update-repository',
     listBranches: 'list-branches',
     getBranchDetails: 'get-branch-details',
     createBranch: 'create-branch',
