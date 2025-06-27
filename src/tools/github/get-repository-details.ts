@@ -8,7 +8,7 @@ import {RepositoryDetails} from "../../types";
 import {apis, buildHeader} from "../../utils/apis";
 import {getGitHubAccessToken} from "../../services/OAuth";
 
-const repositoryDetails = async (accessToken: string, owner: string, repository: string) => {
+const getRepositoryDetails = async (accessToken: string, owner: string, repository: string) => {
     const repositoryDetailsResponse = await axios.get<RepositoryDetails>(apis.repositoryDetailsApi(owner, repository), buildHeader(accessToken));
     const repositoryMetadata = repositoryDetailsResponse.data || {};
     return repositoryMetadata;
@@ -16,7 +16,7 @@ const repositoryDetails = async (accessToken: string, owner: string, repository:
 
 export const registerTool = (server: McpServer) => {
     server.tool(
-        tools.repositoryDetails,
+        tools.getRepositoryDetails,
         'Fetches metadata of a GitHub repository (e.g., default branch, visibility, description, etc.). Useful before accessing files or commits from a repo',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
@@ -27,7 +27,7 @@ export const registerTool = (server: McpServer) => {
             if (!accessToken) return {content};
 
             try {
-                const repositoryMetadata = await repositoryDetails(accessToken, owner, repository);
+                const repositoryMetadata = await getRepositoryDetails(accessToken, owner, repository);
 
                 return {
                     content: [
@@ -38,7 +38,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to get the repository details: ${error}`), tools.repositoryDetails);
+                sendError(transport, new Error(`Failed to get the repository details: ${error}`), tools.getRepositoryDetails);
                 return {
                     content: [
                         {

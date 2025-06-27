@@ -2,10 +2,11 @@ const tools = {
     myDetails: 'my-details',
 
     listRepositories: 'list-repositories',
-    repositoryDetails: 'repository-details',
+    getRepositoryDetails: 'get-repository-details',
     listBranches: 'list-branches',
     getBranchDetails: 'get-branch-details',
     createBranch: 'create-branch',
+    setDefaultBranch: 'set-default-branch',
     listFilesInRepository: 'list-files-in-repository',
     getFileContent: 'get-file-content',
     createRepository: 'create-repository',

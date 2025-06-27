@@ -14,10 +14,13 @@ const apis = {
     listAllBranchesApi: (owner: string, repository: string, perPage: number, currentPage: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/branches??per_page=${perPage}&page=${currentPage}`,
 
     // get a specific branch details
-    branchDetailsApi: (owner: string, repository: string, branch: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/branches/${branch}`,      // TODO: Create a new tool
+    getBranchDetailsApi: (owner: string, repository: string, branch: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/branches/${branch}`,
 
     // create a new branch
     createBranchApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
+
+    // set default branch
+    setDefaultBranchApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
 
     // list of files
     listFilesApi: (username: string, repository: string, branch: string) => `${gitHubBaseUrl}/repos/${username}/${repository}/git/trees/${branch}?recursive=1`,
