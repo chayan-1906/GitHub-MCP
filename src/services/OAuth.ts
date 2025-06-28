@@ -11,32 +11,20 @@ export async function saveGitHubToken(githubId: number, username: string, token:
     const db = await connect(transport, MONGODB_URI, DB_NAME);
     const collection = db.collection('user_tokens');
 
-    await printInConsole(transport, `token: ${token}`);
-
     const encrypted = encryptToken(TOKEN_SECRET, token);
-
-    // Allow up to 4 sessions per user
-    const user = await collection.findOne({githubId});
-    let tokens = user?.tokens || [];
-
-    // Add new token to the front, remove duplicates by token value
-    tokens = [{token: encrypted, updatedAt: new Date(), username}].concat(
-        tokens.filter(
-            (t: { token: { iv: string; content: string; tag: string } }) => t.token !== encrypted
-        )
-    );
-
-    // Keep only the latest 4 tokens
-    tokens = tokens.slice(0, 4);
 
     await collection.updateOne(
         {githubId},
         {
             $set: {
-                githubId,
                 username,
-                token: encrypted,
                 updatedAt: new Date(),
+            },
+            $push: {
+                tokens: {
+                    $each: [{value: encrypted, createdAt: new Date()}],
+                    $slice: -4,
+                },
             },
         },
         {upsert: true},
@@ -44,18 +32,22 @@ export async function saveGitHubToken(githubId: number, username: string, token:
 }
 
 export async function getDetailsFromSessionToken() {
-    const {sessionToken} = await getSessionTokenFromSessionFile() || {};
+    const {sessionToken} = (await getSessionTokenFromSessionFile()) || {};
 
     const db = await connect(transport, MONGODB_URI, DB_NAME);
     const sessions = db.collection('sessions');
-    const session = await sessions.findOne({sessionToken});
+
+    const session = await sessions.findOne(
+        {'sessions.value': sessionToken},
+        {projection: {username: 1}},
+    );
 
     if (!session?.username) {
         return {
             response: {
                 content: [{
                     type: 'text',
-                    text: `Session not found or expired, please authenticate again in this link "http://localhost:${PORT}/auth". 🔑`,
+                    text: `Session not found or expired, please authenticate again at "http://localhost:${PORT}/auth". 🔑`,
                 }],
             },
         };
@@ -88,9 +80,18 @@ export async function generateAndSaveSessionToken(githubId: string, username: st
     const sessionToken = uuidv4();
     const db = await connect(transport, MONGODB_URI, DB_NAME);
     const collection = db.collection('sessions');
+
     await collection.updateOne(
-        {username},
-        {$set: {sessionToken, githubId, username}},
+        {githubId},
+        {
+            $set: {username, updatedAt: new Date()},
+            $push: {
+                sessions: {
+                    $each: [{value: sessionToken, createdAt: new Date()}],
+                    $slice: -4,
+                },
+            },
+        },
         {upsert: true},
     );
 
@@ -113,7 +114,9 @@ export async function getSessionTokenFromSessionFile() {
     try {
         const content = await fs.readFile(filePath, 'utf8');
         const data = JSON.parse(content);
+        await printInConsole(transport, `data in OAuth.ts > getSessionTokenFromSessionFile: ${JSON.stringify(data, null, 2)}`);
         if (!content) {
+            await printInConsole(transport, 'No content in OAuth.ts > getSessionTokenFromSessionFile');
             return {
                 content: [
                     {

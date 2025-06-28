@@ -11,7 +11,7 @@ export const registerTool = (server: McpServer) => {
         'Retrieves details of the authenticated GitHub user, including username, display name, email (if available), avatar URL, and profile link',
         {},
         async ({}) => {
-            const sessionToken = await getSessionTokenFromSessionFile() || {};
+            const {sessionToken} = await getSessionTokenFromSessionFile() || {};
             if (!sessionToken) {
                 return {
                     content: [
