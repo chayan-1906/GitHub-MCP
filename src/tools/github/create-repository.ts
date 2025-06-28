@@ -21,7 +21,7 @@ const createRepository = async (accessToken: string, options: CreateRepoOptions)
         name,
         description,
         private: isPrivate ?? true,
-        auto_init: autoInit ?? false,
+        auto_init: autoInit ?? true,
     }, buildHeader(accessToken));
     const createRepositoryResponseData = createRepositoryResponse.data;
     return {
@@ -40,7 +40,7 @@ export const registerTool = (server: McpServer) => {
             name: z.string().describe('Name of the repository to create'),
             description: z.string().optional().describe('Optional description for the repository'),
             private: z.boolean().optional().describe('Whether the repository should be private (default: true)'),
-            autoInit: z.boolean().optional().describe('Whether to initialize the repository with a README (default: false)'),
+            autoInit: z.boolean().optional().describe('Whether to initialize the repository with a README (default: true)'),
         },
         async ({name, description, private: isPrivate, autoInit}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
