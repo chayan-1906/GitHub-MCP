@@ -36,7 +36,6 @@ export async function getDetailsFromSessionToken() {
 
     const db = await connect(transport, MONGODB_URI, DB_NAME);
     const sessions = db.collection('sessions');
-
     const session = await sessions.findOne(
         {'sessions.value': sessionToken},
         {projection: {username: 1}},
@@ -54,7 +53,7 @@ export async function getDetailsFromSessionToken() {
     }
 
     try {
-        const {data} = await axios.get(`https://api.github.com/users/${session.username}`)
+        const {data} = await axios.get(`https://api.github.com/users/${session.username}`);
         return {
             response: {
                 content: [{
@@ -64,7 +63,7 @@ export async function getDetailsFromSessionToken() {
             },
         };
     } catch (error: any) {
-        await printInConsole(transport, `Error fetching GitHub user: ${error.message}`)
+        await printInConsole(transport, `Error fetching GitHub user: ${error.message}`);
         return {
             response: {
                 content: [{
@@ -138,9 +137,13 @@ export async function getGitHubAccessToken() {
     const db = await connect(transport, MONGODB_URI, DB_NAME);
     const {sessionToken} = await getSessionTokenFromSessionFile() || {};
     const sessions = db.collection('sessions');
-    const session = await sessions.findOne({sessionToken});
+    const session = await sessions.findOne(
+        {'sessions.value': sessionToken},
+        {projection: {username: 1, githubId: 1}},
+    );
+    await printInConsole(transport, `session in getGitHubAccessToken: ${JSON.stringify(session)}`);
 
-    if (!session || !session?.username) {
+    if (!session?.username) {
         return {
             accessToken: null,
             response: {
@@ -154,8 +157,13 @@ export async function getGitHubAccessToken() {
         };
     }
 
-    const record = await db.collection('user_tokens').findOne({githubId: session.githubId});
-    if (!record || !record.token) {
+    // const record = await db.collection('user_tokens').findOne({githubId: session.githubId});
+    const record = await db.collection('user_tokens').findOne(
+        {githubId: Number(session.githubId)},
+        {projection: {tokens: {$slice: -1}}},   // -1 ⇒ latest only; drop if you want all
+    );
+    await printInConsole(transport, `record in getGitHubAccessToken: ${JSON.stringify(record)}`);
+    if (!record || !record.tokens || record.tokens.length === 0) {
         return {
             accessToken: null,
             response: {
@@ -169,8 +177,9 @@ export async function getGitHubAccessToken() {
         };
     }
 
+    const latestToken = record.tokens[0];
     return {
-        accessToken: decryptToken(TOKEN_SECRET, record.token),
+        accessToken: decryptToken(TOKEN_SECRET, record.tokens[0].value),
         response: {
             content: [
                 {
