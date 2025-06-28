@@ -15,7 +15,20 @@ export async function saveGitHubToken(githubId: number, username: string, token:
 
     const encrypted = encryptToken(TOKEN_SECRET, token);
 
-    // TODO Arka: Allow 4 sessions per user
+    // Allow up to 4 sessions per user
+    const user = await collection.findOne({githubId});
+    let tokens = user?.tokens || [];
+
+    // Add new token to the front, remove duplicates by token value
+    tokens = [{token: encrypted, updatedAt: new Date(), username}].concat(
+        tokens.filter(
+            (t: { token: { iv: string; content: string; tag: string } }) => t.token !== encrypted
+        )
+    );
+
+    // Keep only the latest 4 tokens
+    tokens = tokens.slice(0, 4);
+
     await collection.updateOne(
         {githubId},
         {
