@@ -179,7 +179,7 @@ export async function getGitHubAccessToken() {
 
     const latestToken = record.tokens[0];
     return {
-        accessToken: decryptToken(TOKEN_SECRET, record.tokens[0].value),
+        accessToken: decryptToken(TOKEN_SECRET, latestToken.value),
         response: {
             content: [
                 {
