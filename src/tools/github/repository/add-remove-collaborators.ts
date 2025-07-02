@@ -2,10 +2,10 @@ import {z} from "zod";
 import axios from "axios";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {sendError} from "mcp-utils/utils";
-import {transport} from "../../server";
-import {tools} from "../../utils/constants";
-import {apis, buildHeader} from "../../utils/apis";
-import {getGitHubAccessToken} from "../../services/OAuth";
+import {transport} from "../../../server";
+import {tools} from "../../../utils/constants";
+import {apis, buildHeader} from "../../../utils/apis";
+import {getGitHubAccessToken} from "../../../services/OAuth";
 
 const addRemoveCollaborators = async (accessToken: string, owner: string, repository: string, targetUserName: string, action: 'add' | 'remove', status?: 'accepted' | 'pending', invitationId?: string) => {
     if (action === 'add') {

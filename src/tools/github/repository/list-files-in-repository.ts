@@ -2,11 +2,11 @@ import {z} from "zod";
 import axios from "axios";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {sendError} from "mcp-utils/utils";
-import {FileTree} from "../../types";
-import {transport} from "../../server";
-import {tools} from "../../utils/constants";
-import {apis, buildHeader} from "../../utils/apis";
-import {getGitHubAccessToken} from "../../services/OAuth";
+import {FileTree} from "../../../types";
+import {transport} from "../../../server";
+import {tools} from "../../../utils/constants";
+import {apis, buildHeader} from "../../../utils/apis";
+import {getGitHubAccessToken} from "../../../services/OAuth";
 
 const listFilesInRepository = async (accessToken: string, owner: string, repository: string, branch: string) => {
     const listFilesResponse = await axios.get<FileTree>(apis.listFilesApi(owner, repository, branch), buildHeader(accessToken));

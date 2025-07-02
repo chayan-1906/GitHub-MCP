@@ -2,10 +2,10 @@ import {z} from "zod";
 import axios from "axios";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {sendError} from "mcp-utils/utils";
-import {tools} from "../../utils/constants";
-import {transport} from "../../server";
-import {apis, buildHeader} from "../../utils/apis";
-import {getGitHubAccessToken} from "../../services/OAuth";
+import {tools} from "../../../utils/constants";
+import {transport} from "../../../server";
+import {apis, buildHeader} from "../../../utils/apis";
+import {getGitHubAccessToken} from "../../../services/OAuth";
 
 const updateRepository = async (accessToken: string, owner: string, repository: string, description?: string, tags?: string[]) => {
     if (description) {

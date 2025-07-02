@@ -11,18 +11,21 @@ const tools = {
     modifyRepositoryVisibility: 'modify-repository-visibility',
     getAllCollaborators: 'get-all-collaborators',
     addRemoveCollaborators: 'add-remove-collaborators',
+    listFilesInRepository: 'list-files-in-repository',
 
     /** branches */
     listBranches: 'list-branches',
     getBranchDetails: 'get-branch-details',
     createBranch: 'create-branch',
     setDefaultBranch: 'set-default-branch',
-
-    /** files */
-    listFilesInRepository: 'list-files-in-repository',
-    getFileContent: 'get-file-content',
+    deleteBranch: 'delete-branch',
 
     /** commits */
+    listCommits: 'list-commits',
+    getCommitModifications: 'get-commit-modifications',
+
+    /** files */
+    getFileContent: 'get-file-content',
     commitRemoteFile: 'commit-remote-file',
 
     runShellCommand: 'run-shell-command',

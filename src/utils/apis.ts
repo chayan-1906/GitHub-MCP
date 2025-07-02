@@ -25,6 +25,11 @@ const apis = {
     // set default branch
     setDefaultBranchApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
 
+    // delete branch
+    deleteBranchApi: (owner: string, repository: string, branch: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/git/refs/heads/${branch}`,
+
+
+
     // list of files
     listFilesApi: (username: string, repository: string, branch: string) => `${gitHubBaseUrl}/repos/${username}/${repository}/git/trees/${branch}?recursive=1`,
 
@@ -53,6 +58,12 @@ const apis = {
 
     // remove invitations
     cancelInvitationsApi: (owner: string, repository: string, invitationId: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/invitations/${invitationId}`,
+
+    // get all commits
+    listCommitsApi: (owner: string, repository: string, branch: string, perPage: number, page: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/commits?sha=${branch}&per_page=${perPage}&page=${page}`,
+
+    // get commit details
+    commitDetailsApi: (owner: string, repository: string, commitSha: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/commits/${commitSha}`,
 };
 
 const buildHeader = (accessToken: string) => {

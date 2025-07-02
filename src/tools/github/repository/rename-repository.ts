@@ -2,11 +2,11 @@ import {z} from "zod";
 import axios from "axios";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {sendError} from "mcp-utils/utils";
-import {transport} from "../../server";
-import {tools} from "../../utils/constants";
-import {RepositoryDetails} from "../../types";
-import {apis, buildHeader} from "../../utils/apis";
-import {getGitHubAccessToken} from "../../services/OAuth";
+import {transport} from "../../../server";
+import {tools} from "../../../utils/constants";
+import {RepositoryDetails} from "../../../types";
+import {apis, buildHeader} from "../../../utils/apis";
+import {getGitHubAccessToken} from "../../../services/OAuth";
 
 const renameRepository = async (accessToken: string, owner: string, oldName: string, newName: string) => {
     const renameRepositoryResponse = await axios.patch<RepositoryDetails>(apis.renameRepositoryApi(owner, oldName), {name: newName}, buildHeader(accessToken));

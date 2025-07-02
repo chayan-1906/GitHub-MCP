@@ -2,11 +2,11 @@ import {z} from "zod";
 import axios from "axios";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {sendError} from "mcp-utils/utils";
-import {tools} from "../../utils/constants";
-import {transport} from "../../server";
-import {RepositoryDetails} from "../../types";
-import {apis, buildHeader} from "../../utils/apis";
-import {getGitHubAccessToken} from "../../services/OAuth";
+import {transport} from "../../../server";
+import {tools} from "../../../utils/constants";
+import {RepositoryDetails} from "../../../types";
+import {apis, buildHeader} from "../../../utils/apis";
+import {getGitHubAccessToken} from "../../../services/OAuth";
 
 const getRepositoryDetails = async (accessToken: string, owner: string, repository: string) => {
     const repositoryDetailsResponse = await axios.get<RepositoryDetails>(apis.repositoryDetailsApi(owner, repository), buildHeader(accessToken));

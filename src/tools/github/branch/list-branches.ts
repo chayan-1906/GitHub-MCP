@@ -2,10 +2,10 @@ import {z} from "zod";
 import axios from "axios";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {sendError} from "mcp-utils/utils";
-import {transport} from "../../server";
-import {tools} from "../../utils/constants";
-import {apis, buildHeader} from "../../utils/apis";
-import {getGitHubAccessToken} from "../../services/OAuth";
+import {transport} from "../../../server";
+import {tools} from "../../../utils/constants";
+import {apis, buildHeader} from "../../../utils/apis";
+import {getGitHubAccessToken} from "../../../services/OAuth";
 
 const listBranches = async (accessToken: string, owner: string, repository: string, perPage: number, currentPage: number) => {
     const branches = await axios.get(apis.listAllBranchesApi(owner, repository, perPage, currentPage), buildHeader(accessToken));
@@ -19,7 +19,7 @@ const listBranches = async (accessToken: string, owner: string, repository: stri
 export const registerTool = (server: McpServer) => {
     server.tool(
         tools.listBranches,
-        'Fetches branches of the authenticated user\'s repository. Calls repeatedly with increasing currentPage until the result is empty.',
+        'Fetches branches of the authenticated user\'s repository. Calls repeatedly with increasing currentPage until the result is empty',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
             repository: z.string().describe('The name of the GitHub Repository'),
