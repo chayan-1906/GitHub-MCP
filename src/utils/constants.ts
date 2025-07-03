@@ -28,11 +28,15 @@ const tools = {
     getFileContent: 'get-file-content',
     commitRemoteFile: 'commit-remote-file',
 
+    /** local */
+    runGitCommand: 'run-git-command',
+
     runShellCommand: 'run-shell-command',
 }
 
 const constants = {
     sessionTokenFile: 'github_session.json',
+    fsConfigFile: 'file_system_config.json',
 }
 
 export {tools, constants};

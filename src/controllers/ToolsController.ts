@@ -27,6 +27,8 @@ import {registerTool as getCommitModifications} from '../tools/github/commit/get
 import {registerTool as getFileContent} from '../tools/github/get-file-content';
 import {registerTool as commitRemoteFile} from '../tools/github/commit-remote-file';
 
+import {registerTool as runGitCommand} from '../tools/github/local/run-git-command';
+
 import {registerTool as runShellCommand} from '../tools/github/run-shell-command';
 
 async function setupMcpTools(server: McpServer) {
@@ -56,6 +58,8 @@ async function setupMcpTools(server: McpServer) {
 
     getFileContent(server);
     commitRemoteFile(server);
+
+    runGitCommand(server);
 
     runShellCommand(server);
 
