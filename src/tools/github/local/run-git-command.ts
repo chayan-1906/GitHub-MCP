@@ -14,8 +14,6 @@ const runGitCommand = async (command: string, repoPath: string) => {
         throw new Error('Only git commands allowed');
     }
 
-    // Validate path permissions using fs-mcp
-
     const {stdout, stderr} = await execAsync(command, {cwd: repoPath});
     return {stdout, stderr};
 }
@@ -26,7 +24,7 @@ export const registerTool = (server: McpServer) => {
         'Runs a Git command in local machine',
         {
             command: z.string().describe('Git command to execute (must start with "git")'),
-            repoPath: z.string().describe('Local repository path (working directory)'),
+            repoPath: z.string().describe('Local repository path (working directory). MUST be in fs-mcp allowed directories. Call get-allowed-directories first to verify access'),
         },
         async ({command, repoPath}) => {
             try {

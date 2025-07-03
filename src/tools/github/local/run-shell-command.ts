@@ -3,9 +3,9 @@ import {promisify} from "util";
 import {z} from "zod";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {sendError} from "mcp-utils/utils";
-import {transport} from "../../server";
-import {tools} from "../../utils/constants";
-import {getGitHubAccessToken} from "../../services/OAuth";
+import {transport} from "../../../server";
+import {tools} from "../../../utils/constants";
+import {getGitHubAccessToken} from "../../../services/OAuth";
 
 const execAsync = promisify(exec);
 

@@ -28,8 +28,7 @@ import {registerTool as getFileContent} from '../tools/github/get-file-content';
 import {registerTool as commitRemoteFile} from '../tools/github/commit-remote-file';
 
 import {registerTool as runGitCommand} from '../tools/github/local/run-git-command';
-
-import {registerTool as runShellCommand} from '../tools/github/run-shell-command';
+import {registerTool as runShellCommand} from '../tools/github/local/run-shell-command';
 
 async function setupMcpTools(server: McpServer) {
     const start = Date.now();
@@ -60,7 +59,6 @@ async function setupMcpTools(server: McpServer) {
     commitRemoteFile(server);
 
     runGitCommand(server);
-
     runShellCommand(server);
 
     await printInConsole(transport, `All tools loaded in ${Date.now() - start}ms`);
