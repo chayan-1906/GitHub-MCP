@@ -2,7 +2,7 @@ const gitHubBaseUrl = 'https://api.github.com';
 
 const apis = {
     // list of all repositories in my github account
-    listAuthRepositoriesApi: (perPage: number, currentPage: number) => `${gitHubBaseUrl}/user/repos?per_page=${perPage}&page=${currentPage}`,
+    listRepositoriesApi: (perPage: number, currentPage: number) => `${gitHubBaseUrl}/user/repos?affiliation=owner,collaborator,organization_member&per_page=${perPage}&page=${currentPage}`,
 
     // list of all repositories in other's github account
     listOwnerReposApi: (owner: string, perPage: number, page: number) => `${gitHubBaseUrl}/users/${owner}/repos?per_page=${perPage}&page=${page}`,

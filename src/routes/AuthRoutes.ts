@@ -9,7 +9,7 @@ import {createClaudeFileAndStoreSession, generateAndSaveSessionToken, saveGitHub
 const router = Router();
 
 router.get('/auth', async (req: Request, res: Response) => {
-    const redirectURL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo,delete_repo,user`;
+    const redirectURL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo,delete_repo,user,read:org,write:org,admin:org`;
     res.redirect(redirectURL);
 });
 
