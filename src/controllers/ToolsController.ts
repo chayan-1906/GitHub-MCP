@@ -32,40 +32,40 @@ import { registerTool as updateIssue } from '../tools/github/issue/update-issue'
 import { registerTool as updateIssueState } from '../tools/github/issue/update-issue-state';
 import { registerTool as assignIssue } from '../tools/github/issue/assign-issue';
 
-async function setupMcpTools( server: McpServer ) {
+async function setupMcpTools(server: McpServer) {
     const start = Date.now();
 
-    myDetails( server );
+    myDetails(server);
 
-    listRepositories( server );
-    getRepositoryDetails( server );
-    createRepository( server );
-    updateRepository( server );
-    renameRepository( server );
-    deleteRepository( server );
-    modifyRepositoryVisibility( server );
-    getAllCollaborators( server );
-    addRemoveCollaborators( server );
-    listFilesInRepository( server );
+    listRepositories(server);
+    getRepositoryDetails(server);
+    createRepository(server);
+    updateRepository(server);
+    renameRepository(server);
+    deleteRepository(server);
+    modifyRepositoryVisibility(server);
+    getAllCollaborators(server);
+    addRemoveCollaborators(server);
+    listFilesInRepository(server);
 
-    listBranches( server );
-    getBranchDetails( server );
-    createBranch( server );
-    setDefaultBranch( server );
-    deleteBranch( server );
+    listBranches(server);
+    getBranchDetails(server);
+    createBranch(server);
+    setDefaultBranch(server);
+    deleteBranch(server);
 
-    listCommits( server );
-    getCommitModifications( server );
+    listCommits(server);
+    getCommitModifications(server);
 
-    getFileContent( server );
-    commitRemoteFile( server );
+    getFileContent(server);
+    commitRemoteFile(server);
 
-    createIssue( server );
-    updateIssue( server );
-    updateIssueState( server );
-    assignIssue( server );
+    createIssue(server);
+    updateIssue(server);
+    updateIssueState(server);
+    assignIssue(server);
 
-    await printInConsole( transport, `All tools loaded in ${ Date.now() - start }ms` );
+    await printInConsole(transport, `All tools loaded in ${Date.now() - start}ms`);
 }
 
 export { setupMcpTools }
