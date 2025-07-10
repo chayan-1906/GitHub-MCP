@@ -7,43 +7,50 @@ import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
-const getCommitModifications = async ( accessToken: string, owner: string, repository: string, commitSha: string ) => {
-    const commit = await axios.get( apis.commitDetailsApi( owner, repository, commitSha ), buildHeader( accessToken ) );
+const updateIssueState = async ( accessToken: string, owner: string, repository: string, issueNumber: number, state: string ) => {
+    const { data } = await axios.patch( apis.closeIssueApi( owner, repository, issueNumber ), { state }, buildHeader( accessToken ) );
 
-    return commit.data.files.map( ( file: any ) => file.filename );
+    return {
+        repository: `${ owner }/${ repository }`,
+        issueNumber,
+        status: data.state,
+        title: data.title,
+        url: data.html_url,
+    };
 }
 
 export const registerTool = ( server: McpServer ) => {
     server.tool(
-        tools.getCommitModifications,
-        'Returns the list of files modified in a specific GitHub commit',
+        tools.updateIssueState,
+        'Updates the state of a GitHub issue (open or closed) by issue number',
         {
             owner: z.string().describe( 'GitHub username or organization that owns the repository' ),
             repository: z.string().describe( 'The name of the GitHub Repository' ),
-            commitSha: z.string().describe( 'Commit SHA to inspect' ),
+            issueNumber: z.number().describe( 'Issue number to close' ),
+            state: z.enum( [ 'open', 'closed' ] ).describe( "Set to 'open' to reopen or 'closed' to close the issue" ),
         },
-        async ( { owner, repository, commitSha } ) => {
+        async ( { owner, repository, issueNumber, state } ) => {
             const { accessToken, response: { content } } = await getGitHubAccessToken();
             if ( !accessToken ) return { content };
 
             try {
-                const commitDetails = await getCommitModifications( accessToken, owner, repository, commitSha );
+                const updatedIssue = await updateIssueState( accessToken, owner, repository, issueNumber, state );
 
                 return {
                     content: [
                         {
                             type: 'text' as const,
-                            text: JSON.stringify( commitDetails, null, 2 ),
+                            text: JSON.stringify( updatedIssue, null, 2 ),
                         },
                     ],
                 };
             } catch ( error: any ) {
-                sendError( transport, new Error( `Failed to get commit modifications: ${ error }` ), tools.getCommitModifications );
+                sendError( transport, new Error( `Failed to update the issue state: ${ error }` ), tools.updateIssueState );
                 return {
                     content: [
                         {
                             type: 'text',
-                            text: `Failed to get commit modifications ❌: ${ error.message }`,
+                            text: `Failed to update the issue state ❌: ${ error.message }`,
                         },
                     ],
                 };

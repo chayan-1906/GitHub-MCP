@@ -7,43 +7,50 @@ import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
-const getCommitModifications = async ( accessToken: string, owner: string, repository: string, commitSha: string ) => {
-    const commit = await axios.get( apis.commitDetailsApi( owner, repository, commitSha ), buildHeader( accessToken ) );
+const assignIssue = async ( accessToken: string, owner: string, repository: string, issueNumber: number, assignees: string[] ) => {
+    const { data } = await axios.post( apis.assignIssueApi( owner, repository, issueNumber ), { assignees }, buildHeader( accessToken ) );
 
-    return commit.data.files.map( ( file: any ) => file.filename );
+    return {
+        repository: `${ owner }/${ repository }`,
+        issueNumber,
+        title: data.title,
+        issueUrl: data.html_url,
+        assignees: data.assignees.map( ( user: any ) => user.login ),
+    };
 }
 
 export const registerTool = ( server: McpServer ) => {
     server.tool(
-        tools.getCommitModifications,
-        'Returns the list of files modified in a specific GitHub commit',
+        tools.assignIssue,
+        'Assigns one or more GitHub users to a GitHub issue',
         {
             owner: z.string().describe( 'GitHub username or organization that owns the repository' ),
             repository: z.string().describe( 'The name of the GitHub Repository' ),
-            commitSha: z.string().describe( 'Commit SHA to inspect' ),
+            issueNumber: z.number().describe( 'The issue number to assign users to' ),
+            assignees: z.array( z.string() ).nonempty().describe( 'List of GitHub usernames to assign to the issue' ),
         },
-        async ( { owner, repository, commitSha } ) => {
+        async ( { owner, repository, issueNumber, assignees } ) => {
             const { accessToken, response: { content } } = await getGitHubAccessToken();
             if ( !accessToken ) return { content };
 
             try {
-                const commitDetails = await getCommitModifications( accessToken, owner, repository, commitSha );
+                const assignedIssue = await assignIssue( accessToken, owner, repository, issueNumber, assignees );
 
                 return {
                     content: [
                         {
                             type: 'text' as const,
-                            text: JSON.stringify( commitDetails, null, 2 ),
+                            text: JSON.stringify( assignedIssue, null, 2 ),
                         },
                     ],
                 };
             } catch ( error: any ) {
-                sendError( transport, new Error( `Failed to get commit modifications: ${ error }` ), tools.getCommitModifications );
+                sendError( transport, new Error( `Failed to assign issue: ${ error }` ), tools.assignIssue );
                 return {
                     content: [
                         {
                             type: 'text',
-                            text: `Failed to get commit modifications ❌: ${ error.message }`,
+                            text: `Failed to assign issue ❌: ${ error.message }`,
                         },
                     ],
                 };

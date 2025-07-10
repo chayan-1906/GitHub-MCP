@@ -1,42 +1,42 @@
 {
-    "name": "github-mcp",
-    "version": "1.0.0",
-    "main": "src/server.js",
-    "keywords": [
-        "model-context-protocol",
-        "github-oauth",
-        "nodejs",
-        "typescript",
-        "mongodb",
-        "claude-llm",
-        "llm-integration",
-        "llm-backend"
-    ],
-    "author": "",
-    "license": "ISC",
-    "scripts": {
-        "dev": "ts-node src/server.ts",
-        "build": "tsc",
-        "bundle": "ncc build dist/server.js -o build",
-        "package": "ts-node src/scripts/package-script.ts"
-    },
-    "dependencies": {
-        "axios": "^1.10.0",
-        "crypto-js": "^4.2.0",
-        "express": "^5.1.0",
-        "mcp-utils": "github:pdas9647/MCP-Utils#c0a283b3563ff1184bc2c06340d8b46a16c026c7",
-        "mongodb": "^6.17.0",
-        "nodemon": "^3.1.10",
-        "uuid": "^11.1.0",
-        "weather-mcp": "github:chayan-1906/weather-mcp",
-        "zod": "^3.25.73"
-    },
-    "devDependencies": {
-        "@modelcontextprotocol/sdk": "^1.15.0",
-        "@types/express": "^5.0.3",
-        "@vercel/ncc": "^0.38.3",
-        "nodemon": "^3.1.10",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.8.3"
-    }
+  "name": "github-mcp",
+  "version": "1.0.0",
+  "main": "src/server.js",
+  "keywords": [
+    "model-context-protocol",
+    "github-oauth",
+    "nodejs",
+    "typescript",
+    "mongodb",
+    "claude-llm",
+    "llm-integration",
+    "llm-backend"
+  ],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "dev": "ts-node src/server.ts",
+    "build": "tsc",
+    "bundle": "ncc build dist/server.js -o build",
+    "package": "ts-node src/scripts/package-script.ts"
+  },
+  "dependencies": {
+    "axios": "^1.10.0",
+    "crypto-js": "^4.2.0",
+    "express": "^5.1.0",
+    "mcp-utils": "github:pdas9647/MCP-Utils#c0a283b3563ff1184bc2c06340d8b46a16c026c7",
+    "mongodb": "^6.17.0",
+    "nodemon": "^3.1.10",
+    "uuid": "^11.1.0",
+    "weather-mcp": "github:chayan-1906/weather-mcp",
+    "zod": "^4.0.2"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.15.0",
+    "@types/express": "^5.0.3",
+    "@vercel/ncc": "^0.38.3",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
 }

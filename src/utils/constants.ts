@@ -28,6 +28,12 @@ const tools = {
     getFileContent: 'get-file-content',
     commitRemoteFile: 'commit-remote-file',
 
+    /** issues */
+    createIssue: 'create-issue',
+    updateIssue: 'update-issue',
+    updateIssueState: 'update-issue-state',
+    assignIssue: 'assign-issue',
+
     /** local */
     runGitCommand: 'run-git-command',
 
@@ -39,4 +45,4 @@ const constants = {
     fsConfigFile: 'file_system_config.json',
 }
 
-export {tools, constants};
+export { tools, constants };
