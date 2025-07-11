@@ -5,6 +5,7 @@
 node_modules/
 build/
 dist/
+package-lock.json
 
 # debug
 npm-debug.*
