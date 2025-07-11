@@ -7,9 +7,9 @@ import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
-const updateIssue = async (accessToken: string, owner: string, repository: string, issueNumber: number, title: string, body?: string, labels?: string[]) => {
+const updateIssue = async (accessToken: string, owner: string, repository: string, issueNumber: number, issueTitle: string, body?: string, labels?: string[]) => {
     const payload: any = {};
-    if (title) payload.title = title;
+    if (issueTitle) payload.title = issueTitle;
     if (body) payload.body = body;
     if (labels?.length) payload.labels = labels;
 
@@ -32,16 +32,16 @@ export const registerTool = (server: McpServer) => {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
             repository: z.string().describe('The name of the GitHub Repository'),
             issueNumber: z.number().describe('Issue number to update'),
-            title: z.string().describe('Title of the issue'),
+            issueTitle: z.string().describe('Title of the issue'),
             body: z.string().optional().describe('Body/description of the issue'),
             labels: z.array(z.string()).optional().describe('Labels to associate with the issue'),
         },
-        async ({owner, repository, issueNumber, title, body, labels}) => {
+        async ({owner, repository, issueNumber, issueTitle, body, labels}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
             if (!accessToken) return {content};
 
             try {
-                const updatedIssue = await updateIssue(accessToken, owner, repository, issueNumber, title, body, labels);
+                const updatedIssue = await updateIssue(accessToken, owner, repository, issueNumber, issueTitle, body, labels);
 
                 return {
                     content: [
