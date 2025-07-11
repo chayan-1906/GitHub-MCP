@@ -29,7 +29,7 @@
     "nodemon": "^3.1.10",
     "uuid": "^11.1.0",
     "weather-mcp": "github:chayan-1906/weather-mcp",
-    "zod": "^4.0.5"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.15.1",
