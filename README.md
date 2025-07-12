@@ -7,13 +7,43 @@ Issues, Pull Requests, and Actions.
 
 ## ⚙️ Quick Start
 
-### Option 1: Download Pre-built Package
+### Option 1: Use Pre-built Package
 
-Download the ready-to-use package file:
+#### 1. **Install Claude Desktop:**
+Download from [https://claude.ai/download](https://claude.ai/download)
 
-📦 **[Download PKG](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp.pkg)**
+#### 2. **Download the Executable:**
 
-Extract and run directly without compilation.
+**macOS:**
+📦 **[Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-macos.pkg)**
+
+**Windows:**
+📦 **[Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-windows.pkg)**
+
+#### 3. **Run the Executable:**
+- **For macOS users**:
+  ```bash
+  chmod +x github
+  ./github
+  ```
+- **For Windows users**:
+  Double-click the file, or run via terminal: `./github.exe`
+
+**Note**:
+1. No need to run the executable repeatedly
+2. Do NOT delete the executable after running
+3. If you move the executable to another directory, you must run it again from the new location
+
+#### 4. **(Optional) Stop the Server:**
+You can stop the server if needed (launching Claude will automatically stop the currently running instance/port)
+
+#### 5. **Launch Claude Desktop**
+Start Claude Desktop application
+
+#### 6. **Start Asking Tasks:**
+Claude will now recognize the available tools with descriptions
+
+**Important**: When prompting Claude, include "use available GitHub tools" in your prompts to ensure the LLM utilizes the GitHub MCP tools instead of defaulting to web search
 
 ### Option 2: Build from Source
 
@@ -24,19 +54,19 @@ git clone https://github.com/chayan-1906/GitHub-MCP.git
 cd GitHub-MCP
 ```
 
-### 2. 📦 Install dependencies
+#### 2. 📦 Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3. 🔧 Setup Configuration
+#### 3. 🔧 Setup Configuration
 
 Configure your credentials in `src/config/config.ts`:
 
 ```typescript
 export const PORT = 20253
-export const DB_NAME = 'github';
+export const DB_NAME = "github";
 export const CLIENT_ID = "your_github_client_id"
 export const CLIENT_SECRET = "your_github_client_secret"
 export const GITHUB_CALLBACK_URL = `http://localhost:${PORT}/github/oauth/callback`
@@ -46,7 +76,12 @@ export const TOKEN_SECRET = "your_token_secret"
 
 Replace placeholder values with your actual GitHub OAuth app credentials and MongoDB connection string.
 
-### 4. 🧪 Run the MCP Server
+**Generate a secure token secret:**
+```bash
+openssl rand -hex 32
+```
+
+#### 4. 🧪 Run the MCP Server
 
 ```bash
 npm run dev
@@ -62,8 +97,7 @@ npm run package
 
 ## 📖 User Guide
 
-Detailed
-documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/GitHub-MCP-User-Guide-2120c027172280fb81ccda9b88b8e265)
+Detailed documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/GitHub-MCP-User-Guide-2120c027172280fb81ccda9b88b8e265)
 
 ---
 
@@ -71,9 +105,8 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 
 | Tool Name                    | Category      | Description                                                                                                                                         |
 |------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| ---------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `myDetails`                  | Profile       | Retrieves details of the authenticated GitHub user, including username, display name, email (if available), avatar URL, and profile link            |
-| ---------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                              |               |                                                                                                                                                     |
 | `listRepositories`           | Repository    | Fetches repositories user has access to. Calls repeatedly with increasing currentPage until result is empty                                         |
 | `getRepositoryDetails`       | Repository    | Fetches metadata of a GitHub repository (e.g., default branch, visibility, description, etc.). Useful before accessing files or commits from a repo |
 | `createRepository`           | Repository    | Creates a new GitHub repository for the authenticated user with optional description, visibility, and initialization                                |
@@ -81,23 +114,23 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 | `renameRepository`           | Repository    | Renames a GitHub repository owned by the authenticated user                                                                                         |
 | `deleteRepository`           | Repository    | Deletes a GitHub repository owned by the authenticated user. This action is irreversible                                                            |
 | `modifyRepositoryVisibility` | Repository    | Modifies the visibility of a GitHub repository (public/private/internal)                                                                            |
-| ---------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                              |               |                                                                                                                                                     |
 | `getAllCollaborators`        | Collaboration | Returns a combined list of accepted collaborators and pending invitations for a GitHub Repository, each marked with their status                    |
 | `addRemoveCollaborators`     | Collaboration | Adds or removes a collaborator from a GitHub repository                                                                                             |
-| ---------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                              |               |                                                                                                                                                     |
 | `listFilesInRepository`      | File          | Fetches the recursive file structure (tree) of a specified GitHub repository branch. Requires repository and branch name                            |
 | `getFileContent`             | File          | Reads and returns the raw content of a specific file from a GitHub repository branch                                                                |
 | `commitRemoteFile`           | File          | Commits a file to a GitHub Repository using GitHub API. This does not use the local file system                                                     |
-| ---------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                              |               |                                                                                                                                                     |
 | `listBranches`               | Branch        | Fetches branches of the authenticated user's repository. Calls repeatedly with increasing currentPage until the result is empty                     |
 | `getBranchDetails`           | Branch        | Fetches details of a specific branch in a GitHub repository                                                                                         |
 | `createBranch`               | Branch        | Creates a new branch from a given commit SHA (usually the latest commit of an existing branch)                                                      |
 | `setDefaultBranch`           | Branch        | Sets the default branch in a GitHub repository                                                                                                      |
 | `deleteBranch`               | Branch        | Deletes a branch from a GitHub repository. Cannot delete the default branch                                                                         |
-| ---------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                              |               |                                                                                                                                                     |
 | `listCommits`                | Commit        | Fetches commits in a branch of a GitHub repository, page by page                                                                                    |
 | `getCommitModifications`     | Commit        | Returns the list of files modified in a specific GitHub commit                                                                                      |
-| ---------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                              |               |                                                                                                                                                     |
 | `createIssue`                | Issue         | Creates a new issue in a GitHub repository. Including body and labels is optional                                                                   |
 | `updateIssue`                | Issue         | Updates the title and/or body of an existing GitHub issue                                                                                           |
 | `updateIssueState`           | Issue         | Updates the state of a GitHub issue (open or closed) by issue number                                                                                |
@@ -144,10 +177,15 @@ This MCP server provides comprehensive coverage of GitHub's REST API v4, includi
 - 📄 **GitHub API** – GitHub integration and data access
 - 🧠 **MCP SDK** – Model Context Protocol server framework
 - ✅ **Zod** – Schema-based input validation
-- 🌱 **dotenv** – Environment variable management
 - 🔐 **OAuth 2.0** – Secure authentication
 - 📊 **MongoDB** – Data persistence
 - 🚀 **Express.js** – Web server framework
+
+## 💡 Need More Tools?
+
+If you need additional GitHub tools or features that aren't currently available, please let me know! I'm happy to extend the functionality based on your requirements
+
+⭐ **If you find this project useful, please give it a star on GitHub!**
 
 ## 🔗 License
 
@@ -155,5 +193,4 @@ ISC
 
 ---
 
-**Note**: This server requires GitHub OAuth authentication. Please ensure you have proper credentials configured before
-running.
+**Note**: This server requires GitHub OAuth authentication. Please ensure you have proper credentials configured before running
