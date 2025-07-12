@@ -17,7 +17,7 @@ const modifyRepositoryVisibility = async (accessToken: string, owner: string, re
 export const registerTool = (server: McpServer) => {
     server.tool(
         tools.modifyRepositoryVisibility,
-        'Renames a GitHub repository owned by the authenticated user',
+        'Modifies a GitHub repository visibility (private/public/internal)',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
             repository: z.string().describe('Name of the repository to update'),

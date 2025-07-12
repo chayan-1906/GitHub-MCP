@@ -10,17 +10,22 @@ Issues, Pull Requests, and Actions.
 ### Option 1: Use Pre-built Package
 
 #### 1. **Install Claude Desktop:**
+
 Download from [https://claude.ai/download](https://claude.ai/download)
 
 #### 2. **Download the Executable:**
 
 **macOS:**
-📦 **[Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-macos.pkg)**
+📦 **[Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-macos.pkg)
+**
 
 **Windows:**
-📦 **[Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-windows.pkg)**
+📦 *
+*[Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-windows.pkg)
+**
 
 #### 3. **Run the Executable:**
+
 - **For macOS users**:
   ```bash
   chmod +x github
@@ -30,20 +35,25 @@ Download from [https://claude.ai/download](https://claude.ai/download)
   Double-click the file, or run via terminal: `./github.exe`
 
 **Note**:
+
 1. No need to run the executable repeatedly
 2. Do NOT delete the executable after running
-3. If you move the executable to another directory, you must run it again from the new location
+3. If you rename, move, or modify the executable, you must run it again (Step 3) to restart it properly
 
 #### 4. **(Optional) Stop the Server:**
+
 You can stop the server if needed (launching Claude will automatically stop the currently running instance/port)
 
 #### 5. **Launch Claude Desktop**
+
 Start Claude Desktop application
 
 #### 6. **Start Asking Tasks:**
+
 Claude will now recognize the available tools with descriptions
 
-**Important**: When prompting Claude, include "use available GitHub tools" in your prompts to ensure the LLM utilizes the GitHub MCP tools instead of defaulting to web search
+**Important**: When prompting Claude, include "use available GitHub tools" in your prompts to ensure the LLM utilizes
+the GitHub MCP tools instead of defaulting to web search
 
 ### Option 2: Build from Source
 
@@ -77,6 +87,7 @@ export const TOKEN_SECRET = "your_token_secret"
 Replace placeholder values with your actual GitHub OAuth app credentials and MongoDB connection string.
 
 **Generate a secure token secret:**
+
 ```bash
 openssl rand -hex 32
 ```
@@ -97,7 +108,8 @@ npm run package
 
 ## 📖 User Guide
 
-Detailed documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/GitHub-MCP-User-Guide-2120c027172280fb81ccda9b88b8e265)
+Detailed
+documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/GitHub-MCP-User-Guide-2120c027172280fb81ccda9b88b8e265)
 
 ---
 
@@ -113,7 +125,7 @@ Detailed documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notio
 | `updateRepository`           | Repository    | Updates repository description and/or tags (topics) of a GitHub repository                                                                          |
 | `renameRepository`           | Repository    | Renames a GitHub repository owned by the authenticated user                                                                                         |
 | `deleteRepository`           | Repository    | Deletes a GitHub repository owned by the authenticated user. This action is irreversible                                                            |
-| `modifyRepositoryVisibility` | Repository    | Modifies the visibility of a GitHub repository (public/private/internal)                                                                            |
+| `modifyRepositoryVisibility` | Repository    | Modifies a GitHub repository visibility (private/public/internal)                                                                                   |
 |                              |               |                                                                                                                                                     |
 | `getAllCollaborators`        | Collaboration | Returns a combined list of accepted collaborators and pending invitations for a GitHub Repository, each marked with their status                    |
 | `addRemoveCollaborators`     | Collaboration | Adds or removes a collaborator from a GitHub repository                                                                                             |
@@ -183,9 +195,42 @@ This MCP server provides comprehensive coverage of GitHub's REST API v4, includi
 
 ## 💡 Need More Tools?
 
-If you need additional GitHub tools or features that aren't currently available, please let me know! I'm happy to extend the functionality based on your requirements
+If you need additional GitHub tools or features that aren't currently available, please let me know! I'm happy to extend
+the functionality based on your requirements
 
-⭐ **If you find this project useful, please give it a star on GitHub!**
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/add-github-discussions` or
+   `git checkout -b fix/oauth-callback-error`)
+3. Commit your changes (`git commit -m 'Add GitHub Discussions API support'` or
+   `git commit -m 'Fix OAuth callback redirect issue'`)
+4. Push to the branch (`git push origin feature/add-github-discussions`)
+5. Open a Pull Request
+
+## 👨‍💻 Author
+
+**Padmanabha Das**
+
+- GitHub: [@chayan-1906](https://github.com/chayan-1906)
+- LinkedIn: [Padmanabha Das](https://www.linkedin.com/in/padmanabha-das-59bb2019b/)
+- Email: padmanabhadas9647@gmail.com
+
+## 🌟 Show Your Support
+
+If this project helped you, please give it a ⭐️!
+
+## 📱 Connect With Me
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/chayan-ranjan-das/)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-black)](https://github.com/chayan-1906)
+
+## 💡 Need More Tools?
+
+If you need additional GitHub tools or features that aren't currently available, please let me know! I'm happy to extend
+the functionality based on your requirements
 
 ## 🔗 License
 
@@ -193,4 +238,8 @@ ISC
 
 ---
 
-**Note**: This server requires GitHub OAuth authentication. Please ensure you have proper credentials configured before running
+<div align="center">
+  <p>Made with ❤️ by Padmanabha Das</p>
+  <p>⭐ Star this repo if you found it helpful!</p>
+  <p><strong>Note:</strong> This server requires GitHub OAuth authentication. Please ensure you have proper credentials configured before running.</p>
+</div>
