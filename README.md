@@ -1,7 +1,6 @@
 # 🚀 GitHub MCP Server
 
-An MCP-compliant server built with TypeScript to extend Claude and other AI agents with superpowers for GitHub Repos,
-Issues, Pull Requests, and Actions.
+An MCP-compliant server built with TypeScript to extend Claude and other AI agents with superpowers for GitHub Repositories, Branches, Commits, Issues, and Actions.
 
 ---
 
