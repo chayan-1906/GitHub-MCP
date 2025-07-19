@@ -15,10 +15,10 @@ Download from [https://claude.ai/download](https://claude.ai/download)
 #### 2. Download the Executable:
 
 **macOS:**
-📦 [Download macOS Executable]()
+📦 [Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.0.0/github)
 
 **Windows:**
-📦 [Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-windows.pkg)
+📦 [Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.0.0/github.exe)
 
 #### 3. Run the Executable:
 
