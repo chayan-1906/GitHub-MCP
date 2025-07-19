@@ -1,8 +1,19 @@
 # 🚀 GitHub MCP Server
 
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/chayan-1906/GitHub-MCP)
+[![Node.js](https://img.shields.io/badge/node.js-16.x+-green.svg)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/typescript-5.8.3-blue.svg)](https://www.typescriptlang.org/)
+[![Express](https://img.shields.io/badge/express-5.1.0-black.svg)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/mongodb-6.17.0-green.svg)](https://www.mongodb.com/)
+[![License](https://img.shields.io/badge/license-ISC-yellow.svg)](https://opensource.org/licenses/ISC)
+[![MCP](https://img.shields.io/badge/model_context_protocol-compliant-purple.svg)](https://modelcontextprotocol.io/)
+[![GitHub OAuth](https://img.shields.io/badge/github-oauth-black.svg)](https://docs.github.com/en/developers/apps/building-oauth-apps)
+
 An MCP-compliant server built with TypeScript to extend Claude and other AI agents with superpowers for GitHub Repositories, Branches, Commits, Issues, and Actions.
 
 ---
+
+![logo](https://raw.githubusercontent.com/chayan-1906/GitHub-MCP/master/github.png)
 
 ## ⚙️ Quick Start
 
