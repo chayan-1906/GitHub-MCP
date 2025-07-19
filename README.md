@@ -193,11 +193,6 @@ This MCP server provides comprehensive coverage of GitHub's REST API v4, includi
 - 📊 **MongoDB** – Data persistence
 - 🚀 **Express.js** – Web server framework
 
-## 💡 Need More Tools?
-
-If you need additional GitHub tools or features that aren't currently available, please let me know! I'm happy to extend
-the functionality based on your requirements
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -229,8 +224,7 @@ If this project helped you, please give it a ⭐️!
 
 ## 💡 Need More Tools?
 
-If you need additional GitHub tools or features that aren't currently available, please let me know! I'm happy to extend
-the functionality based on your requirements
+If you need additional GitHub tools or features that aren't currently available, please let me know! I'm happy to extend the functionality based on your requirements
 
 ## 🔗 License
 
