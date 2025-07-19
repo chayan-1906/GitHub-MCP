@@ -9,22 +9,19 @@ Issues, Pull Requests, and Actions.
 
 ### Option 1: Use Pre-built Package
 
-#### 1. **Install Claude Desktop:**
+#### 1. Install Claude Desktop:
 
 Download from [https://claude.ai/download](https://claude.ai/download)
 
-#### 2. **Download the Executable:**
+#### 2. Download the Executable:
 
 **macOS:**
-📦 **[Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-macos.pkg)
-**
+📦 [Download macOS Executable]()
 
 **Windows:**
-📦 *
-*[Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-windows.pkg)
-**
+📦 [Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/latest/download/github-mcp-windows.pkg)
 
-#### 3. **Run the Executable:**
+#### 3. Run the Executable:
 
 - **For macOS users**:
   ```bash
@@ -32,7 +29,7 @@ Download from [https://claude.ai/download](https://claude.ai/download)
   ./github
   ```
 - **For Windows users**:
-  Double-click the file, or run via terminal: `./github.exe`
+  Double-click the file, or run via terminal: `.\github.exe`
 
 **Note**:
 
@@ -40,15 +37,15 @@ Download from [https://claude.ai/download](https://claude.ai/download)
 2. Do NOT delete the executable after running
 3. If you rename, move, or modify the executable, you must run it again (Step 3) to restart it properly
 
-#### 4. **(Optional) Stop the Server:**
+#### 4. (Optional) Stop the Server:
 
 You can stop the server if needed (launching Claude will automatically stop the currently running instance/port)
 
-#### 5. **Launch Claude Desktop**
+#### 5. Launch Claude Desktop
 
 Start Claude Desktop application
 
-#### 6. **Start Asking Tasks:**
+#### 6. Start Asking Tasks:
 
 Claude will now recognize the available tools with descriptions
 

@@ -24,11 +24,10 @@
     "axios": "^1.10.0",
     "crypto-js": "^4.2.0",
     "express": "^5.1.0",
-    "mcp-utils": "github:pdas9647/MCP-Utils#c0a283b3563ff1184bc2c06340d8b46a16c026c7",
+    "mcp-utils": "github:pdas9647/MCP-Utils#master",
     "mongodb": "^6.17.0",
     "nodemon": "^3.1.10",
     "uuid": "^11.1.0",
-    "weather-mcp": "github:chayan-1906/weather-mcp",
     "zod": "^3.25.76"
   },
   "devDependencies": {
