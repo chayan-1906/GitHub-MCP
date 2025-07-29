@@ -34,6 +34,9 @@ const tools = {
     updateIssueState: 'update-issue-state',
     assignIssue: 'assign-issue',
 
+    /** releases */
+    createRelease: 'create-release',
+
     /** local */
     runGitCommand: 'run-git-command',
 

@@ -75,6 +75,9 @@ const apis = {
 
     // assign issue
     assignIssueApi: (owner: string, repository: string, issueNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}/assignees`,
+
+    // create release
+    createReleaseApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/releases`,
 };
 
 const buildHeader = (accessToken: string) => {

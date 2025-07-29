@@ -1,6 +1,6 @@
 # 🚀 GitHub MCP Server
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/chayan-1906/GitHub-MCP)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/chayan-1906/GitHub-MCP)
 [![Node.js](https://img.shields.io/badge/node.js-16.x+-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/typescript-5.8.3-blue.svg)](https://www.typescriptlang.org/)
 [![Express](https://img.shields.io/badge/express-5.1.0-black.svg)](https://expressjs.com/)
@@ -9,7 +9,8 @@
 [![MCP](https://img.shields.io/badge/model_context_protocol-compliant-purple.svg)](https://modelcontextprotocol.io/)
 [![GitHub OAuth](https://img.shields.io/badge/github-oauth-black.svg)](https://docs.github.com/en/developers/apps/building-oauth-apps)
 
-An MCP-compliant server built with TypeScript to extend Claude and other AI agents with superpowers for GitHub Repositories, Branches, Commits, Issues, and Actions.
+An MCP-compliant server built with TypeScript to extend Claude and other AI agents with superpowers for GitHub
+Repositories, Branches, Commits, Issues, and Actions.
 
 ---
 
@@ -124,7 +125,7 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 
 | Tool Name                    | Category      | Description                                                                                                                                         |
 |------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `myDetails`                  | Profile       | Retrieves details of the authenticated GitHub user, including username, display name, email (if available), avatar URL, and profile link            |
+| `myGitHubAccount`            | Profile       | Retrieves details of the authenticated GitHub user, including username, display name, email (if available), avatar URL, and profile link            |
 |                              |               |                                                                                                                                                     |
 | `listRepositories`           | Repository    | Fetches repositories user has access to. Calls repeatedly with increasing currentPage until result is empty                                         |
 | `getRepositoryDetails`       | Repository    | Fetches metadata of a GitHub repository (e.g., default branch, visibility, description, etc.). Useful before accessing files or commits from a repo |
@@ -231,7 +232,8 @@ If this project helped you, please give it a ⭐️!
 
 ## 💡 Need More Tools?
 
-If you need additional GitHub tools or features that aren't currently available, please let me know! I'm happy to extend the functionality based on your requirements
+If you need additional GitHub tools or features that aren't currently available, please let me know! I'm happy to extend
+the functionality based on your requirements
 
 ## 🔗 License
 
