@@ -37,7 +37,7 @@ export const registerTool = (server: McpServer) => {
         'Updates repository description and/or tags (topics) of a GitHub repository',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub repository'),
+            repository: z.string().describe('The name of the GitHub Repository'),
             description: z.string().optional().describe('The description to be added to the repository'),
             tags: z.array(z.string()).optional().describe('Topics to set or replace in the repository'),
         },

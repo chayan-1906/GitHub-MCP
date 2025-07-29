@@ -76,8 +76,17 @@ const apis = {
     // assign issue
     assignIssueApi: (owner: string, repository: string, issueNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}/assignees`,
 
+    // get all releases
+    getAllReleasesApi: (owner: string, repository: string, perPage: number, currentPage: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/releases?per_page=${perPage}&page=${currentPage}`,
+
     // create release
     createReleaseApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/releases`,
+
+    // update release
+    updateReleaseApi: (owner: string, repository: string, releaseId: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/releases/${releaseId}`,
+
+    // delete release
+    deleteReleaseApi: (owner: string, repository: string, releaseId: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/releases/${releaseId}`,
 };
 
 const buildHeader = (accessToken: string) => {

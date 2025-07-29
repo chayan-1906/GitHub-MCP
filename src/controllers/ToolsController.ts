@@ -32,7 +32,10 @@ import { registerTool as updateIssue } from '../tools/github/issue/update-issue'
 import { registerTool as updateIssueState } from '../tools/github/issue/update-issue-state';
 import { registerTool as assignIssue } from '../tools/github/issue/assign-issue';
 
+import { registerTool as getAllReleases } from '../tools/github/release/get-all-releases';
 import { registerTool as createRelease } from '../tools/github/release/create-release';
+import { registerTool as updateRelease } from '../tools/github/release/update-release';
+import { registerTool as deleteRelease } from '../tools/github/release/delete-release';
 
 async function setupMcpTools(server: McpServer) {
     const start = Date.now();
@@ -67,7 +70,10 @@ async function setupMcpTools(server: McpServer) {
     updateIssueState(server);
     assignIssue(server);
 
+    getAllReleases(server);
     createRelease(server);
+    updateRelease(server);
+    deleteRelease(server);
 
     await printInConsole(transport, `All tools loaded in ${Date.now() - start}ms`);
 }

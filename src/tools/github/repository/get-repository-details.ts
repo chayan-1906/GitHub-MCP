@@ -35,7 +35,7 @@ export const registerTool = (server: McpServer) => {
         'Fetches metadata of a GitHub repository (e.g., default branch, visibility, description, etc.). Useful before accessing files or commits from a repo',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub repository'),
+            repository: z.string().describe('The name of the GitHub Repository'),
         },
         async ({owner, repository}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();

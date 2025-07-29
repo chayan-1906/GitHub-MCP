@@ -155,6 +155,11 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 | `updateIssue`                | Issue         | Updates the title and/or body of an existing GitHub issue                                                                                           |
 | `updateIssueState`           | Issue         | Updates the state of a GitHub issue (open or closed) by issue number                                                                                |
 | `assignIssue`                | Issue         | Assigns one or more GitHub users to a GitHub issue                                                                                                  |
+|                              |               |                                                                                                                                                     |
+| `getAllReleases`             | Release       | Fetches all releases in a GitHub repository, page by page                                                                                           |
+| `createRelease`              | Release       | Creates a GitHub release from an existing tag or creates a new tag and release                                                                      |
+| `updateRelease`              | Release       | Updates an existing GitHub release by release ID with new information                                                                               |
+| `deleteRelease`              | Release       | Deletes a GitHub release by release ID. This action is irreversible                                                                                 |
 
 ---
 
@@ -167,6 +172,7 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 - **👥 Collaboration**: Manage collaborators and permissions
 - **📁 File Operations**: Read, write, and commit files
 - **🔄 Commit History**: Access and analyze commit data
+- **🚀 Release Management**: Create and update releases
 - **⚡ Real-time Updates**: Live synchronization with GitHub API
 
 ## 🛠️ Architecture
@@ -189,6 +195,7 @@ This MCP server provides comprehensive coverage of GitHub's REST API v4, includi
 - File operations
 - Collaboration features
 - Commit history
+- Release management
 - User profile management
 
 ## 👨‍💻 Tech Stack
