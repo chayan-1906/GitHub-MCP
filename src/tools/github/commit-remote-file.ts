@@ -5,19 +5,19 @@ import { sendError } from "mcp-utils/utils";
 import { transport } from "../../server";
 import { tools } from "../../utils/constants";
 import { getGitHubAccessToken } from "../../services/OAuth";
-import { buildHeader, gitHubBaseUrl } from "../../utils/apis";
+import { apis, buildHeader } from "../../utils/apis";
 
 const commitRemoteFile = async (accessToken: string, owner: string, repository: string, branch: string, filePath: string, fileContent: string, commitMessage: string, parentCommitSha?: string, baseTreeSha?: string) => {
     /* Create blob for the new/updated file */
     const {data: blob} = await axios.post(
-        `${gitHubBaseUrl}/repos/${owner}/${repository}/git/blobs`,
+        apis.createBlobApi(owner, repository),  
         {content: fileContent, encoding: 'utf-8'},
         buildHeader(accessToken),
     );
 
     /* Create a new tree that includes the blob */
     const {data: newTree} = await axios.post(
-        `${gitHubBaseUrl}/repos/${owner}/${repository}/git/trees`,
+        apis.createTreeApi(owner, repository),
         {
             base_tree: baseTreeSha,
             tree: [
@@ -37,7 +37,7 @@ const commitRemoteFile = async (accessToken: string, owner: string, repository: 
     }
 
     const {data: newCommit} = await axios.post(
-        `${gitHubBaseUrl}/repos/${owner}/${repository}/git/commits`,
+        apis.createCommitApi(owner, repository),
         commitPayload,
         buildHeader(accessToken),
     );
@@ -45,7 +45,7 @@ const commitRemoteFile = async (accessToken: string, owner: string, repository: 
 
     /* Update the branch ref to the new commit */
     await axios.patch(
-        `${gitHubBaseUrl}/repos/${owner}/${repository}/git/refs/heads/${branch}`,
+        apis.updateBranchRefApi(owner, repository, branch),
         {sha: newCommit.sha},
         buildHeader(accessToken),
     );

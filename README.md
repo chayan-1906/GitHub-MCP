@@ -100,7 +100,14 @@ Replace placeholder values with your actual GitHub OAuth app credentials and Mon
 openssl rand -hex 32
 ```
 
-#### 4. 🧪 Run the MCP Server
+#### 4. 🔧 Switch GitHub Accounts
+
+To authenticate with a different GitHub account or refresh your session:
+
+- Visit: **http://localhost:20253/auth**
+- Complete OAuth flow with desired GitHub account
+
+#### 5. 🧪 Run the MCP Server
 
 ```bash
 npm run dev
@@ -123,43 +130,79 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 
 ## 🧰 Available Tools
 
-| Tool Name                    | Category      | Description                                                                                                                                         |
-|------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `myGitHubAccount`            | Profile       | Retrieves details of the authenticated GitHub user, including username, display name, email (if available), avatar URL, and profile link            |
-|                              |               |                                                                                                                                                     |
-| `listRepositories`           | Repository    | Fetches repositories user has access to. Calls repeatedly with increasing currentPage until result is empty                                         |
-| `getRepositoryDetails`       | Repository    | Fetches metadata of a GitHub repository (e.g., default branch, visibility, description, etc.). Useful before accessing files or commits from a repo |
-| `createRepository`           | Repository    | Creates a new GitHub repository for the authenticated user with optional description, visibility, and initialization                                |
-| `updateRepository`           | Repository    | Updates repository description and/or tags (topics) of a GitHub repository                                                                          |
-| `renameRepository`           | Repository    | Renames a GitHub repository owned by the authenticated user                                                                                         |
-| `deleteRepository`           | Repository    | Deletes a GitHub repository owned by the authenticated user. This action is irreversible                                                            |
-| `modifyRepositoryVisibility` | Repository    | Modifies a GitHub repository visibility (private/public/internal)                                                                                   |
-|                              |               |                                                                                                                                                     |
-| `getAllCollaborators`        | Collaboration | Returns a combined list of accepted collaborators and pending invitations for a GitHub Repository, each marked with their status                    |
-| `addRemoveCollaborators`     | Collaboration | Adds or removes a collaborator from a GitHub repository                                                                                             |
-|                              |               |                                                                                                                                                     |
-| `listFilesInRepository`      | File          | Fetches the recursive file structure (tree) of a specified GitHub repository branch. Requires repository and branch name                            |
-| `getFileContent`             | File          | Reads and returns the raw content of a specific file from a GitHub repository branch                                                                |
-| `commitRemoteFile`           | File          | Commits a file to a GitHub Repository using GitHub API. This does not use the local file system                                                     |
-|                              |               |                                                                                                                                                     |
-| `listBranches`               | Branch        | Fetches branches of the authenticated user's repository. Calls repeatedly with increasing currentPage until the result is empty                     |
-| `getBranchDetails`           | Branch        | Fetches details of a specific branch in a GitHub repository                                                                                         |
-| `createBranch`               | Branch        | Creates a new branch from a given commit SHA (usually the latest commit of an existing branch)                                                      |
-| `setDefaultBranch`           | Branch        | Sets the default branch in a GitHub repository                                                                                                      |
-| `deleteBranch`               | Branch        | Deletes a branch from a GitHub repository. Cannot delete the default branch                                                                         |
-|                              |               |                                                                                                                                                     |
-| `listCommits`                | Commit        | Fetches commits in a branch of a GitHub repository, page by page                                                                                    |
-| `getCommitModifications`     | Commit        | Returns the list of files modified in a specific GitHub commit                                                                                      |
-|                              |               |                                                                                                                                                     |
-| `createIssue`                | Issue         | Creates a new issue in a GitHub repository. Including body and labels is optional                                                                   |
-| `updateIssue`                | Issue         | Updates the title and/or body of an existing GitHub issue                                                                                           |
-| `updateIssueState`           | Issue         | Updates the state of a GitHub issue (open or closed) by issue number                                                                                |
-| `assignIssue`                | Issue         | Assigns one or more GitHub users to a GitHub issue                                                                                                  |
-|                              |               |                                                                                                                                                     |
-| `getAllReleases`             | Release       | Fetches all releases in a GitHub repository, page by page                                                                                           |
-| `createRelease`              | Release       | Creates a GitHub release from an existing tag or creates a new tag and release                                                                      |
-| `updateRelease`              | Release       | Updates an existing GitHub release by release ID with new information                                                                               |
-| `deleteRelease`              | Release       | Deletes a GitHub release by release ID. This action is irreversible                                                                                 |
+| Tool Name                      | Category      | Description                                                                                                                                         |
+|--------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `my-github-account`            | Profile       | Retrieves details of the authenticated GitHub user, including username, display name, email (if available), avatar URL, and profile link            |
+|                                |               |                                                                                                                                                     |
+| `list-repositories`            | Repository    | Fetches repositories user has access to. Calls repeatedly with increasing currentPage until result is empty                                         |
+| `get-repository-details`       | Repository    | Fetches metadata of a GitHub repository (e.g., default branch, visibility, description, etc.). Useful before accessing files or commits from a repo |
+| `create-repository`            | Repository    | Creates a new GitHub repository for the authenticated user with optional description, visibility, and initialization                                |
+| `update-repository`            | Repository    | Updates repository description and/or tags (topics) of a GitHub repository                                                                          |
+| `rename-repository`            | Repository    | Renames a GitHub repository owned by the authenticated user                                                                                         |
+| `delete-repository`            | Repository    | Deletes a GitHub repository owned by the authenticated user. This action is irreversible                                                            |
+| `modify-repository-visibility` | Repository    | Modifies a GitHub repository visibility (private/public/internal)                                                                                   |
+|                                |               |                                                                                                                                                     |
+| `get-all-collaborators`        | Collaboration | Returns a combined list of accepted collaborators and pending invitations for a GitHub Repository, each marked with their status                    |
+| `add-remove-collaborators`     | Collaboration | Adds or removes a collaborator from a GitHub repository                                                                                             |
+|                                |               |                                                                                                                                                     |
+| `list-branches`                | Branch        | Fetches branches of the authenticated user's repository. Calls repeatedly with increasing currentPage until the result is empty                     |
+| `get-branch-details`           | Branch        | Fetches details of a specific branch in a GitHub repository                                                                                         |
+| `create-branch`                | Branch        | Creates a new branch from a given commit SHA (usually the latest commit of an existing branch)                                                      |
+| `set-default-branch`           | Branch        | Sets the default branch in a GitHub repository                                                                                                      |
+| `delete-branch`                | Branch        | Deletes a branch from a GitHub repository. Cannot delete the default branch                                                                         |
+|                                |               |                                                                                                                                                     |
+| `list-files-in-repository`     | File          | Fetches the recursive file structure (tree) of a specified GitHub repository branch. Requires repository and branch name                            |
+| `get-file-content`             | File          | Reads and returns the raw content of a specific file from a GitHub repository branch                                                                |
+| `commit-remote-file`           | File          | Commits a file to a GitHub Repository using GitHub API. This does not use the local file system                                                     |                                |               |                                                                                                                                                     |
+|                                |               |                                                                                                                                                     |
+| `list-commits`                 | Commit        | Fetches commits in a branch of a GitHub repository, page by page                                                                                    |
+| `get-commit-modifications`     | Commit        | Returns the list of files modified in a specific GitHub commit                                                                                      |
+|                                |               |                                                                                                                                                     |
+| `create-issue`                 | Issue         | Creates a new issue in a GitHub repository. Including body and labels is optional                                                                   |
+| `update-issue`                 | Issue         | Updates the title and/or body of an existing GitHub issue                                                                                           |
+| `update-issue-state`           | Issue         | Updates the state of a GitHub issue (open or closed) by issue number                                                                                |
+| `assign-issue`                 | Issue         | Assigns one or more GitHub users to a GitHub issue                                                                                                  |
+|                                |               |                                                                                                                                                     |
+| `get-all-releases`             | Release       | Fetches all releases in a GitHub repository, page by page                                                                                           |
+| `create-release`               | Release       | Creates a GitHub release from an existing tag or creates a new tag and release                                                                      |
+| `update-release`               | Release       | Updates an existing GitHub release by release ID with new information                                                                               |
+| `delete-release`               | Release       | Deletes a GitHub release by release ID. This action is irreversible                                                                                 |
+
+---
+
+## 📋 Changelog
+
+### v1.1.0 (2025-07-29)
+
+#### ✨ New Features
+
+- **Release Management Tools**: Added complete GitHub release lifecycle management
+    - `get-all-releases` - Paginated release listing with full metadata
+    - `create-release` - Create releases from existing tags or new tags
+    - `update-release` - Modify existing release information
+    - `delete-release` - Remove releases (irreversible action)
+
+#### 🔄 Changes
+
+- Renamed `my-details` → `my-github-account` for consistency
+
+#### 📊 Statistics
+
+- **Total Tools**: 29 (increased from 25 in v1.0.0)
+- **New Category**: Release management operations
+- **API Coverage**: Extended GitHub REST API v4 support
+
+### v1.0.0 (2025-07-19)
+
+#### 🚀 Initial Release
+
+- **25 GitHub API Tools** for AI agents
+- **OAuth 2.0 Authentication** with GitHub
+- **Repository Management** - CRUD operations, visibility, collaboration
+- **Branch Operations** - Create, delete, list, set default
+- **Issue Management** - Create, update, assign, state changes
+- **File Operations** - Read content, commit files, list repository tree
+- **Commit History** - List commits, get modifications
 
 ---
 

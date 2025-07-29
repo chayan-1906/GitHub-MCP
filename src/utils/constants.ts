@@ -9,9 +9,9 @@ const tools = {
     renameRepository: 'rename-repository',
     deleteRepository: 'delete-repository',
     modifyRepositoryVisibility: 'modify-repository-visibility',
+
     getAllCollaborators: 'get-all-collaborators',
     addRemoveCollaborators: 'add-remove-collaborators',
-    listFilesInRepository: 'list-files-in-repository',
 
     /** branches */
     listBranches: 'list-branches',
@@ -20,13 +20,14 @@ const tools = {
     setDefaultBranch: 'set-default-branch',
     deleteBranch: 'delete-branch',
 
+    /** files */
+    listFilesInRepository: 'list-files-in-repository',
+    getFileContent: 'get-file-content',
+    commitRemoteFile: 'commit-remote-file',
+
     /** commits */
     listCommits: 'list-commits',
     getCommitModifications: 'get-commit-modifications',
-
-    /** files */
-    getFileContent: 'get-file-content',
-    commitRemoteFile: 'commit-remote-file',
 
     /** issues */
     createIssue: 'create-issue',
@@ -39,11 +40,6 @@ const tools = {
     createRelease: 'create-release',
     updateRelease: 'update-release',
     deleteRelease: 'delete-release',
-
-    /** local */
-    runGitCommand: 'run-git-command',
-
-    runShellCommand: 'run-shell-command',
 }
 
 const constants = {
