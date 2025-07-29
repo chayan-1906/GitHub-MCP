@@ -10,7 +10,7 @@
 [![GitHub OAuth](https://img.shields.io/badge/github-oauth-black.svg)](https://docs.github.com/en/developers/apps/building-oauth-apps)
 
 An MCP-compliant server built with TypeScript to extend Claude and other AI agents with superpowers for GitHub
-Repositories, Branches, Commits, Issues, and Actions.
+Repositories, Branches, Commits, Issues, Releases, and Actions.
 
 ---
 
@@ -27,10 +27,10 @@ Download from [https://claude.ai/download](https://claude.ai/download)
 #### 2. Download the Executable:
 
 **macOS:**
-📦 [Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.0.0/github)
+📦 [Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.1.0/github)
 
 **Windows:**
-📦 [Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.0.0/github.exe)
+📦 [Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.1.0/github.exe)
 
 #### 3. Run the Executable:
 
