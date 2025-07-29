@@ -7,7 +7,7 @@ import { getDetailsFromSessionToken, getSessionTokenFromSessionFile } from "../.
 
 export const registerTool = (server: McpServer) => {
     server.tool(
-        tools.myDetails,
+        tools.myGitHubAccount,
         'Retrieves details of the authenticated GitHub user, including username, display name, email (if available), avatar URL, and profile link',
         {},
         async ({}) => {
@@ -23,19 +23,19 @@ export const registerTool = (server: McpServer) => {
                 };
             }
 
-            const myDetails = await getDetailsFromSessionToken();
+            const myGitHubDetails = await getDetailsFromSessionToken();
 
             try {
                 return {
                     content: [
                         {
                             type: 'text',
-                            text: JSON.stringify(myDetails, null, 2),
+                            text: JSON.stringify(myGitHubDetails, null, 2),
                         },
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch my details: ${error}`), 'my-details');
+                sendError(transport, new Error(`Failed to fetch my github account details: ${error}`), tools.myGitHubAccount);
                 return {
                     content: [
                         {

@@ -1,5 +1,5 @@
 const tools = {
-    myDetails: 'my-details',
+    myGitHubAccount: 'my-github-account',
 
     /** repositories */
     listRepositories: 'list-repositories',

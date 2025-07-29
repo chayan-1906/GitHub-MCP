@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { transport } from "../server";
 import { printInConsole } from "mcp-utils/utils";
 
-import { registerTool as myDetails } from '../tools/profile/my-details';
+import { registerTool as myGitHubAccount } from '../tools/profile/my-github-account';
 
 import { registerTool as listRepositories } from '../tools/github/repository/list-repositories';
 import { registerTool as getRepositoryDetails } from '../tools/github/repository/get-repository-details';
@@ -35,7 +35,7 @@ import { registerTool as assignIssue } from '../tools/github/issue/assign-issue'
 async function setupMcpTools(server: McpServer) {
     const start = Date.now();
 
-    myDetails(server);
+    myGitHubAccount(server);
 
     listRepositories(server);
     getRepositoryDetails(server);
