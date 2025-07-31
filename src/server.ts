@@ -17,7 +17,7 @@ app.use('/', AuthRoutes);
 // Create an MCP server
 const server = new McpServer({
     name: 'GitHub',
-    version: '1.0.0',
+    version: '1.1.0',
 });
 
 freezePortOnQuit();
