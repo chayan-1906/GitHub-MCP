@@ -2,15 +2,19 @@ import path from "path";
 import axios from "axios";
 import fs from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
-import { connect, decryptToken, encryptToken, getClaudeConfigDir, printInConsole } from "mcp-utils/utils";
+import { connect, decryptToken, encryptToken, getClaudeConfigDir, printInConsole, sendError } from "mcp-utils/utils";
 import { transport } from "../server";
 import { constants } from "../utils/constants";
 import { DB_NAME, MONGODB_URI, PORT, TOKEN_SECRET } from "../config/config";
 
 export async function saveGitHubToken(githubId: number, username: string, token: string) {
     const db = await connect(transport, MONGODB_URI, DB_NAME);
-    const collection = db.collection('user_tokens');
+    if (!db) {
+        sendError(transport, new Error('Failed to connect to database'), 'db-connection');
+        return;
+    }
 
+    const collection = db.collection('user_tokens');
     const encrypted = encryptToken(TOKEN_SECRET, token);
 
     await collection.updateOne(
@@ -24,8 +28,8 @@ export async function saveGitHubToken(githubId: number, username: string, token:
                 tokens: {
                     $each: [{value: encrypted, createdAt: new Date()}],
                     $slice: -4,
-                },
-            },
+                } as any,
+            } as any,
         },
         {upsert: true},
     );
@@ -35,6 +39,18 @@ export async function getDetailsFromSessionToken() {
     const {sessionToken} = (await getSessionTokenFromSessionFile()) || {};
 
     const db = await connect(transport, MONGODB_URI, DB_NAME);
+    if (!db) {
+        sendError(transport, new Error('Failed to connect to database'), 'db-connection');
+        return {
+            response: {
+                content: [{
+                    type: 'text',
+                    text: `Database connection failed, please try again later ❌`,
+                }],
+            },
+        };
+    }
+
     const sessions = db.collection('sessions');
     const session = await sessions.findOne(
         {'sessions.value': sessionToken},
@@ -46,7 +62,7 @@ export async function getDetailsFromSessionToken() {
             response: {
                 content: [{
                     type: 'text',
-                    text: `Session not found or expired, please authenticate again at "http://localhost:${PORT}/auth". 🔑`,
+                    text: `Session not found or expired, please authenticate again at "http://localhost:${PORT}/auth" 🔑`,
                 }],
             },
         };
@@ -78,6 +94,11 @@ export async function getDetailsFromSessionToken() {
 export async function generateAndSaveSessionToken(githubId: string, username: string): Promise<string> {
     const sessionToken = uuidv4();
     const db = await connect(transport, MONGODB_URI, DB_NAME);
+    if (!db) {
+        sendError(transport, new Error('Failed to connect to database'), 'db-connection');
+        return sessionToken;
+    }
+
     const collection = db.collection('sessions');
 
     await collection.updateOne(
@@ -88,8 +109,8 @@ export async function generateAndSaveSessionToken(githubId: string, username: st
                 sessions: {
                     $each: [{value: sessionToken, createdAt: new Date()}],
                     $slice: -4,
-                },
-            },
+                } as any,
+            } as any,
         },
         {upsert: true},
     );
@@ -120,7 +141,7 @@ export async function getSessionTokenFromSessionFile() {
                 content: [
                     {
                         type: 'text',
-                        text: `Please authenticate first in this link "http://localhost:${PORT}/auth". 🔑`,
+                        text: `Please authenticate first in this link "http://localhost:${PORT}/auth" 🔑`,
                     },
                 ],
             };
@@ -135,6 +156,21 @@ export async function getSessionTokenFromSessionFile() {
 
 export async function getGitHubAccessToken() {
     const db = await connect(transport, MONGODB_URI, DB_NAME);
+    if (!db) {
+        sendError(transport, new Error('Failed to connect to database'), 'db-connection');
+        return {
+            accessToken: null,
+            response: {
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: `Database connection failed, please try again later ❌`,
+                    },
+                ],
+            },
+        };
+    }
+
     const {sessionToken} = await getSessionTokenFromSessionFile() || {};
     const sessions = db.collection('sessions');
     const session = await sessions.findOne(
@@ -150,7 +186,7 @@ export async function getGitHubAccessToken() {
                 content: [
                     {
                         type: 'text' as const,
-                        text: `Session not found or expired, please authenticate again in this link "http://localhost:${PORT}/auth". 🔑`,
+                        text: `Session not found or expired, please authenticate again in this link "http://localhost:${PORT}/auth" 🔑`,
                     },
                 ],
             },
@@ -170,7 +206,7 @@ export async function getGitHubAccessToken() {
                 content: [
                     {
                         type: 'text' as const,
-                        text: `Please authenticate first in this link "http://localhost:${PORT}/auth". 🔑`,
+                        text: `Please authenticate first in this link "http://localhost:${PORT}/auth" 🔑`,
                     },
                 ],
             },
