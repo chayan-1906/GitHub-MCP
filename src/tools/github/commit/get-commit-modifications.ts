@@ -10,7 +10,14 @@ import { getGitHubAccessToken } from "../../../services/OAuth";
 const getCommitModifications = async (accessToken: string, owner: string, repository: string, commitSha: string) => {
     const commit = await axios.get(apis.commitDetailsApi(owner, repository, commitSha), buildHeader(accessToken));
 
-    return commit.data.files.map((file: any) => file.filename);
+    return commit.data.files.map((file: any) => ({
+        filename: file.filename,
+        status: file.status,
+        additions: file.additions,
+        deletions: file.deletions,
+        changes: file.changes,
+        patch: file.patch,
+    }));
 }
 
 export const registerTool = (server: McpServer) => {
