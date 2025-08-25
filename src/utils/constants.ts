@@ -21,7 +21,7 @@ const tools = {
     deleteBranch: 'delete-branch',
 
     /** files */
-    listFilesInRepository: 'list-files-in-repository',
+    repositoryTree: 'repository-tree',
     getFileContent: 'get-file-content',
     commitRemoteFile: 'commit-remote-file',
 

@@ -13,7 +13,7 @@ import { registerTool as deleteRepository } from '../tools/github/repository/del
 import { registerTool as modifyRepositoryVisibility } from '../tools/github/repository/modify-repository-visibility';
 import { registerTool as getAllCollaborators } from '../tools/github/repository/get-all-collaborators';
 import { registerTool as addRemoveCollaborators } from '../tools/github/repository/add-remove-collaborators';
-import { registerTool as listFilesInRepository } from '../tools/github/repository/list-files-in-repository';
+import { registerTool as repositoryTree } from '../tools/github/repository/repository-tree';
 
 import { registerTool as listBranches } from '../tools/github/branch/list-branches';
 import { registerTool as getBranchDetails } from '../tools/github/branch/get-branch-details';
@@ -51,7 +51,7 @@ async function setupMcpTools(server: McpServer) {
     modifyRepositoryVisibility(server);
     getAllCollaborators(server);
     addRemoveCollaborators(server);
-    listFilesInRepository(server);
+    repositoryTree(server);
 
     listBranches(server);
     getBranchDetails(server);
