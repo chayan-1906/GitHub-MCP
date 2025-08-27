@@ -26,7 +26,7 @@ export const registerTool = (server: McpServer) => {
         'Fetches repositories user has access to. Calls repeatedly with increasing currentPage until result is empty',
         {
             perPage: z.number().min(1).max(60).default(30).describe('Repositories per page (max: 60)'),
-            currentPage: z.number().min(1).default(1).describe('Page number')
+            currentPage: z.number().min(1).default(1).describe('Page number'),
         },
         async ({perPage, currentPage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();

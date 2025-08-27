@@ -84,7 +84,10 @@ const apis = {
 
     /** issues */
     // list all issues
-    listIssuesApi: (owner: string, repository: string, state: string, perPage: number, page: number, sort: string, direction: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues?state=${state}&sort=${sort}&direction=${direction}&per_page=${perPage}&page=${page}`,
+    listIssuesApi: (owner: string, repository: string, state: string, includePRs: boolean, perPage: number, page: number, sort: string, direction: string) => {
+        const baseUrl = `${gitHubBaseUrl}/repos/${owner}/${repository}/issues?state=${state}&sort=${sort}&direction=${direction}&per_page=${perPage}&page=${page}`;
+        return includePRs ? baseUrl : `${baseUrl}&filter=issues`;
+    },
 
     // get issue details
     issueDetailsApi: (owner: string, repository: string, issueNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}`,
