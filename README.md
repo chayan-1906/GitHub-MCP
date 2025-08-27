@@ -10,7 +10,8 @@
 [![GitHub OAuth](https://img.shields.io/badge/github-oauth-black.svg)](https://docs.github.com/en/developers/apps/building-oauth-apps)
 
 An MCP-compliant server built with TypeScript to extend Claude and other AI agents with superpowers for GitHub
-Repositories, Branches, Commits, Issues, Releases, and Actions.
+Repositories, Branches, Commits, Issues, Releases, and Actions. Pre-built executables available for macOS, Windows, and
+Linux for easy end-user installation without Node.js dependencies.
 
 ---
 

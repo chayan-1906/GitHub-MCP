@@ -83,6 +83,15 @@ const apis = {
     commitDetailsApi: (owner: string, repository: string, commitSha: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/commits/${commitSha}`,
 
     /** issues */
+    // list all issues
+    listIssuesApi: (owner: string, repository: string, state: string, perPage: number, page: number, sort: string, direction: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues?state=${state}&sort=${sort}&direction=${direction}&per_page=${perPage}&page=${page}`,
+
+    // get issue details
+    issueDetailsApi: (owner: string, repository: string, issueNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}`,
+
+    // get issue comments
+    issueCommentsApi: (owner: string, repository: string, issueNumber: number, perPage: number, page: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}/comments?per_page=${perPage}&page=${page}`,
+
     // create issue
     createIssueApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues`,
 

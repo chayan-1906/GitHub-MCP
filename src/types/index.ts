@@ -261,4 +261,124 @@ export interface GitHubContent {
 }
 
 
-// createRepository:: https://api.github.com/user/repos
+// TODO: createRepository:: https://api.github.com/user/repos
+
+
+// listIssuesApi:: https://api.github.com/repos/repos/chayan-1906/School-Management-Next.js/issues
+// issueDetailsApi:: https://api.github.com/repos/repos/chayan-1906/School-Management-Next.js/issues/1
+export interface IssueDetails {
+    id: number;
+    number: number;
+    title: string;
+    body?: string;
+    state: string;
+    locked: boolean;
+    created_at: string;
+    updated_at: string;
+    closed_at?: string;
+    user: {
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+    };
+    assignee?: {
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+    };
+    assignees: Array<{
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+    }>;
+    labels: Array<{
+        id: number;
+        name: string;
+        color: string;
+        description?: string;
+    }>;
+    milestone?: {
+        id: number;
+        number: number;
+        title: string;
+        description?: string;
+        state: string;
+        due_on?: string;
+    };
+    comments: number;
+    html_url: string;
+    repository_url: string;
+    state_reason?: string;
+    pull_request?: {
+        url: string;
+        html_url: string;
+        diff_url: string;
+        patch_url: string;
+    };
+}
+
+// issueCommentsApis:: https://api.github.com/repos/repos/chayan-1906/School-Management-Next.js/issues/1/comments
+interface IssueUser {
+    login: string;
+    id: number;
+    avatar_url: string;
+    html_url: string;
+    type: string;
+}
+
+interface IssueLabel {
+    id: number;
+    name: string;
+    color: string;
+    description?: string;
+}
+
+export interface IssueAssignee {
+    login: string;
+    id: number;
+    avatar_url: string;
+    html_url: string;
+}
+
+export interface IssueResponse {
+    id: number;
+    number: number;
+    title: string;
+    body?: string;
+    state: string;
+    created_at: string;
+    updated_at: string;
+    closed_at?: string;
+    user: IssueUser;
+    assignees: IssueAssignee[];
+    labels: IssueLabel[];
+    html_url: string;
+    comments: number;
+}
+
+interface CommentReactions {
+    total_count: number;
+    "+1": number;
+    "-1": number;
+    laugh: number;
+    hooray: number;
+    confused: number;
+    heart: number;
+    rocket: number;
+    eyes: number;
+}
+
+export interface IssueComment {
+    id: number;
+    body: string;
+    created_at: string;
+    updated_at: string;
+    user: IssueUser;
+    html_url: string;
+    issue_url: string;
+    reactions: CommentReactions;
+    author_association: string;
+}

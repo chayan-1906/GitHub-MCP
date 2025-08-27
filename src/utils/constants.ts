@@ -30,6 +30,9 @@ const tools = {
     getCommitModifications: 'get-commit-modifications',
 
     /** issues */
+    listAllIssues: 'list-all-issues',
+    issueDetails: 'issue-details',
+    getIssueComments: 'get-issue-comments',
     createIssue: 'create-issue',
     updateIssue: 'update-issue',
     updateIssueState: 'update-issue-state',
