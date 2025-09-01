@@ -2,10 +2,10 @@ const gitHubBaseUrl = 'https://api.github.com';
 
 const apis = {
     /** repositories */
-    // list of all repositories in my github account
+    // list repositories in my github account
     listRepositoriesApi: (perPage: number, currentPage: number) => `${gitHubBaseUrl}/user/repos?affiliation=owner,collaborator,organization_member&per_page=${perPage}&page=${currentPage}`,
 
-    // list of all repositories in other's github account
+    // list repositories in other's github account
     listOwnerReposApi: (owner: string, perPage: number, page: number) => `${gitHubBaseUrl}/users/${owner}/repos?per_page=${perPage}&page=${page}`,
 
     // get repository metadata
@@ -27,20 +27,20 @@ const apis = {
     modifyRepositoryVisibilityApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
 
 
-    // get-all-collaborators
-    getAllCollaboratorsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/collaborators`,
+    // list-collaborators
+    listCollaboratorsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/collaborators`,
 
-    // get-all-invitations
-    getAllInvitationsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/invitations`,
+    // list invitations
+    listInvitationsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/invitations`,
 
     // add or remove collaborators
     addRemoveCollaboratorsApi: (owner: string, repository: string, username: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/collaborators/${username}`,
 
-    // remove invitations
-    cancelInvitationsApi: (owner: string, repository: string, invitationId: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/invitations/${invitationId}`,
+    // remove invitation
+    cancelInvitationApi: (owner: string, repository: string, invitationId: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/invitations/${invitationId}`,
 
     /** branches */
-    // list of all branches in a repository
+    // list branches in a repository
     listAllBranchesApi: (owner: string, repository: string, perPage: number, currentPage: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/branches?per_page=${perPage}&page=${currentPage}`,
 
     // get a specific branch details
@@ -56,7 +56,7 @@ const apis = {
     deleteBranchApi: (owner: string, repository: string, branch: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/git/refs/heads/${branch}`,
 
     /** files */
-    // list of files
+    // list files
     listFilesApi: (username: string, repository: string, branch: string) => `${gitHubBaseUrl}/repos/${username}/${repository}/git/trees/${branch}?recursive=1`,
 
     // get file content
@@ -76,14 +76,14 @@ const apis = {
 
 
     /** commits */
-    // get all commits
+    // list commits
     listCommitsApi: (owner: string, repository: string, branch: string, perPage: number, page: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/commits?sha=${branch}&per_page=${perPage}&page=${page}`,
 
     // get commit details
     commitDetailsApi: (owner: string, repository: string, commitSha: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/commits/${commitSha}`,
 
     /** issues */
-    // list all issues
+    // list issues
     listIssuesApi: (owner: string, repository: string, state: string, includePRs: boolean, perPage: number, page: number, sort: string, direction: string) => {
         const baseUrl = `${gitHubBaseUrl}/repos/${owner}/${repository}/issues?state=${state}&sort=${sort}&direction=${direction}&per_page=${perPage}&page=${page}`;
         return includePRs ? baseUrl : `${baseUrl}&filter=issues`;
@@ -108,8 +108,8 @@ const apis = {
     assignIssueApi: (owner: string, repository: string, issueNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}/assignees`,
 
     /** releases */
-    // get all releases
-    getAllReleasesApi: (owner: string, repository: string, perPage: number, currentPage: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/releases?per_page=${perPage}&page=${currentPage}`,
+    // get releases
+    listReleasesApi: (owner: string, repository: string, perPage: number, currentPage: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/releases?per_page=${perPage}&page=${currentPage}`,
 
     // create release
     createReleaseApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/releases`,

@@ -7,8 +7,8 @@ import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
-const getAllReleases = async (accessToken: string, owner: string, repository: string, perPage: number, currentPage: number) => {
-    const {data} = await axios.get(apis.getAllReleasesApi(owner, repository, perPage, currentPage), buildHeader(accessToken));
+const listReleases = async (accessToken: string, owner: string, repository: string, perPage: number, currentPage: number) => {
+    const {data} = await axios.get(apis.listReleasesApi(owner, repository, perPage, currentPage), buildHeader(accessToken));
 
     return data.map((release: any) => ({
         id: release.id,
@@ -28,7 +28,7 @@ const getAllReleases = async (accessToken: string, owner: string, repository: st
 
 export const registerTool = (server: McpServer) => {
     server.tool(
-        tools.getAllReleases,
+        tools.listReleases,
         'Fetches all releases in a GitHub repository, page by page',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
@@ -41,7 +41,7 @@ export const registerTool = (server: McpServer) => {
             if (!accessToken) return {content};
 
             try {
-                const releases = await getAllReleases(accessToken, owner, repository, perPage, currentPage);
+                const releases = await listReleases(accessToken, owner, repository, perPage, currentPage);
 
                 return {
                     content: [
@@ -52,7 +52,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to get all releases: ${error}`), tools.getAllReleases);
+                sendError(transport, new Error(`Failed to get all releases: ${error}`), tools.listReleases);
                 return {
                     content: [
                         {

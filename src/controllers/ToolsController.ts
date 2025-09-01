@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { transport } from "../server";
 import { printInConsole } from "mcp-utils/utils";
+import { transport } from "../server";
 
 import { registerTool as myGitHubAccount } from '../tools/profile/my-github-account';
 
@@ -11,7 +11,7 @@ import { registerTool as updateRepository } from '../tools/github/repository/upd
 import { registerTool as renameRepository } from '../tools/github/repository/rename-repository';
 import { registerTool as deleteRepository } from '../tools/github/repository/delete-repository';
 import { registerTool as modifyRepositoryVisibility } from '../tools/github/repository/modify-repository-visibility';
-import { registerTool as getAllCollaborators } from '../tools/github/repository/get-all-collaborators';
+import { registerTool as listCollaborators } from '../tools/github/repository/list-collaborators';
 import { registerTool as addRemoveCollaborators } from '../tools/github/repository/add-remove-collaborators';
 import { registerTool as repositoryTree } from '../tools/github/repository/repository-tree';
 
@@ -27,7 +27,7 @@ import { registerTool as getCommitModifications } from '../tools/github/commit/g
 import { registerTool as getFileContent } from '../tools/github/get-file-content';
 import { registerTool as commitRemoteFile } from '../tools/github/commit-remote-file';
 
-import { registerTool as listAllIssues } from '../tools/github/issue/list-all-issues';
+import { registerTool as listIssues } from '../tools/github/issue/list-issues';
 import { registerTool as issueDetails } from '../tools/github/issue/issue-details';
 import { registerTool as getIssueComments } from '../tools/github/issue/get-issue-comments';
 import { registerTool as createIssue } from '../tools/github/issue/create-issue';
@@ -35,7 +35,7 @@ import { registerTool as updateIssue } from '../tools/github/issue/update-issue'
 import { registerTool as updateIssueState } from '../tools/github/issue/update-issue-state';
 import { registerTool as assignIssue } from '../tools/github/issue/assign-issue';
 
-import { registerTool as getAllReleases } from '../tools/github/release/get-all-releases';
+import { registerTool as listReleases } from '../tools/github/release/list-releases';
 import { registerTool as createRelease } from '../tools/github/release/create-release';
 import { registerTool as updateRelease } from '../tools/github/release/update-release';
 import { registerTool as deleteRelease } from '../tools/github/release/delete-release';
@@ -52,7 +52,7 @@ async function setupMcpTools(server: McpServer) {
     renameRepository(server);
     deleteRepository(server);
     modifyRepositoryVisibility(server);
-    getAllCollaborators(server);
+    listCollaborators(server);
     addRemoveCollaborators(server);
     repositoryTree(server);
 
@@ -68,7 +68,7 @@ async function setupMcpTools(server: McpServer) {
     getFileContent(server);
     commitRemoteFile(server);
 
-    listAllIssues(server);
+    listIssues(server);
     issueDetails(server);
     getIssueComments(server);
     createIssue(server);
@@ -76,7 +76,7 @@ async function setupMcpTools(server: McpServer) {
     updateIssueState(server);
     assignIssue(server);
 
-    getAllReleases(server);
+    listReleases(server);
     createRelease(server);
     updateRelease(server);
     deleteRelease(server);
@@ -84,4 +84,4 @@ async function setupMcpTools(server: McpServer) {
     await printInConsole(transport, `All tools loaded in ${Date.now() - start}ms`);
 }
 
-export { setupMcpTools }
+export { setupMcpTools };

@@ -1,4 +1,5 @@
 const tools = {
+    /** profile */
     myGitHubAccount: 'my-github-account',
 
     /** repositories */
@@ -10,7 +11,7 @@ const tools = {
     deleteRepository: 'delete-repository',
     modifyRepositoryVisibility: 'modify-repository-visibility',
 
-    getAllCollaborators: 'get-all-collaborators',
+    listCollaborators: 'list-collaborators',
     addRemoveCollaborators: 'add-remove-collaborators',
 
     /** branches */
@@ -30,7 +31,7 @@ const tools = {
     getCommitModifications: 'get-commit-modifications',
 
     /** issues */
-    listAllIssues: 'list-all-issues',
+    listIssues: 'list-issues',
     issueDetails: 'issue-details',
     getIssueComments: 'get-issue-comments',
     createIssue: 'create-issue',
@@ -39,15 +40,15 @@ const tools = {
     assignIssue: 'assign-issue',
 
     /** releases */
-    getAllReleases: 'get-all-releases',
+    listReleases: 'list-releases',
     createRelease: 'create-release',
     updateRelease: 'update-release',
     deleteRelease: 'delete-release',
-}
+};
 
 const constants = {
     sessionTokenFile: 'github_session.json',
     fsConfigFile: 'file_system_config.json',
-}
+};
 
 export { tools, constants };

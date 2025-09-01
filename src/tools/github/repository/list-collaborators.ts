@@ -7,10 +7,10 @@ import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
-const getAllCollaborators = async (accessToken: string, owner: string, repository: string) => {
+const listCollaborators = async (accessToken: string, owner: string, repository: string) => {
     const [collaboratorsResponse, invitationsResponse] = await Promise.all([
-        axios.get(apis.getAllCollaboratorsApi(owner, repository), buildHeader(accessToken)),
-        axios.get(apis.getAllInvitationsApi(owner, repository), buildHeader(accessToken)),
+        axios.get(apis.listCollaboratorsApi(owner, repository), buildHeader(accessToken)),
+        axios.get(apis.listInvitationsApi(owner, repository), buildHeader(accessToken)),
     ]);
 
     const collaborators = (collaboratorsResponse.data || []).map((collaborator: any) => ({
@@ -33,7 +33,7 @@ const getAllCollaborators = async (accessToken: string, owner: string, repositor
 
 export const registerTool = (server: McpServer) => {
     server.tool(
-        tools.getAllCollaborators,
+        tools.listCollaborators,
         'Returns a combined list of accepted collaborators and pending invitations for a GitHub Repository, each marked with their status',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
@@ -44,7 +44,7 @@ export const registerTool = (server: McpServer) => {
             if (!accessToken) return {content};
 
             try {
-                const collabsInvites = await getAllCollaborators(accessToken, owner, repository);
+                const collabsInvites = await listCollaborators(accessToken, owner, repository);
 
                 return {
                     content: [
@@ -55,7 +55,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch collaborators: ${error}`), tools.getAllCollaborators);
+                sendError(transport, new Error(`Failed to fetch collaborators: ${error}`), tools.listCollaborators);
                 return {
                     content: [
                         {

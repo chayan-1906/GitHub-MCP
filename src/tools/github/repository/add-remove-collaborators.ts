@@ -13,7 +13,7 @@ const addRemoveCollaborators = async (accessToken: string, owner: string, reposi
         return {action: 'added', user: targetUserName};
     } else if (action === 'remove') {
         if (status === 'pending' && invitationId) {
-            await axios.delete(apis.cancelInvitationsApi(owner, repository, invitationId), buildHeader(accessToken));
+            await axios.delete(apis.cancelInvitationApi(owner, repository, invitationId), buildHeader(accessToken));
             return {action: 'canceled-invitation', user: targetUserName};
         }
 

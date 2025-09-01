@@ -7,7 +7,7 @@ import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
-const listAllIssues = async (accessToken: string, owner: string, repository: string, state: string, includePRs: boolean, perPage: number, currentPage: number, sort: string, direction: string) => {
+const listIssues = async (accessToken: string, owner: string, repository: string, state: string, includePRs: boolean, perPage: number, currentPage: number, sort: string, direction: string) => {
     const response = await axios.get(apis.listIssuesApi(owner, repository, state, includePRs, perPage, currentPage, sort, direction), buildHeader(accessToken));
 
     return response.data.map((issue: any) => {
@@ -22,7 +22,7 @@ const listAllIssues = async (accessToken: string, owner: string, repository: str
             created_at,
             updated_at,
             html_url,
-            pull_request
+            pull_request,
         } = issue;
         return {
             number,
@@ -42,8 +42,8 @@ const listAllIssues = async (accessToken: string, owner: string, repository: str
 
 export const registerTool = (server: McpServer) => {
     server.tool(
-        tools.listAllIssues,
-        'Fetches issues from a GitHub repository, page by page. Calls repeatedly with increasing currentPage until result is empty.',
+        tools.listIssues,
+        'Fetches issues from a GitHub repository, page by page. Calls repeatedly with increasing currentPage until result is empty',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
             repository: z.string().describe('The name of the GitHub Repository'),
@@ -59,7 +59,7 @@ export const registerTool = (server: McpServer) => {
             if (!accessToken) return {content};
 
             try {
-                const issues = await listAllIssues(accessToken, owner, repository, state, includePRs, perPage, currentPage, sort, direction);
+                const issues = await listIssues(accessToken, owner, repository, state, includePRs, perPage, currentPage, sort, direction);
 
                 return {
                     content: [
@@ -70,7 +70,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch issues: ${error}`), tools.listAllIssues);
+                sendError(transport, new Error(`Failed to fetch issues: ${error}`), tools.listIssues);
                 return {
                     content: [
                         {
