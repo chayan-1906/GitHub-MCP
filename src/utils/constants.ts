@@ -32,7 +32,7 @@ const tools = {
 
     /** issues */
     listIssues: 'list-issues',
-    issueDetails: 'issue-details',
+    getIssueDetails: 'get-issue-details',
     getIssueComments: 'get-issue-comments',
     createIssue: 'create-issue',
     updateIssue: 'update-issue',

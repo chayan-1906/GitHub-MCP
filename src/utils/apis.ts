@@ -90,7 +90,7 @@ const apis = {
     },
 
     // get issue details
-    issueDetailsApi: (owner: string, repository: string, issueNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}`,
+    getIssueDetailsApi: (owner: string, repository: string, issueNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}`,
 
     // get issue comments
     issueCommentsApi: (owner: string, repository: string, issueNumber: number, perPage: number, page: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}/comments?per_page=${perPage}&page=${page}`,

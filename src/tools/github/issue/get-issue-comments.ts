@@ -33,7 +33,7 @@ const getAllComments = async (accessToken: string, owner: string, repository: st
 
 const getIssueComments = async (accessToken: string, owner: string, repository: string, issueNumber: number) => {
     const [issueResponse, comments] = await Promise.all([
-        axios.get<IssueResponse>(apis.issueDetailsApi(owner, repository, issueNumber), buildHeader(accessToken)),
+        axios.get<IssueResponse>(apis.getIssueDetailsApi(owner, repository, issueNumber), buildHeader(accessToken)),
         getAllComments(accessToken, owner, repository, issueNumber)
     ]);
 

@@ -28,7 +28,7 @@ import { registerTool as getFileContent } from '../tools/github/get-file-content
 import { registerTool as commitRemoteFile } from '../tools/github/commit-remote-file';
 
 import { registerTool as listIssues } from '../tools/github/issue/list-issues';
-import { registerTool as issueDetails } from '../tools/github/issue/issue-details';
+import { registerTool as getIssueDetails } from '../tools/github/issue/get-issue-details';
 import { registerTool as getIssueComments } from '../tools/github/issue/get-issue-comments';
 import { registerTool as createIssue } from '../tools/github/issue/create-issue';
 import { registerTool as updateIssue } from '../tools/github/issue/update-issue';
@@ -69,7 +69,7 @@ async function setupMcpTools(server: McpServer) {
     commitRemoteFile(server);
 
     listIssues(server);
-    issueDetails(server);
+    getIssueDetails(server);
     getIssueComments(server);
     createIssue(server);
     updateIssue(server);

@@ -160,7 +160,7 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 | `get-commit-modifications`     | Commit        | Returns the list of files modified in a specific GitHub commit                                                                                            |
 |                                |               |                                                                                                                                                           |
 | `list-issues`                  | Issue         | Fetches issues from a GitHub repository, page by page. Calls repeatedly with increasing currentPage until result is empty                                 |
-| `issue-details`                | Issue         | Fetches detailed information about a specific GitHub issue by issue number                                                                                |
+| `get-issue-details`            | Issue         | Fetches detailed information about a specific GitHub issue by issue number                                                                                |
 | `get-issue-comments`           | Issue         | Fetches all comments for a GitHub issue, including the original issue, all comments, and participant details. Automatically fetches all pages of comments |
 | `create-issue`                 | Issue         | Creates a new issue in a GitHub repository. Including body and labels is optional                                                                         |
 | `update-issue`                 | Issue         | Updates the title and/or body of an existing GitHub issue                                                                                                 |

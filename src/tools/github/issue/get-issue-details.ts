@@ -9,7 +9,7 @@ import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const getIssueDetails = async (accessToken: string, owner: string, repository: string, issueNumber: number) => {
-    const response = await axios.get<IssueDetails>(apis.issueDetailsApi(owner, repository, issueNumber), buildHeader(accessToken));
+    const response = await axios.get<IssueDetails>(apis.getIssueDetailsApi(owner, repository, issueNumber), buildHeader(accessToken));
     const issue = response.data;
 
     return {
@@ -63,7 +63,7 @@ const getIssueDetails = async (accessToken: string, owner: string, repository: s
 
 export const registerTool = (server: McpServer) => {
     server.tool(
-        tools.issueDetails,
+        tools.getIssueDetails,
         'Fetches detailed information about a specific GitHub issue by issue number',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
@@ -86,7 +86,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch issue details: ${error}`), tools.issueDetails);
+                sendError(transport, new Error(`Failed to fetch issue details: ${error}`), tools.getIssueDetails);
                 return {
                     content: [
                         {
