@@ -2,21 +2,17 @@ import { z } from "zod";
 import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
+import { CommitFile, GitCommit } from "../../../types";
 import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const getCommitModifications = async (accessToken: string, owner: string, repository: string, commitSha: string) => {
-    const commit = await axios.get(apis.commitDetailsApi(owner, repository, commitSha), buildHeader(accessToken));
+    const commit = await axios.get<GitCommit>(apis.commitDetailsApi(owner, repository, commitSha), buildHeader(accessToken));
 
-    return commit.data.files.map((file: any) => ({
-        filename: file.filename,
-        status: file.status,
-        additions: file.additions,
-        deletions: file.deletions,
-        changes: file.changes,
-        patch: file.patch,
+    return commit.data.files.map(({filename, status, additions, deletions, changes, patch}: CommitFile) => ({
+        filename, status, additions, deletions, changes, patch
     }));
 }
 

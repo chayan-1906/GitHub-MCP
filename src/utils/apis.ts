@@ -79,6 +79,7 @@ const apis = {
     // get commit details
     commitDetailsApi: (owner: string, repository: string, commitSha: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/commits/${commitSha}`,
 
+
     /** issues */
     // list issues
     listIssuesApi: (owner: string, repository: string, state: string, includePRs: boolean, perPage: number, page: number, sort: string, direction: string) => {

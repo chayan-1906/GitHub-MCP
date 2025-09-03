@@ -3,44 +3,11 @@ import axios from "axios";
 import { minimatch } from "minimatch";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
-import { FileTree } from "../../../types";
 import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
-
-interface FileItem {
-    path: string;
-    mode: string;
-    type: 'blob' | 'tree' | 'commit';
-    sha: string;
-    size?: number;
-    url: string;
-}
-
-interface FilterOptions {
-    pattern?: string;
-    fileType?: 'files' | 'directories';
-    limit?: number;
-    offset?: number;
-}
-
-interface TreeNode {
-    name: string;
-    path: string;
-    type: 'blob' | 'tree';
-    size?: number;
-    children?: TreeNode[];
-    sha: string;
-    url: string;
-}
-
-interface PaginationInfo {
-    hasMore: boolean;
-    currentOffset: number;
-    suggestedNextOffset: number;
-    totalResults: number;
-}
+import { FileItem, FileTree, FilterOptions, PaginationInfo, TreeNode } from "../../../types";
 
 const getRepositoryTree = async (accessToken: string, owner: string, repository: string, branch: string, options: FilterOptions = {}) => {
     const listFilesResponse = await axios.get<FileTree>(apis.listFilesApi(owner, repository, branch), buildHeader(accessToken));

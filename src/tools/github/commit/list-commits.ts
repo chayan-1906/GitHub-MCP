@@ -2,20 +2,21 @@ import { z } from "zod";
 import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
+import { GitCommit } from "../../../types";
 import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const listCommits = async (accessToken: string, owner: string, repository: string, branch: string, perPage: number, currentPage: number) => {
-    const commits = await axios.get(apis.listCommitsApi(owner, repository, branch, perPage, currentPage), buildHeader(accessToken));
+    const commits = await axios.get<Partial<GitCommit>[]>(apis.listCommitsApi(owner, repository, branch, perPage, currentPage), buildHeader(accessToken));
 
-    return commits.data.map((commit: any) => ({
-        sha: commit.sha,
-        message: commit.commit.message,
-        author: commit.commit.author?.name,
-        date: commit.commit.author?.date,
-        url: commit.html_url,
+    return commits.data.map(({sha, message, author, html_url}: Partial<GitCommit>) => ({
+        sha: sha || '',
+        message: message ?? '',
+        author: author?.name ?? '',
+        date: author?.date ?? null,
+        url: html_url,
     }));
 }
 

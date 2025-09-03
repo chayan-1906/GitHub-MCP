@@ -114,7 +114,7 @@ export interface CreateRepositoryParams {
     autoInit?: boolean;
 }
 
-// listBranchesApi:: /repos/${owner}/${repository}/collaborators
+// listCollaboratorsApi:: https://api.github.com/repos/${owner}/${repository}/collaborators
 export interface Collaborator {
     login: string;
     html_url: string;
@@ -124,6 +124,7 @@ export interface Collaborator {
     };
 }
 
+// listInvitationsApi:: https://api.github.com/repos/${owner}/${repository}/invitations
 export interface Invitation {
     id: string;
     invitee: {
@@ -146,13 +147,37 @@ export interface BranchDetails {
 }
 
 // listFilesApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native/git/trees/master?recursive=1
-interface FileItem {
+export interface FileItem {
     path: string;
     mode: string;
     type: "blob" | "tree" | "commit"; // file, directory, or submodule
     sha: string;
     size?: number;
     url: string;
+}
+
+export interface FilterOptions {
+    pattern?: string;
+    fileType?: 'files' | 'directories';
+    limit?: number;
+    offset?: number;
+}
+
+export interface TreeNode {
+    name: string;
+    path: string;
+    type: 'blob' | 'tree';
+    size?: number;
+    children?: TreeNode[];
+    sha: string;
+    url: string;
+}
+
+export interface PaginationInfo {
+    hasMore: boolean;
+    currentOffset: number;
+    suggestedNextOffset: number;
+    totalResults: number;
 }
 
 export interface FileTree {
@@ -162,9 +187,8 @@ export interface FileTree {
     truncated: boolean;
 }
 
-
 // getFileContentApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native/contents/src/index.dt.ts?ref=master
-export interface GitHubContentLink {
+interface GitHubContentLink {
     self: string;
     git: string;
     html: string;
@@ -185,8 +209,68 @@ export interface GitHubContent {
     _links: GitHubContentLink;
 }
 
+// createBlobApi:: https://api.github.com/repos/owner/repo/git/blobs
+export interface GitBlob {
+    sha: string;
+    url: string;
+}
 
-// TODO: createRepository:: https://api.github.com/user/repos
+// createTreeApi:: https://api.github.com/repos/owner/repo/git/trees
+export interface GitTree {
+    sha: string;
+    url: string;
+    tree: Array<{
+        path: string;
+        mode: string;
+        type: string;
+        sha: string;
+        size?: number;
+        url: string;
+    }>;
+}
+
+// createCommitApi:: https://api.github.com/repos/owner/repo/git/commits
+export interface GitCommit {
+    sha: string;
+    url: string;
+    html_url: string;
+    author: {
+        name: string;
+        email: string;
+        date: string;
+    };
+    committer: {
+        name: string;
+        email: string;
+        date: string;
+    };
+    tree: {
+        sha: string;
+        url: string;
+    };
+    message: string;
+    parents: Array<{
+        sha: string;
+        url: string;
+        html_url: string;
+    }>;
+    files: CommitFile[];
+}
+
+// commitDetailsApi:: https://api.github.com/repos/owner/repo/commits/sha
+export interface CommitFile {
+    filename: string;
+    status: 'added' | 'removed' | 'modified' | 'renamed' | 'copied' | 'changed' | 'unchanged';
+    additions: number;
+    deletions: number;
+    changes: number;
+    patch?: string;
+    blob_url: string;
+    raw_url: string;
+    contents_url: string;
+    sha?: string;
+    previous_filename?: string;
+}
 
 
 // listIssuesApi:: https://api.github.com/repos/repos/chayan-1906/School-Management-Next.js/issues

@@ -4,19 +4,20 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
 import { transport } from "../../server";
 import { tools } from "../../utils/constants";
-import { getGitHubAccessToken } from "../../services/OAuth";
 import { apis, buildHeader } from "../../utils/apis";
+import { getGitHubAccessToken } from "../../services/OAuth";
+import { GitBlob, GitCommit, GitTree } from "../../types";
 
 const commitRemoteFile = async (accessToken: string, owner: string, repository: string, branch: string, filePath: string, fileContent: string, commitMessage: string, parentCommitSha?: string, baseTreeSha?: string) => {
     /* Create blob for the new/updated file */
-    const {data: blob} = await axios.post(
-        apis.createBlobApi(owner, repository),  
+    const {data: blob} = await axios.post<GitBlob>(
+        apis.createBlobApi(owner, repository),
         {content: fileContent, encoding: 'utf-8'},
         buildHeader(accessToken),
     );
 
     /* Create a new tree that includes the blob */
-    const {data: newTree} = await axios.post(
+    const {data: newTree} = await axios.post<GitTree>(
         apis.createTreeApi(owner, repository),
         {
             base_tree: baseTreeSha,
@@ -28,7 +29,11 @@ const commitRemoteFile = async (accessToken: string, owner: string, repository: 
     );
 
     /* Create a new commit pointing to that tree */
-    const commitPayload: any = {
+    const commitPayload: {
+        message: string;
+        tree: string;
+        parents?: string[];
+    } = {
         message: commitMessage,
         tree: newTree.sha,
     };
@@ -36,7 +41,7 @@ const commitRemoteFile = async (accessToken: string, owner: string, repository: 
         commitPayload.parents = [parentCommitSha];
     }
 
-    const {data: newCommit} = await axios.post(
+    const {data: newCommit} = await axios.post<GitCommit>(
         apis.createCommitApi(owner, repository),
         commitPayload,
         buildHeader(accessToken),
