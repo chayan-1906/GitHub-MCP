@@ -6,7 +6,7 @@ import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
-import { IssueAssignee, IssueComment, IssueResponse } from "../../../types";
+import { IssueAssignee, IssueComment } from "../../../types";
 
 const getAllComments = async (accessToken: string, owner: string, repository: string, issueNumber: number) => {
     const allComments: IssueComment[] = [];
@@ -33,13 +33,20 @@ const getAllComments = async (accessToken: string, owner: string, repository: st
 
 const getIssueComments = async (accessToken: string, owner: string, repository: string, issueNumber: number) => {
     const [issueResponse, comments] = await Promise.all([
-        axios.get<IssueResponse>(apis.getIssueDetailsApi(owner, repository, issueNumber), buildHeader(accessToken)),
+        axios.get<IssueComment>(apis.getIssueDetailsApi(owner, repository, issueNumber), buildHeader(accessToken)),
         getAllComments(accessToken, owner, repository, issueNumber)
     ]);
 
-    const issue: IssueResponse = issueResponse.data;
+    const issue: IssueComment = issueResponse.data;
 
-    const participantsMap = new Map();
+    const participantsMap = new Map<string, {
+        username: string;
+        id: number;
+        avatarUrl: string;
+        profileUrl: string;
+        type: string;
+        roles: string[];
+    }>();
 
     participantsMap.set(issue.user.login, {
         username: issue.user.login,

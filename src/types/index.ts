@@ -352,7 +352,7 @@ export interface IssueAssignee {
     html_url: string;
 }
 
-export interface IssueResponse {
+export interface IssueComment {
     id: number;
     number: number;
     title: string;

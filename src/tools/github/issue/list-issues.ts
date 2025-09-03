@@ -6,38 +6,36 @@ import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
+import { IssueDetails } from "../../../types";
 
 const listIssues = async (accessToken: string, owner: string, repository: string, state: string, includePRs: boolean, perPage: number, currentPage: number, sort: string, direction: string) => {
-    const response = await axios.get(apis.listIssuesApi(owner, repository, state, includePRs, perPage, currentPage, sort, direction), buildHeader(accessToken));
+    const response = await axios.get<Partial<IssueDetails>[]>(apis.listIssuesApi(owner, repository, state, includePRs, perPage, currentPage, sort, direction), buildHeader(accessToken));
 
-    return response.data.map((issue: any) => {
-        const {
-            number,
-            title,
-            state,
-            body,
-            user,
-            assignees,
-            labels,
-            created_at,
-            updated_at,
-            html_url,
-            pull_request,
-        } = issue;
-        return {
-            number,
-            title,
-            state,
-            // body,
-            author: user?.login,
-            assignees: assignees?.map((assignee: any) => assignee.login) || [],
-            labels: labels?.map((label: any) => label.name) || [],
-            created_at,
-            updated_at,
-            url: html_url,
-            isPR: !!pull_request,
-        };
-    });
+    return response.data.map(({
+                                  number,
+                                  title,
+                                  state,
+                                  body,
+                                  user,
+                                  assignees,
+                                  labels,
+                                  created_at,
+                                  updated_at,
+                                  html_url,
+                                  pull_request,
+                              }: Partial<IssueDetails>) => ({
+        number,
+        title,
+        state,
+        // body,
+        author: user?.login || '',
+        assignees: assignees?.map(assignee => assignee.login) || [],
+        labels: labels?.map(label => label.name) || [],
+        created_at,
+        updated_at,
+        url: html_url,
+        isPR: !!pull_request,
+    }));
 }
 
 export const registerTool = (server: McpServer) => {

@@ -3,17 +3,22 @@ import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
 import { transport } from "../../../server";
+import { IssueDetails } from "../../../types";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const updateIssue = async (accessToken: string, owner: string, repository: string, issueNumber: number, issueTitle: string, body?: string, labels?: string[]) => {
-    const payload: any = {};
+    const payload: {
+        title?: string;
+        body?: string;
+        labels?: string[];
+    } = {};
     if (issueTitle) payload.title = issueTitle;
     if (body) payload.body = body;
     if (labels?.length) payload.labels = labels;
 
-    const {data} = await axios.patch(apis.updateIssueApi(owner, repository, issueNumber), payload, buildHeader(accessToken));
+    const {data} = await axios.patch<Partial<IssueDetails>>(apis.updateIssueApi(owner, repository, issueNumber), payload, buildHeader(accessToken));
 
     return {
         issueNumber: data.number,

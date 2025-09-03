@@ -3,19 +3,20 @@ import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
 import { transport } from "../../../server";
+import { IssueDetails } from "../../../types";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const assignIssue = async (accessToken: string, owner: string, repository: string, issueNumber: number, assignees: string[]) => {
-    const {data} = await axios.post(apis.assignIssueApi(owner, repository, issueNumber), {assignees}, buildHeader(accessToken));
+    const {data} = await axios.post<Partial<IssueDetails>>(apis.assignIssueApi(owner, repository, issueNumber), {assignees}, buildHeader(accessToken));
 
     return {
         repository: `${owner}/${repository}`,
         issueNumber,
         title: data.title,
         issueUrl: data.html_url,
-        assignees: data.assignees.map((user: any) => user.login),
+        assignees: (data?.assignees && data.assignees.length) ? data.assignees.map(user => user.login) : [],
     };
 }
 

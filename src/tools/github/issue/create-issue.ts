@@ -3,23 +3,28 @@ import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
 import { transport } from "../../../server";
+import { IssueDetails } from "../../../types";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const createIssue = async (accessToken: string, owner: string, repository: string, issueTitle: string, body?: string, labels?: string[]) => {
-    const payload: any = {issueTitle};
+    const payload: {
+        title: string;
+        body?: string;
+        labels?: string[];
+    } = {title: issueTitle};
     if (body) payload.body = body;
     if (labels?.length) payload.labels = labels;
 
-    const {data} = await axios.post(apis.createIssueApi(owner, repository), payload, buildHeader(accessToken));
+    const {data} = await axios.post<IssueDetails>(apis.createIssueApi(owner, repository), payload, buildHeader(accessToken));
 
     return {
         issueNumber: data.number,
         title: data.title,
         url: data.html_url,
         state: data.state,
-        labels: data.labels.map((l: any) => l.name),
+        labels: data.labels.map(label => label.name),
     };
 }
 

@@ -10,7 +10,7 @@ import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const getIssueDetails = async (accessToken: string, owner: string, repository: string, issueNumber: number) => {
     const response = await axios.get<IssueDetails>(apis.getIssueDetailsApi(owner, repository, issueNumber), buildHeader(accessToken));
-    const issue = response.data;
+    const issue: IssueDetails = response.data;
 
     return {
         id: issue.id,
