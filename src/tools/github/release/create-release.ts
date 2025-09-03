@@ -2,13 +2,21 @@ import { z } from "zod";
 import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
+import { Release } from "../../../types";
 import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const createRelease = async (accessToken: string, owner: string, repository: string, tagName: string, name?: string, body?: string, draft?: boolean, prerelease?: boolean, targetCommitish?: string) => {
-    const payload: any = {
+    const payload: {
+        tag_name: string;
+        name: string;
+        body: string;
+        draft: boolean;
+        prerelease: boolean;
+        target_commitish?: string;
+    } = {
         tag_name: tagName,
         name: name || tagName,
         body: body || "",
@@ -20,7 +28,7 @@ const createRelease = async (accessToken: string, owner: string, repository: str
         payload.target_commitish = targetCommitish;
     }
 
-    const {data} = await axios.post(apis.createReleaseApi(owner, repository), payload, buildHeader(accessToken));
+    const {data} = await axios.post<Partial<Release>>(apis.createReleaseApi(owner, repository), payload, buildHeader(accessToken));
 
     return {
         id: data.id,

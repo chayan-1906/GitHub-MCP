@@ -2,27 +2,41 @@ import { z } from "zod";
 import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
+import { Release } from "../../../types";
 import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const listReleases = async (accessToken: string, owner: string, repository: string, perPage: number, currentPage: number) => {
-    const {data} = await axios.get(apis.listReleasesApi(owner, repository, perPage, currentPage), buildHeader(accessToken));
+    const {data} = await axios.get<Release[]>(apis.listReleasesApi(owner, repository, perPage, currentPage), buildHeader(accessToken));
 
-    return data.map((release: any) => ({
-        id: release.id,
-        tagName: release.tag_name,
-        name: release.name,
-        body: release.body,
-        draft: release.draft,
-        prerelease: release.prerelease,
-        htmlUrl: release.html_url,
-        publishedAt: release.published_at,
-        createdAt: release.created_at,
-        author: release.author?.login,
-        tarballUrl: release.tarball_url,
-        zipballUrl: release.zipball_url,
+    return data.map(({
+                         id,
+                         tag_name,
+                         name,
+                         body,
+                         draft,
+                         prerelease,
+                         html_url,
+                         published_at,
+                         created_at,
+                         author,
+                         tarball_url,
+                         zipball_url,
+                     }: Partial<Release>) => ({
+        id,
+        tagName: tag_name,
+        name,
+        body,
+        draft,
+        prerelease,
+        htmlUrl: html_url,
+        publishedAt: published_at,
+        createdAt: created_at,
+        author: author?.login,
+        tarballUrl: tarball_url,
+        zipballUrl: zipball_url,
     }));
 }
 

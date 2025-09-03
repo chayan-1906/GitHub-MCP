@@ -272,7 +272,6 @@ export interface CommitFile {
     previous_filename?: string;
 }
 
-
 // listIssuesApi:: https://api.github.com/repos/repos/chayan-1906/School-Management-Next.js/issues
 // issueDetailsApi:: https://api.github.com/repos/repos/chayan-1906/School-Management-Next.js/issues/1
 export interface IssueDetails {
@@ -290,6 +289,7 @@ export interface IssueDetails {
         id: number;
         avatar_url: string;
         html_url: string;
+        type: string;
     };
     assignee?: {
         login: string;
@@ -338,34 +338,11 @@ interface IssueUser {
     type: string;
 }
 
-interface IssueLabel {
-    id: number;
-    name: string;
-    color: string;
-    description?: string;
-}
-
 export interface IssueAssignee {
     login: string;
     id: number;
     avatar_url: string;
     html_url: string;
-}
-
-export interface IssueComment {
-    id: number;
-    number: number;
-    title: string;
-    body?: string;
-    state: string;
-    created_at: string;
-    updated_at: string;
-    closed_at?: string;
-    user: IssueUser;
-    assignees: IssueAssignee[];
-    labels: IssueLabel[];
-    html_url: string;
-    comments: number;
 }
 
 interface CommentReactions {
@@ -390,4 +367,26 @@ export interface IssueComment {
     issue_url: string;
     reactions: CommentReactions;
     author_association: string;
+}
+
+// listReleasesApi:: https://api.github.com/repos/owner/repo/releases
+// createReleaseApi:: https://api.github.com/repos/owner/repo/releases
+export interface Release {
+    id: number;
+    tag_name: string;
+    name: string;
+    body: string;
+    draft: boolean;
+    prerelease: boolean;
+    created_at: string;
+    published_at: string;
+    html_url: string;
+    tarball_url: string;
+    zipball_url: string;
+    author?: {
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+    };
 }

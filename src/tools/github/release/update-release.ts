@@ -2,13 +2,21 @@ import { z } from "zod";
 import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
+import { Release } from "../../../types";
 import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const updateRelease = async (accessToken: string, owner: string, repository: string, releaseId: number, tagName?: string, name?: string, body?: string, draft?: boolean, prerelease?: boolean, targetCommitish?: string) => {
-    const payload: any = {};
+    const payload: {
+        tag_name?: string;
+        name?: string;
+        body?: string;
+        draft?: boolean;
+        prerelease?: boolean;
+        target_commitish?: string;
+    } = {};
 
     if (tagName) payload.tag_name = tagName;
     if (name) payload.name = name;
@@ -17,7 +25,7 @@ const updateRelease = async (accessToken: string, owner: string, repository: str
     if (prerelease !== undefined) payload.prerelease = prerelease;
     if (targetCommitish) payload.target_commitish = targetCommitish;
 
-    const {data} = await axios.patch(apis.updateReleaseApi(owner, repository, releaseId), payload, buildHeader(accessToken));
+    const {data} = await axios.patch<Partial<Release>>(apis.updateReleaseApi(owner, repository, releaseId), payload, buildHeader(accessToken));
 
     return {
         id: data.id,
