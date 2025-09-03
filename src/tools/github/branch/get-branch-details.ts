@@ -3,12 +3,13 @@ import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
 import { transport } from "../../../server";
+import { BranchDetails } from "../../../types";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const getBranchDetails = async (accessToken: string, owner: string, repository: string, branch: string) => {
-    const getBranchDetailsResponse = await axios.get(apis.getBranchDetailsApi(owner, repository, branch), buildHeader(accessToken));
+    const getBranchDetailsResponse = await axios.get<BranchDetails>(apis.getBranchDetailsApi(owner, repository, branch), buildHeader(accessToken));
     return getBranchDetailsResponse.data;
 }
 

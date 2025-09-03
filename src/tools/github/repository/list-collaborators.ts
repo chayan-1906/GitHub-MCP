@@ -5,27 +5,28 @@ import { sendError } from "mcp-utils/utils";
 import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
+import { Collaborator, Invitation } from "../../../types";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const listCollaborators = async (accessToken: string, owner: string, repository: string) => {
     const [collaboratorsResponse, invitationsResponse] = await Promise.all([
-        axios.get(apis.listCollaboratorsApi(owner, repository), buildHeader(accessToken)),
-        axios.get(apis.listInvitationsApi(owner, repository), buildHeader(accessToken)),
+        axios.get<Collaborator[]>(apis.listCollaboratorsApi(owner, repository), buildHeader(accessToken)),
+        axios.get<Invitation[]>(apis.listInvitationsApi(owner, repository), buildHeader(accessToken)),
     ]);
 
-    const collaborators = (collaboratorsResponse.data || []).map((collaborator: any) => ({
-        username: collaborator.login,
-        htmlUrl: collaborator.html_url,
-        role: collaborator.permissions?.admin ? 'admin' : collaborator.permissions?.push ? 'write' : 'read',
+    const collaborators = (collaboratorsResponse.data || []).map(({login, html_url, permissions}: Collaborator) => ({
+        username: login,
+        htmlUrl: html_url,
+        role: permissions?.admin ? 'admin' : permissions?.push ? 'write' : 'read',
         status: 'accepted' as const,
     }));
 
-    const invitations = (invitationsResponse.data || []).map((invitation: any) => ({
-        username: invitation.invitee?.login,
-        htmlUrl: invitation.invitee?.html_url,
-        role: invitation.permissions || 'write',
+    const invitations = (invitationsResponse.data || []).map(({id, invitee, permissions}: Invitation) => ({
+        invitationId: id,
+        username: invitee?.login,
+        htmlUrl: invitee?.html_url,
+        role: permissions || 'write',
         status: 'pending' as const,
-        invitationId: invitation.id,
     }));
 
     return [...collaborators, ...invitations];

@@ -3,17 +3,19 @@ import axios from "axios";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
 import { transport } from "../../../server";
+import { BranchDetails } from "../../../types";
 import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const listBranches = async (accessToken: string, owner: string, repository: string, perPage: number, currentPage: number) => {
-    const branches = await axios.get(apis.listAllBranchesApi(owner, repository, perPage, currentPage), buildHeader(accessToken));
+    const branches = await axios.get<Partial<BranchDetails>[]>(apis.listAllBranchesApi(owner, repository, perPage, currentPage), buildHeader(accessToken));
 
-    return branches.data.map((branch: any) => {
-        const {name, commit, protected: isProtected} = branch;  // Note: commit.sha is the latest commit hash of the branch
-        return ({name, sha: commit.sha, isProtected});
-    });
+    return branches.data.map(({name, commit, protected: isProtected}: Partial<BranchDetails>) => ({
+        name: name || '',
+        sha: commit ? commit.sha : '',
+        isProtected: isProtected ?? false,
+    }));
 }
 
 export const registerTool = (server: McpServer) => {
