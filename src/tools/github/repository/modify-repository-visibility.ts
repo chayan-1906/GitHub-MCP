@@ -9,8 +9,9 @@ import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const modifyRepositoryVisibility = async (accessToken: string, owner: string, repository: string, visibility: 'public' | 'private' | 'internal') => {
-    const renameRepositoryResponse = await axios.patch<RepositoryDetails>(apis.modifyRepositoryVisibilityApi(owner, repository), {visibility}, buildHeader(accessToken));
-    const renameRepositoryResponseData = renameRepositoryResponse.data;
+    const renameRepositoryResponse = await axios.patch<Partial<RepositoryDetails>>(apis.modifyRepositoryVisibilityApi(owner, repository), {visibility}, buildHeader(accessToken));
+    const renameRepositoryResponseData: Partial<RepositoryDetails> = renameRepositoryResponse.data;
+
     return renameRepositoryResponseData.visibility;
 }
 

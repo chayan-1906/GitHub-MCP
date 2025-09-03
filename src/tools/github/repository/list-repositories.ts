@@ -4,19 +4,20 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { printInConsole, sendError } from "mcp-utils/utils";
 import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
+import { RepositoryDetails } from "../../../types";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const listRepositories = async (accessToken: string, perPage: number, currentPage: number) => {
-    const response = await axios.get(apis.listRepositoriesApi(perPage, currentPage), buildHeader(accessToken));
+    const response = await axios.get<Partial<RepositoryDetails>[]>(apis.listRepositoriesApi(perPage, currentPage), buildHeader(accessToken));
 
     await printInConsole(transport, `Response status: ${response.status}`);
     await printInConsole(transport, `Response data length: ${response.data.length}`);
     await printInConsole(transport, `Response headers Link: ${response.headers.link}`);
 
-    return response.data.map((repository: any) => {
+    return response.data.map((repository: Partial<RepositoryDetails>) => {
         const {name, full_name, description, private: isPrivate, html_url: url, visibility, owner} = repository;
-        return ({name, full_name, description, isPrivate, url, visibility, owner: owner.login});
+        return ({name, full_name, description, isPrivate, url, visibility, owner: owner ? owner.login : ''});
     });
 }
 

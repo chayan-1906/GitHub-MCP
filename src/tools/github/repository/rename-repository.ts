@@ -9,13 +9,10 @@ import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
 const renameRepository = async (accessToken: string, owner: string, oldName: string, newName: string) => {
-    const renameRepositoryResponse = await axios.patch<RepositoryDetails>(apis.renameRepositoryApi(owner, oldName), {name: newName}, buildHeader(accessToken));
-    const renameRepositoryResponseData = renameRepositoryResponse.data;
-    return {
-        oldName,
-        newName: renameRepositoryResponseData.name,
-        htmlUrl: renameRepositoryResponseData.html_url,
-    };
+    const renameRepositoryResponse = await axios.patch<Partial<RepositoryDetails>>(apis.renameRepositoryApi(owner, oldName), {name: newName}, buildHeader(accessToken));
+    const {name, html_url}: Partial<RepositoryDetails> = renameRepositoryResponse.data;
+
+    return {oldName, newName: name, htmlUrl: html_url};
 }
 
 export const registerTool = (server: McpServer) => {

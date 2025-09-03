@@ -4,31 +4,30 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { sendError } from "mcp-utils/utils";
 import { transport } from "../../../server";
 import { tools } from "../../../utils/constants";
-import { RepositoryDetails } from "../../../types";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
+import { CreateRepositoryParams, RepositoryDetails } from "../../../types";
 
-interface CreateRepoOptions {
-    name: string;
-    description?: string;
-    isPrivate?: boolean;
-    autoInit?: boolean;
-}
-
-const createRepository = async (accessToken: string, options: CreateRepoOptions) => {
+const createRepository = async (accessToken: string, options: CreateRepositoryParams) => {
     const {name, description, isPrivate, autoInit} = options;
-    const createRepositoryResponse = await axios.post<RepositoryDetails>(apis.createRepositoryApi(), {
+    const createRepositoryResponse = await axios.post<Partial<RepositoryDetails>>(apis.createRepositoryApi(), {
         name,
         description,
         private: isPrivate ?? true,
         auto_init: autoInit ?? true,
     }, buildHeader(accessToken));
-    const createRepositoryResponseData = createRepositoryResponse.data;
+    const {
+        name: repositoryName,
+        full_name,
+        private: isPrivateRepository,
+        html_url
+    }: Partial<RepositoryDetails> = createRepositoryResponse.data;
+
     return {
-        name: createRepositoryResponseData.name,
-        fullName: createRepositoryResponseData.full_name,
-        isPrivate: createRepositoryResponseData.private,
-        htmlUrl: createRepositoryResponseData.html_url,
+        name: repositoryName,
+        fullName: full_name,
+        isPrivate: isPrivateRepository,
+        htmlUrl: html_url,
     };
 }
 

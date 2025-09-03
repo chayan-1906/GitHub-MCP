@@ -5,9 +5,6 @@ const apis = {
     // list repositories in my github account
     listRepositoriesApi: (perPage: number, currentPage: number) => `${gitHubBaseUrl}/user/repos?affiliation=owner,collaborator,organization_member&per_page=${perPage}&page=${currentPage}`,
 
-    // list repositories in other's github account
-    listOwnerReposApi: (owner: string, perPage: number, page: number) => `${gitHubBaseUrl}/users/${owner}/repos?per_page=${perPage}&page=${page}`,
-
     // get repository metadata
     repositoryDetailsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}`,
 

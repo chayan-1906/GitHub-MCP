@@ -1,7 +1,3 @@
-// listRepositoriesApi::
-// TODO: Create interface for listRepositoriesApi, use that listRepositories tool
-
-
 // repositoryDetailsApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native
 interface Owner {
     login: string;
@@ -108,6 +104,14 @@ export interface RepositoryDetails {
     temp_clone_token: string | null;
     network_count: number;
     subscribers_count: number;
+}
+
+// createRepositoryApi:: https://api.github.com/user/repos
+export interface CreateRepositoryParams {
+    name: string;
+    description?: string;
+    isPrivate?: boolean;
+    autoInit?: boolean;
 }
 
 
