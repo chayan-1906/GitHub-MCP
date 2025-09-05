@@ -39,6 +39,22 @@ const tools = {
     updateIssueState: 'update-issue-state',
     assignIssue: 'assign-issue',
 
+    /** pull requests */
+    listAllPRs: 'list-all-pull-requests',
+    createPR: 'create-pull-request',
+    updatePR: 'update-pull-request',
+    getPRDetails: 'get-pull-request-details',
+    listPRCommits: 'list-pull-request-commits',
+    listPRFiles: 'list-pull-request-files',
+    mergePR: 'merge-pull-request',
+    closePR: 'close-pull-request',
+    reopenPR: 'reopen-pull-request',
+    requestPRReview: 'request-pull-request-review',
+    getPRReviews: 'get-pull-request-reviews',
+    createPRReview: 'create-pull-request-review',
+    dismissPRReview: 'dismiss-pull-request-review',
+    markPRForPRReview: 'mark-pull-request-review',
+
     /** releases */
     listReleases: 'list-releases',
     createRelease: 'create-release',

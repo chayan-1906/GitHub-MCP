@@ -105,6 +105,18 @@ const apis = {
     // assign issue
     assignIssueApi: (owner: string, repository: string, issueNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/issues/${issueNumber}/assignees`,
 
+
+    /** pull requests */
+    // list pull requests
+    listPullRequestsApi: (owner: string, repository: string, state: string, perPage: number, page: number, sort: string, direction: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls?state=${state}&sort=${sort}&direction=${direction}&per_page=${perPage}&page=${page}`,
+
+    // create pull request
+    createPullRequestApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls`,
+
+    // update pull request
+    updatePullRequestApi: (owner: string, repository: string, prNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}`,
+
+
     /** releases */
     // get releases
     listReleasesApi: (owner: string, repository: string, perPage: number, currentPage: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/releases?per_page=${perPage}&page=${currentPage}`,

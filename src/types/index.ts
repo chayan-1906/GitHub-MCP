@@ -390,3 +390,68 @@ export interface Release {
         html_url: string;
     };
 }
+
+// listPullRequestsApi:: https://api.github.com/repos/owner/repo/pulls
+export interface PullRequest {
+    id: number;
+    number: number;
+    title: string;
+    body?: string;
+    state: 'open' | 'closed' | 'draft';
+    created_at: string;
+    updated_at: string;
+    closed_at?: string;
+    merged_at?: string;
+    html_url: string;
+    diff_url: string;
+    patch_url: string;
+    user: {
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+    };
+    assignee?: {
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+    };
+    assignees: Array<{
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+    }>;
+    labels: Array<{
+        id: number;
+        name: string;
+        color: string;
+        description?: string;
+    }>;
+    head: {
+        ref: string;
+        sha: string;
+        repo?: {
+            name: string;
+            full_name: string;
+            html_url: string;
+        };
+    };
+    base: {
+        ref: string;
+        sha: string;
+        repo: {
+            name: string;
+            full_name: string;
+            html_url: string;
+        };
+    };
+    draft: boolean;
+    merged: boolean;
+    mergeable?: boolean;
+    commits: number;
+    additions: number;
+    deletions: number;
+    changed_files: number;
+}
