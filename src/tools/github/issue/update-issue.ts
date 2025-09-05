@@ -32,14 +32,14 @@ const updateIssue = async (accessToken: string, owner: string, repository: strin
 export const registerTool = (server: McpServer) => {
     server.tool(
         tools.updateIssue,
-        'Updates the title and/or body of an existing GitHub issue',
+        'Updates the title, body, and/or labels of an existing GitHub issue. Also works for pull requests since PRs are treated as issues for label management.',
         {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
             repository: z.string().describe('The name of the GitHub Repository'),
-            issueNumber: z.number().describe('Issue number to update'),
+            issueNumber: z.number().describe('Issue number or pull request number to update'),
             issueTitle: z.string().describe('Title of the issue'),
             body: z.string().optional().describe('Body/description of the issue'),
-            labels: z.array(z.string()).optional().describe('Labels to associate with the issue'),
+            labels: z.array(z.string()).optional().describe('Labels to associate with the issue or pull request. This replaces all existing labels'),
         },
         async ({owner, repository, issueNumber, issueTitle, body, labels}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
