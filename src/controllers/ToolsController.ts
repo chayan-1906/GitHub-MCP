@@ -42,6 +42,9 @@ import { registerTool as updatePR } from '../tools/github/pull-request/update-pu
 import { registerTool as listPRCommits } from '../tools/github/pull-request/list-pull-request-commits';
 import { registerTool as listPRFiles } from '../tools/github/pull-request/list-pull-request-files';
 import { registerTool as updatePRState } from '../tools/github/pull-request/update-pull-request-state';
+import { registerTool as mergePR } from '../tools/github/pull-request/merge-pull-request';
+import { registerTool as getPRReviews } from '../tools/github/pull-request/get-pull-request-reviews';
+import { registerTool as createPRReview } from '../tools/github/pull-request/create-pull-request-review';
 
 import { registerTool as listReleases } from '../tools/github/release/list-releases';
 import { registerTool as createRelease } from '../tools/github/release/create-release';
@@ -91,6 +94,9 @@ async function setupMcpTools(server: McpServer) {
     listPRCommits(server);
     listPRFiles(server);
     updatePRState(server);
+    mergePR(server);
+    getPRReviews(server);
+    createPRReview(server);
 
     listReleases(server);
     createRelease(server);

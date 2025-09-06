@@ -47,10 +47,10 @@ const tools = {
     listPRCommits: 'list-pull-request-commits',
     listPRFiles: 'list-pull-request-files',
     updatePRState: 'update-pull-request-state',
-    mergePR: 'merge-pull-request',  // yet to do... should merge prs only if conflict doesn't exist
-    requestPRReview: 'request-pull-request-review',
+    mergePR: 'merge-pull-request',  // not yet working, 404
     getPRReviews: 'get-pull-request-reviews',
     createPRReview: 'create-pull-request-review',
+    requestPRReview: 'request-pull-request-review',
     dismissPRReview: 'dismiss-pull-request-review',
     markPRForPRReview: 'mark-pull-request-review',
 

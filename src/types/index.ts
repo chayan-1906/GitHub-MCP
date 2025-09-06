@@ -455,3 +455,29 @@ export interface PullRequest {
     deletions: number;
     changed_files: number;
 }
+
+// mergePullRequestApi:: https://api.github.com/repos/owner/repo/pulls/{number}/merge
+export interface MergeResponse {
+    sha: string;
+    merged: boolean;
+    message: string;
+}
+
+// getPullRequestReviewsApi:: https://api.github.com/repos/owner/repo/pulls/{number}/reviews
+// createPullRequestReviewApi:: https://api.github.com/repos/owner/repo/pulls/{number}/reviews
+export interface PullRequestReview {
+    id: number;
+    user: {
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+    };
+    body: string;
+    state: 'APPROVED' | 'CHANGES_REQUESTED' | 'COMMENTED' | 'DISMISSED' | 'PENDING';
+    html_url: string;
+    pull_request_url: string;
+    submitted_at: string;
+    commit_id: string;
+    author_association: string;
+}

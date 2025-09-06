@@ -128,6 +128,15 @@ const apis = {
     // update pull request state
     updatePullRequestStateApi: (owner: string, repository: string, prNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}`,
 
+    // merge pull request
+    mergePullRequestApi: (owner: string, repository: string, prNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}/merge`,
+
+    // get pull request reviews
+    getPullRequestReviewsApi: (owner: string, repository: string, prNumber: number, perPage: number, page: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}/reviews?per_page=${perPage}&page=${page}`,
+
+    // create pull request review
+    createPullRequestReviewApi: (owner: string, repository: string, prNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}/reviews`,
+
 
     /** releases */
     // get releases
@@ -148,6 +157,7 @@ const buildHeader = (accessToken: string) => {
         headers: {
             Authorization: `Bearer ${accessToken}`,
             Accept: 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
         },
     };
 }
