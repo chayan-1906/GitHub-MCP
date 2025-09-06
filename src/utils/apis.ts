@@ -137,6 +137,15 @@ const apis = {
     // create pull request review
     createPullRequestReviewApi: (owner: string, repository: string, prNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}/reviews`,
 
+    // request pull request review
+    requestPullRequestReviewApi: (owner: string, repository: string, prNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}/requested_reviewers`,
+
+    // dismiss pull request review
+    dismissPullRequestReviewApi: (owner: string, repository: string, prNumber: number, reviewId: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}/reviews/${reviewId}/dismissals`,
+
+    // mark/submit pull request review
+    markPullRequestReviewApi: (owner: string, repository: string, prNumber: number, reviewId: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}/reviews/${reviewId}/events`,
+
 
     /** releases */
     // get releases

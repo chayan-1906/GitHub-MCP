@@ -45,6 +45,9 @@ import { registerTool as updatePRState } from '../tools/github/pull-request/upda
 import { registerTool as mergePR } from '../tools/github/pull-request/merge-pull-request';
 import { registerTool as getPRReviews } from '../tools/github/pull-request/get-pull-request-reviews';
 import { registerTool as createPRReview } from '../tools/github/pull-request/create-pull-request-review';
+import { registerTool as requestPRReview } from '../tools/github/pull-request/request-pull-request-review';
+import { registerTool as dismissPRReview } from '../tools/github/pull-request/dismiss-pull-request-review';
+import { registerTool as markPRForPRReview } from '../tools/github/pull-request/mark-pull-request-review';
 
 import { registerTool as listReleases } from '../tools/github/release/list-releases';
 import { registerTool as createRelease } from '../tools/github/release/create-release';
@@ -97,6 +100,9 @@ async function setupMcpTools(server: McpServer) {
     mergePR(server);
     getPRReviews(server);
     createPRReview(server);
+    requestPRReview(server);
+    dismissPRReview(server);
+    markPRForPRReview(server);
 
     listReleases(server);
     createRelease(server);

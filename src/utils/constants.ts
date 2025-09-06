@@ -50,7 +50,7 @@ const tools = {
     mergePR: 'merge-pull-request',  // not yet working, 404
     getPRReviews: 'get-pull-request-reviews',
     createPRReview: 'create-pull-request-review',
-    requestPRReview: 'request-pull-request-review',
+    requestPRReview: 'request-pull-request-review', // need a third github account
     dismissPRReview: 'dismiss-pull-request-review',
     markPRForPRReview: 'mark-pull-request-review',
 

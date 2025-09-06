@@ -481,3 +481,25 @@ export interface PullRequestReview {
     commit_id: string;
     author_association: string;
 }
+
+// requestPullRequestReviewApi:: https://api.github.com/repos/owner/repo/pulls/{number}/requested_reviewers
+export interface ReviewRequest {
+    users: Array<{
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+    }>;
+    teams: Array<{
+        id: number;
+        name: string;
+        slug: string;
+    }>;
+}
+
+// dismissPullRequestReviewApi:: https://api.github.com/repos/owner/repo/pulls/{number}/reviews/{review_id}/dismissals
+// markPullRequestReviewApi:: https://api.github.com/repos/owner/repo/pulls/{number}/reviews/{review_id}/events
+export interface ReviewResponse {
+    message: string;
+    review?: PullRequestReview;
+}

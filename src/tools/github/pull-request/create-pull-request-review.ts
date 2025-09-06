@@ -8,13 +8,14 @@ import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
-const createPullRequestReview = async (accessToken: string, owner: string, repository: string, prNumber: number, event: string, body?: string, commitId?: string) => {
+const createPullRequestReview = async (accessToken: string, owner: string, repository: string, prNumber: number, event?: string, body?: string, commitId?: string) => {
     const payload: {
-        event: string;
+        event?: string;
         body?: string;
         commit_id?: string;
-    } = {event};
+    } = {};
 
+    if (event && event !== 'PENDING') payload.event = event;
     if (body) payload.body = body;
     if (commitId) payload.commit_id = commitId;
 
@@ -45,7 +46,7 @@ export const registerTool = (server: McpServer) => {
             owner: z.string().describe('GitHub username or organization that owns the repository'),
             repository: z.string().describe('The name of the GitHub Repository'),
             prNumber: z.number().min(1).describe('Pull request number to review'),
-            event: z.enum(['APPROVE', 'REQUEST_CHANGES', 'COMMENT']).describe('Review action: APPROVE (approve PR), REQUEST_CHANGES (request changes), COMMENT (general comment)'),
+            event: z.enum(['APPROVE', 'REQUEST_CHANGES', 'COMMENT', 'PENDING']).optional().describe('Review action: APPROVE (approve PR), REQUEST_CHANGES (request changes), COMMENT (general comment), PENDING (create pending review) or omit for pending'),
             body: z.string().optional().describe('Review comment text. Required for REQUEST_CHANGES and COMMENT events'),
             commitId: z.string().optional().describe('Specific commit SHA to review (optional, defaults to latest commit)'),
         },
@@ -53,7 +54,7 @@ export const registerTool = (server: McpServer) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
             if (!accessToken) return {content};
 
-            if ((event === 'REQUEST_CHANGES' || event === 'COMMENT') && !body) {
+            if (event && (event === 'REQUEST_CHANGES' || event === 'COMMENT') && !body) {
                 return {
                     content: [
                         {
