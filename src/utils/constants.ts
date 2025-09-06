@@ -41,14 +41,13 @@ const tools = {
 
     /** pull requests */
     listAllPRs: 'list-all-pull-requests',
+    getPRDetails: 'get-pull-request-details',
     createPR: 'create-pull-request',
     updatePR: 'update-pull-request',
-    getPRDetails: 'get-pull-request-details',
     listPRCommits: 'list-pull-request-commits',
     listPRFiles: 'list-pull-request-files',
-    mergePR: 'merge-pull-request',
-    closePR: 'close-pull-request',
-    reopenPR: 'reopen-pull-request',
+    updatePRState: 'update-pull-request-state',
+    mergePR: 'merge-pull-request',  // yet to do... should merge prs only if conflict doesn't exist
     requestPRReview: 'request-pull-request-review',
     getPRReviews: 'get-pull-request-reviews',
     createPRReview: 'create-pull-request-review',

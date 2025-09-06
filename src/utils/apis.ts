@@ -110,11 +110,23 @@ const apis = {
     // list pull requests
     listPullRequestsApi: (owner: string, repository: string, state: string, perPage: number, page: number, sort: string, direction: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls?state=${state}&sort=${sort}&direction=${direction}&per_page=${perPage}&page=${page}`,
 
+    // get pull request details
+    getPullRequestDetailsApi: (owner: string, repository: string, prNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}`,
+
     // create pull request
     createPullRequestApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls`,
 
     // update pull request
     updatePullRequestApi: (owner: string, repository: string, prNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}`,
+
+    // list pull request commits
+    listPullRequestCommitsApi: (owner: string, repository: string, prNumber: number, perPage: number, page: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}/commits?per_page=${perPage}&page=${page}`,
+
+    // list pull request files
+    listPullRequestFilesApi: (owner: string, repository: string, prNumber: number, perPage: number, page: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}/files?per_page=${perPage}&page=${page}`,
+
+    // update pull request state
+    updatePullRequestStateApi: (owner: string, repository: string, prNumber: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/pulls/${prNumber}`,
 
 
     /** releases */
