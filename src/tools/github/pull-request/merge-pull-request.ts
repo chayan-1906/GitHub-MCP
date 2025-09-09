@@ -57,7 +57,7 @@ const mergePullRequest = async (accessToken: string, owner: string, repository: 
     if (commitTitle) payload.commit_title = commitTitle;
     if (commitMessage) payload.commit_message = commitMessage;
 
-    const {data} = await axios.post<MergeResponse>(apis.mergePullRequestApi(owner, repository, prNumber), payload, buildHeader(accessToken));
+    const {data} = await axios.put<MergeResponse>(apis.mergePullRequestApi(owner, repository, prNumber), payload, buildHeader(accessToken));
     const {sha, merged} = data;
 
     return {
