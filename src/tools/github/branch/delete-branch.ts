@@ -18,13 +18,14 @@ const deleteBranch = async (accessToken: string, owner: string, repository: stri
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.deleteBranch;
     server.tool(
-        tools.deleteBranch,
-        'Deletes a branch from a GitHub repository. Cannot delete the default branch',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            branch: z.string().describe('The name of the branch to delete'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            branch: z.string().describe(toolConfig.parameters.find(p => p.name === 'branch')?.techDescription || ''),
         },
         async ({owner, repository, branch}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -42,7 +43,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to delete branch: ${error}`), tools.deleteBranch);
+                sendError(transport, new Error(`Failed to delete branch: ${error}`), tools.deleteBranch.name);
                 return {
                     content: [
                         {

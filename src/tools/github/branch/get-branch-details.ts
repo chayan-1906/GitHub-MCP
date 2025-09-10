@@ -14,13 +14,14 @@ const getBranchDetails = async (accessToken: string, owner: string, repository: 
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.getBranchDetails;
     server.tool(
-        tools.getBranchDetails,
-        'Fetches details of a specific branch in a GitHub repository',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            branch: z.string().describe('Branch name to get details for'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            branch: z.string().describe(toolConfig.parameters.find(p => p.name === 'branch')?.techDescription || ''),
         },
         async ({owner, repository, branch}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -38,7 +39,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to get branch details: ${error}`), tools.getBranchDetails);
+                sendError(transport, new Error(`Failed to get branch details: ${error}`), tools.getBranchDetails.name);
                 return {
                     content: [
                         {

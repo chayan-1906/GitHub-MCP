@@ -21,8 +21,59 @@ const tools = {
     addRemoveCollaborators: 'add-remove-collaborators',
 
     /** branches */
-    listBranches: 'list-branches',
-    getBranchDetails: 'get-branch-details',
+    listBranches: {
+        name: 'list-branches',
+        category: 'Branches',
+        techDescription: 'Fetches branches of the authenticated user\'s repository. Calls repeatedly with increasing currentPage until the result is empty',
+        userFriendlyDescription: 'List all branches in a repository with pagination support',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'perPage',
+                techDescription: 'Maximum number of repositories to return per page (max: 60)',
+                userFriendlyDescription: 'Number of branches per page (max: 60)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number of the results to fetch. Start with 1 and increment this value in each call until the returned list is empty',
+                userFriendlyDescription: 'Page number for pagination',
+                optional: true,
+            },
+        ],
+    },
+    getBranchDetails: {
+        name: 'get-branch-details',
+        category: 'Branches',
+        techDescription: 'Fetches details of a specific branch in a GitHub repository',
+        userFriendlyDescription: 'Get detailed information about a specific branch',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'branch',
+                techDescription: 'Branch name to get details for',
+                userFriendlyDescription: 'Branch name',
+            },
+        ],
+    },
     createBranch: {
         name: 'create-branch',
         category: 'Branches',
@@ -57,8 +108,52 @@ const tools = {
             },
         ],
     },
-    setDefaultBranch: 'set-default-branch',
-    deleteBranch: 'delete-branch',
+    setDefaultBranch: {
+        name: 'set-default-branch',
+        category: 'Branches',
+        techDescription: 'Sets the default branch in a GitHub repository',
+        userFriendlyDescription: 'Set the default branch for a repository',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'branch',
+                techDescription: 'The branch name to set as default for the repository',
+                userFriendlyDescription: 'Branch name to set as default',
+            },
+        ],
+    },
+    deleteBranch: {
+        name: 'delete-branch',
+        category: 'Branches',
+        techDescription: 'Deletes a branch from a GitHub repository. Cannot delete the default branch',
+        userFriendlyDescription: 'Delete a branch from the repository',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'branch',
+                techDescription: 'The name of the branch to delete',
+                userFriendlyDescription: 'Branch name to delete',
+            },
+        ],
+    },
 
     /** files */
     repositoryTree: 'repository-tree',
