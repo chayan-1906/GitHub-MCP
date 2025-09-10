@@ -32,14 +32,15 @@ const createRepository = async (accessToken: string, options: CreateRepositoryPa
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.createRepository;
     server.tool(
-        tools.createRepository,
-        'Creates a new GitHub repository for the authenticated user with optional description, visibility, and initialization',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            name: z.string().describe('Name of the repository to create'),
-            description: z.string().optional().describe('Optional description for the repository'),
-            private: z.boolean().optional().describe('Whether the repository should be private (default: true)'),
-            autoInit: z.boolean().optional().describe('Whether to initialize the repository with a README (default: true)'),
+            name: z.string().describe(toolConfig.parameters.find(p => p.name === 'name')?.techDescription || ''),
+            description: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'description')?.techDescription || ''),
+            private: z.boolean().optional().describe(toolConfig.parameters.find(p => p.name === 'private')?.techDescription || ''),
+            autoInit: z.boolean().optional().describe(toolConfig.parameters.find(p => p.name === 'autoInit')?.techDescription || ''),
         },
         async ({name, description, private: isPrivate, autoInit}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -64,7 +65,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to create repository: ${error}`), tools.createRepository);
+                sendError(transport, new Error(`Failed to create repository: ${error}`), tools.createRepository.name);
                 return {
                     content: [
                         {

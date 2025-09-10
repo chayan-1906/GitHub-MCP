@@ -30,12 +30,13 @@ const getRepositoryDetails = async (accessToken: string, owner: string, reposito
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.getRepositoryDetails;
     server.tool(
-        tools.getRepositoryDetails,
-        'Fetches metadata of a GitHub repository (e.g., default branch, visibility, description, etc.). Useful before accessing files or commits from a repo',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
         },
         async ({owner, repository}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -53,7 +54,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to get the repository details: ${error}`), tools.getRepositoryDetails);
+                sendError(transport, new Error(`Failed to get the repository details: ${error}`), tools.getRepositoryDetails.name);
                 return {
                     content: [
                         {

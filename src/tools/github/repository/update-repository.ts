@@ -32,14 +32,15 @@ const updateRepository = async (accessToken: string, owner: string, repository: 
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.updateRepository;
     server.tool(
-        tools.updateRepository,
-        'Updates repository description and/or tags (topics) of a GitHub repository',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            description: z.string().optional().describe('The description to be added to the repository'),
-            tags: z.array(z.string()).optional().describe('Topics to set or replace in the repository'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            description: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'description')?.techDescription || ''),
+            tags: z.array(z.string()).optional().describe(toolConfig.parameters.find(p => p.name === 'tags')?.techDescription || ''),
         },
         async ({owner, repository, description, tags}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -57,7 +58,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to update repository: ${error}`), tools.updateRepository);
+                sendError(transport, new Error(`Failed to update repository: ${error}`), tools.updateRepository.name);
                 return {
                     content: [
                         {

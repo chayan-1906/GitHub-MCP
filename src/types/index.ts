@@ -1,3 +1,19 @@
+// home page
+export interface ToolParameter {
+    name: string;
+    techDescription: string;
+    userFriendlyDescription: string;
+    optional?: boolean;
+}
+
+export interface Tool {
+    name: string;
+    category: string;
+    techDescription: string;
+    userFriendlyDescription: string;
+    parameters: ToolParameter[];
+}
+
 // repositoryDetailsApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native
 interface Owner {
     login: string;

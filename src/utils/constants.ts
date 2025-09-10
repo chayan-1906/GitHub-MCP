@@ -9,11 +9,128 @@ const tools = {
     },
 
     /** repositories */
-    listRepositories: 'list-repositories',
-    getRepositoryDetails: 'get-repository-details',
-    createRepository: 'create-repository',
-    updateRepository: 'update-repository',
-    renameRepository: 'rename-repository',
+    listRepositories: {
+        name: 'list-repositories',
+        category: 'Repositories',
+        techDescription: 'Fetches repositories user has access to. Calls repeatedly with increasing currentPage until result is empty',
+        userFriendlyDescription: 'List all repositories you have access to with pagination',
+        parameters: [
+            {
+                name: 'perPage',
+                techDescription: 'Repositories per page (max: 60)',
+                userFriendlyDescription: 'Number of repositories per page (max: 60)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number',
+                userFriendlyDescription: 'Page number for pagination',
+                optional: true,
+            },
+        ],
+    },
+    getRepositoryDetails: {
+        name: 'get-repository-details',
+        category: 'Repositories',
+        techDescription: 'Fetches metadata of a GitHub repository (e.g., default branch, visibility, description, etc.). Useful before accessing files or commits from a repo',
+        userFriendlyDescription: 'Get detailed information about a specific repository',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+        ],
+    },
+    createRepository: {
+        name: 'create-repository',
+        category: 'Repositories',
+        techDescription: 'Creates a new GitHub repository for the authenticated user with optional description, visibility, and initialization',
+        userFriendlyDescription: 'Create a new repository in your GitHub account',
+        parameters: [
+            {
+                name: 'name',
+                techDescription: 'Name of the repository to create',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'description',
+                techDescription: 'Optional description for the repository',
+                userFriendlyDescription: 'Repository description',
+                optional: true,
+            },
+            {
+                name: 'private',
+                techDescription: 'Whether the repository should be private (default: true)',
+                userFriendlyDescription: 'Make repository private',
+                optional: true,
+            },
+            {
+                name: 'autoInit',
+                techDescription: 'Whether to initialize the repository with a README (default: true)',
+                userFriendlyDescription: 'Initialize with README file',
+                optional: true,
+            },
+        ],
+    },
+    updateRepository: {
+        name: 'update-repository',
+        category: 'Repositories',
+        techDescription: 'Updates repository description and/or tags (topics) of a GitHub repository',
+        userFriendlyDescription: 'Update repository settings like description and topics',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'description',
+                techDescription: 'The description to be added to the repository',
+                userFriendlyDescription: 'New repository description',
+                optional: true,
+            },
+            {
+                name: 'tags',
+                techDescription: 'Topics to set or replace in the repository',
+                userFriendlyDescription: 'Repository topics/tags',
+                optional: true,
+            },
+        ],
+    },
+    renameRepository: {
+        name: 'rename-repository',
+        category: 'Repositories',
+        techDescription: 'Renames a GitHub repository owned by the authenticated user',
+        userFriendlyDescription: 'Rename one of your repositories',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'oldName',
+                techDescription: 'Current name of the repository',
+                userFriendlyDescription: 'Current repository name',
+            },
+            {
+                name: 'newName',
+                techDescription: 'New name to give to the repository',
+                userFriendlyDescription: 'New repository name',
+            },
+        ],
+    },
     deleteRepository: 'delete-repository',
     modifyRepositoryVisibility: 'modify-repository-visibility',
 
