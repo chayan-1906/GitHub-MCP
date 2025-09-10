@@ -16,13 +16,14 @@ const modifyRepositoryVisibility = async (accessToken: string, owner: string, re
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.modifyRepositoryVisibility;
     server.tool(
-        tools.modifyRepositoryVisibility,
-        'Modifies a GitHub repository visibility (private/public/internal)',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('Name of the repository to update'),
-            visibility: z.enum(['public', 'private', 'internal']).describe('New visibility setting for the repository'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            visibility: z.enum(['public', 'private', 'internal']).describe(toolConfig.parameters.find(p => p.name === 'visibility')?.techDescription || ''),
         },
         async ({owner, repository, visibility}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -40,7 +41,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to modify repository visibility: ${error}`), tools.modifyRepositoryVisibility);
+                sendError(transport, new Error(`Failed to modify repository visibility: ${error}`), tools.modifyRepositoryVisibility.name);
                 return {
                     content: [
                         {

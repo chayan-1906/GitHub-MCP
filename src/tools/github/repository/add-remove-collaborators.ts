@@ -24,16 +24,17 @@ const addRemoveCollaborators = async (accessToken: string, owner: string, reposi
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.addRemoveCollaborators;
     server.tool(
-        tools.addRemoveCollaborators,
-        'Adds or removes a collaborator from a GitHub repository',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('Current name of the repository'),
-            targetUserName: z.string().describe('GitHub username of the collaborator'),
-            action: z.enum(['add', 'remove']).describe('Whether to add or remove the collaborator'),
-            status: z.enum(['accepted', 'pending']).optional().describe('Required only to remove a user - "accepted" to remove an existing collaborator, "pending" to cancel an invitation'),
-            invitationId: z.string().optional().describe('Required to cancel a pending invitation — the unique invitation ID'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            targetUserName: z.string().describe(toolConfig.parameters.find(p => p.name === 'targetUserName')?.techDescription || ''),
+            action: z.enum(['add', 'remove']).describe(toolConfig.parameters.find(p => p.name === 'action')?.techDescription || ''),
+            status: z.enum(['accepted', 'pending']).optional().describe(toolConfig.parameters.find(p => p.name === 'status')?.techDescription || ''),
+            invitationId: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'invitationId')?.techDescription || ''),
         },
         async ({owner, repository, targetUserName, invitationId, action, status}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -51,7 +52,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to add or remove collaborators: ${error}`), tools.addRemoveCollaborators);
+                sendError(transport, new Error(`Failed to add or remove collaborators: ${error}`), tools.addRemoveCollaborators.name);
                 return {
                     content: [
                         {

@@ -131,11 +131,106 @@ const tools = {
             },
         ],
     },
-    deleteRepository: 'delete-repository',
-    modifyRepositoryVisibility: 'modify-repository-visibility',
+    deleteRepository: {
+        name: 'delete-repository',
+        category: 'Repositories',
+        techDescription: 'Deletes a GitHub repository owned by the authenticated user. This action is irreversible',
+        userFriendlyDescription: 'Permanently delete one of your repositories',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+        ],
+    },
+    modifyRepositoryVisibility: {
+        name: 'modify-repository-visibility',
+        category: 'Repositories',
+        techDescription: 'Modifies a GitHub repository visibility (private/public/internal)',
+        userFriendlyDescription: 'Change repository visibility settings',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'Name of the repository to update',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'visibility',
+                techDescription: 'New visibility setting for the repository',
+                userFriendlyDescription: 'New visibility (public/private/internal)',
+            },
+        ],
+    },
 
-    listCollaborators: 'list-collaborators',
-    addRemoveCollaborators: 'add-remove-collaborators',
+    listCollaborators: {
+        name: 'list-collaborators',
+        category: 'Repositories',
+        techDescription: 'Returns a combined list of accepted collaborators and pending invitations for a GitHub Repository, each marked with their status',
+        userFriendlyDescription: 'View all collaborators and pending invitations for a repository',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+        ],
+    },
+    addRemoveCollaborators: {
+        name: 'add-remove-collaborators',
+        category: 'Repositories',
+        techDescription: 'Adds or removes a collaborator from a GitHub repository',
+        userFriendlyDescription: 'Invite or remove collaborators from your repository',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'Current name of the repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'targetUserName',
+                techDescription: 'GitHub username of the collaborator',
+                userFriendlyDescription: 'Username to add/remove',
+            },
+            {
+                name: 'action',
+                techDescription: 'Whether to add or remove the collaborator',
+                userFriendlyDescription: 'Action to perform (add/remove)',
+            },
+            {
+                name: 'status',
+                techDescription: 'Required only to remove a user - "accepted" to remove an existing collaborator, "pending" to cancel an invitation',
+                userFriendlyDescription: 'Status of user to remove (accepted/pending)',
+                optional: true,
+            },
+            {
+                name: 'invitationId',
+                techDescription: 'Required to cancel a pending invitation — the unique invitation ID',
+                userFriendlyDescription: 'Invitation ID for pending invites',
+                optional: true,
+            },
+        ],
+    },
 
     /** branches */
     listBranches: {
