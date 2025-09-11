@@ -43,19 +43,20 @@ const updateRelease = async (accessToken: string, owner: string, repository: str
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.updateRelease;
     server.tool(
-        tools.updateRelease,
-        'Updates an existing GitHub release by release ID with new information',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            releaseId: z.number().describe('The unique ID of the release to update'),
-            tagName: z.string().optional().describe('The name of the tag (e.g., "v1.0.1")'),
-            name: z.string().optional().describe('The name of the release'),
-            body: z.string().optional().describe('Text describing the contents of the tag (release notes)'),
-            draft: z.boolean().optional().describe('True to mark as draft (unpublished) release, false to publish'),
-            prerelease: z.boolean().optional().describe('True to identify the release as a prerelease, false for full release'),
-            targetCommitish: z.string().optional().describe('Specifies the commitish value that determines where the Git tag is created from'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            releaseId: z.number().describe(toolConfig.parameters.find(p => p.name === 'releaseId')?.techDescription || ''),
+            tagName: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'tagName')?.techDescription || ''),
+            name: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'name')?.techDescription || ''),
+            body: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'body')?.techDescription || ''),
+            draft: z.boolean().optional().describe(toolConfig.parameters.find(p => p.name === 'draft')?.techDescription || ''),
+            prerelease: z.boolean().optional().describe(toolConfig.parameters.find(p => p.name === 'prerelease')?.techDescription || ''),
+            targetCommitish: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'targetCommitish')?.techDescription || ''),
         },
         async ({owner, repository, releaseId, tagName, name, body, draft, prerelease, targetCommitish}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -73,7 +74,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to update release: ${error}`), tools.updateRelease);
+                sendError(transport, new Error(`Failed to update release: ${error}`), tools.updateRelease.name);
                 return {
                     content: [
                         {

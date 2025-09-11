@@ -18,13 +18,14 @@ const deleteRelease = async (accessToken: string, owner: string, repository: str
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.deleteRelease;
     server.tool(
-        tools.deleteRelease,
-        'Deletes a GitHub release by release ID. This action is irreversible',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            releaseId: z.number().describe('The unique ID of the release to delete'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            releaseId: z.number().describe(toolConfig.parameters.find(p => p.name === 'releaseId')?.techDescription || ''),
         },
         async ({owner, repository, releaseId}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -42,7 +43,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to delete release: ${error}`), tools.deleteRelease);
+                sendError(transport, new Error(`Failed to delete release: ${error}`), tools.deleteRelease.name);
                 return {
                     content: [
                         {

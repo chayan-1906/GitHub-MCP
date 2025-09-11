@@ -585,10 +585,171 @@ const tools = {
     markPRForPRReview: 'mark-pull-request-review',
 
     /** releases */
-    listReleases: 'list-releases',
-    createRelease: 'create-release',
-    updateRelease: 'update-release',
-    deleteRelease: 'delete-release',
+    listReleases: {
+        name: 'list-releases',
+        category: 'Releases',
+        techDescription: 'Fetches all releases in a GitHub repository, page by page',
+        userFriendlyDescription: 'List all releases in a repository with pagination',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'perPage',
+                techDescription: 'Maximum number of releases to return per page (max: 100)',
+                userFriendlyDescription: 'Number of releases per page (max: 100)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number of the results to fetch. Start with 1 and increment until the returned list is empty',
+                userFriendlyDescription: 'Page number for pagination',
+                optional: true,
+            },
+        ],
+    },
+    createRelease: {
+        name: 'create-release',
+        category: 'Releases',
+        techDescription: 'Creates a GitHub release from an existing tag or creates a new tag and release',
+        userFriendlyDescription: 'Create a new release with optional tag creation',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'tagName',
+                techDescription: 'The name of the tag (e.g., "v1.0.0")',
+                userFriendlyDescription: 'Tag name (e.g., "v1.0.0")',
+            },
+            {
+                name: 'name',
+                techDescription: 'The name of the release (defaults to tag name)',
+                userFriendlyDescription: 'Release name (optional)',
+                optional: true,
+            },
+            {
+                name: 'body',
+                techDescription: 'Text describing the contents of the tag (release notes)',
+                userFriendlyDescription: 'Release notes/description',
+                optional: true,
+            },
+            {
+                name: 'draft',
+                techDescription: 'True to create a draft (unpublished) release, false to create a published one (default: false)',
+                userFriendlyDescription: 'Create as draft release',
+                optional: true,
+            },
+            {
+                name: 'prerelease',
+                techDescription: 'True to identify the release as a prerelease, false to identify as full release (default: false)',
+                userFriendlyDescription: 'Mark as prerelease',
+                optional: true,
+            },
+            {
+                name: 'targetCommitish',
+                techDescription: 'Specifies the commitish value that determines where the Git tag is created from (default: repository default branch)',
+                userFriendlyDescription: 'Target commit/branch (optional)',
+                optional: true,
+            },
+        ],
+    },
+    updateRelease: {
+        name: 'update-release',
+        category: 'Releases',
+        techDescription: 'Updates an existing GitHub release by release ID with new information',
+        userFriendlyDescription: 'Update an existing release with new information',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'releaseId',
+                techDescription: 'The unique ID of the release to update',
+                userFriendlyDescription: 'Release ID',
+            },
+            {
+                name: 'tagName',
+                techDescription: 'The name of the tag (e.g., "v1.0.1")',
+                userFriendlyDescription: 'New tag name (optional)',
+                optional: true,
+            },
+            {
+                name: 'name',
+                techDescription: 'The name of the release',
+                userFriendlyDescription: 'New release name (optional)',
+                optional: true,
+            },
+            {
+                name: 'body',
+                techDescription: 'Text describing the contents of the tag (release notes)',
+                userFriendlyDescription: 'Updated release notes (optional)',
+                optional: true,
+            },
+            {
+                name: 'draft',
+                techDescription: 'True to mark as draft (unpublished) release, false to publish',
+                userFriendlyDescription: 'Set as draft release',
+                optional: true,
+            },
+            {
+                name: 'prerelease',
+                techDescription: 'True to identify the release as a prerelease, false for full release',
+                userFriendlyDescription: 'Mark as prerelease',
+                optional: true,
+            },
+            {
+                name: 'targetCommitish',
+                techDescription: 'Specifies the commitish value that determines where the Git tag is created from',
+                userFriendlyDescription: 'Target commit/branch (optional)',
+                optional: true,
+            },
+        ],
+    },
+    deleteRelease: {
+        name: 'delete-release',
+        category: 'Releases',
+        techDescription: 'Deletes a GitHub release by release ID. This action is irreversible',
+        userFriendlyDescription: 'Permanently delete a release',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'releaseId',
+                techDescription: 'The unique ID of the release to delete',
+                userFriendlyDescription: 'Release ID',
+            },
+        ],
+    },
 };
 
 const constants = {
