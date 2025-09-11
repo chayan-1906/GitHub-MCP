@@ -501,8 +501,64 @@ const tools = {
     },
 
     /** commits */
-    listCommits: 'list-commits',
-    getCommitModifications: 'get-commit-modifications',
+    listCommits: {
+        name: 'list-commits',
+        category: 'Commits',
+        techDescription: 'Fetches commits in a branch of a GitHub repository, page by page',
+        userFriendlyDescription: 'List commits from a repository branch with pagination',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'branch',
+                techDescription: 'The name of the branch to list commits from',
+                userFriendlyDescription: 'Branch name',
+            },
+            {
+                name: 'perPage',
+                techDescription: 'Maximum number of repositories to return per page (max: 100)',
+                userFriendlyDescription: 'Number of commits per page (max: 100)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number of the results to fetch. Start with 1 and increment until the returned list is empty',
+                userFriendlyDescription: 'Page number for pagination',
+                optional: true,
+            },
+        ],
+    },
+    getCommitModifications: {
+        name: 'get-commit-modifications',
+        category: 'Commits',
+        techDescription: 'Returns the list of files modified in a specific GitHub commit',
+        userFriendlyDescription: 'View files modified in a specific commit',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'commitSha',
+                techDescription: 'Commit SHA to inspect',
+                userFriendlyDescription: 'Commit SHA',
+            },
+        ],
+    },
 
     /** issues */
     listIssues: 'list-issues',
