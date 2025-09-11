@@ -19,14 +19,15 @@ const getFileContent = async (accessToken: string, owner: string, repository: st
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.getFileContent;
     server.tool(
-        tools.getFileContent,
-        'Reads and returns the raw content of a specific file from a GitHub repository branch',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            filePath: z.string().describe("Relative file path in the repository (e.g., 'src/index.js')"),
-            branch: z.string().describe('Branch name'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            filePath: z.string().describe(toolConfig.parameters.find(p => p.name === 'filePath')?.techDescription || ''),
+            branch: z.string().describe(toolConfig.parameters.find(p => p.name === 'branch')?.techDescription || ''),
         },
         async ({owner, repository, filePath, branch}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -44,7 +45,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to get file content: ${error}`), tools.getFileContent);
+                sendError(transport, new Error(`Failed to get file content: ${error}`), tools.getFileContent.name);
                 return {
                     content: [
                         {

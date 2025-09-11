@@ -162,18 +162,19 @@ const formatBytes = (bytes: number): string => {
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.repositoryTree;
     server.tool(
-        tools.repositoryTree,
-        'Displays the hierarchical tree structure of a GitHub repository branch with ASCII tree formatting. Shows files and directories in a visual tree layout with filtering and pagination support.',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub repository to display as a tree'),
-            branch: z.string().describe('Branch name to display tree structure from'),
-            pattern: z.string().optional().describe('Glob pattern to filter items (e.g., "*.js", "src/**/*.ts", "**/*.md")'),
-            fileType: z.enum(['files', 'directories']).optional().describe('Filter by type: "files" for files only, "directories" for folders only. If not specified, shows both files and directories'),
-            format: z.enum(['tree', 'simple-tree', 'detailed']).optional().default('tree').describe('Tree format: "tree" for ASCII tree with lines, "simple-tree" for indented tree, "detailed" for tree with metadata'),
-            limit: z.number().optional().describe('Maximum number of items to return (for pagination)'),
-            offset: z.number().optional().describe('Number of items to skip (for pagination)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            branch: z.string().describe(toolConfig.parameters.find(p => p.name === 'branch')?.techDescription || ''),
+            pattern: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'pattern')?.techDescription || ''),
+            fileType: z.enum(['files', 'directories']).optional().describe(toolConfig.parameters.find(p => p.name === 'fileType')?.techDescription || ''),
+            format: z.enum(['tree', 'simple-tree', 'detailed']).optional().default('tree').describe(toolConfig.parameters.find(p => p.name === 'format')?.techDescription || ''),
+            limit: z.number().optional().describe(toolConfig.parameters.find(p => p.name === 'limit')?.techDescription || ''),
+            offset: z.number().optional().describe(toolConfig.parameters.find(p => p.name === 'offset')?.techDescription || ''),
         },
         async ({owner, repository, branch, pattern, fileType, format = 'tree', limit, offset}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -217,7 +218,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to get repository tree: ${error}`), tools.repositoryTree);
+                sendError(transport, new Error(`Failed to get repository tree: ${error}`), tools.repositoryTree.name);
                 return {
                     content: [
                         {

@@ -368,9 +368,137 @@ const tools = {
     },
 
     /** files */
-    repositoryTree: 'repository-tree',
-    getFileContent: 'get-file-content',
-    commitRemoteFile: 'commit-remote-file',
+    repositoryTree: {
+        name: 'repository-tree',
+        category: 'Files',
+        techDescription: 'Displays the hierarchical tree structure of a GitHub repository branch with ASCII tree formatting. Shows files and directories in a visual tree layout with filtering and pagination support.',
+        userFriendlyDescription: 'Browse repository files and folders in a visual tree structure',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub repository to display as a tree',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'branch',
+                techDescription: 'Branch name to display tree structure from',
+                userFriendlyDescription: 'Branch name',
+            },
+            {
+                name: 'pattern',
+                techDescription: 'Glob pattern to filter items (e.g., "*.js", "src/**/*.ts", "**/*.md")',
+                userFriendlyDescription: 'Pattern to filter files (optional)',
+                optional: true,
+            },
+            {
+                name: 'fileType',
+                techDescription: 'Filter by type: "files" for files only, "directories" for folders only. If not specified, shows both files and directories',
+                userFriendlyDescription: 'Filter by type (files/directories)',
+                optional: true,
+            },
+            {
+                name: 'format',
+                techDescription: 'Tree format: "tree" for ASCII tree with lines, "simple-tree" for indented tree, "detailed" for tree with metadata',
+                userFriendlyDescription: 'Display format (tree/simple-tree/detailed)',
+                optional: true,
+            },
+            {
+                name: 'limit',
+                techDescription: 'Maximum number of items to return (for pagination)',
+                userFriendlyDescription: 'Maximum items to show',
+                optional: true,
+            },
+            {
+                name: 'offset',
+                techDescription: 'Number of items to skip (for pagination)',
+                userFriendlyDescription: 'Number of items to skip',
+                optional: true,
+            },
+        ],
+    },
+    getFileContent: {
+        name: 'get-file-content',
+        category: 'Files',
+        techDescription: 'Reads and returns the raw content of a specific file from a GitHub repository branch',
+        userFriendlyDescription: 'Read the contents of a specific file from a repository',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'filePath',
+                techDescription: 'Relative file path in the repository (e.g., \'src/index.js\')',
+                userFriendlyDescription: 'Path to the file in the repository',
+            },
+            {
+                name: 'branch',
+                techDescription: 'Branch name',
+                userFriendlyDescription: 'Branch name',
+            },
+        ],
+    },
+    commitRemoteFile: {
+        name: 'commit-remote-file',
+        category: 'Files',
+        techDescription: 'Commits a file to a GitHub Repository using GitHub API. This does not use the local file system. • parentCommitSha & baseTreeSha: must be real SHAs. • If the repository is empty, omit these fields (don\'t pass 000…000).',
+        userFriendlyDescription: 'Create or update a file in a repository with a commit',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'branch',
+                techDescription: 'Name of the branch where the file should be committed',
+                userFriendlyDescription: 'Target branch name',
+            },
+            {
+                name: 'filePath',
+                techDescription: 'Path of the file (e.g., README.md or docs/info.txt)',
+                userFriendlyDescription: 'File path in repository',
+            },
+            {
+                name: 'fileContent',
+                techDescription: 'Content of the file',
+                userFriendlyDescription: 'File content',
+            },
+            {
+                name: 'commitMessage',
+                techDescription: 'Commit message to include',
+                userFriendlyDescription: 'Commit message',
+            },
+            {
+                name: 'parentCommitSha',
+                techDescription: 'Latest commit SHA in branch (omit if repo empty)',
+                userFriendlyDescription: 'Parent commit SHA (optional)',
+                optional: true,
+            },
+            {
+                name: 'baseTreeSha',
+                techDescription: 'Tree SHA of that commit (omit if repo empty)',
+                userFriendlyDescription: 'Base tree SHA (optional)',
+                optional: true,
+            },
+        ],
+    },
 
     /** commits */
     listCommits: 'list-commits',

@@ -66,20 +66,19 @@ const commitRemoteFile = async (accessToken: string, owner: string, repository: 
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.commitRemoteFile;
     server.tool(
-        tools.commitRemoteFile,
-        `Commits a file to a GitHub Repository using GitHub API. This does not use the local file system.  
-                    • parentCommitSha & baseTreeSha: must be real SHAs.  
-                    • If the repository is empty, omit these fields (don’t pass 000…000).`,
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            branch: z.string().describe('Name of the branch where the file should be committed'),
-            filePath: z.string().describe('Path of the file (e.g., README.md or docs/info.txt)'),
-            fileContent: z.string().describe('Content of the file'),
-            commitMessage: z.string().describe('Commit message to include'),
-            parentCommitSha: z.string().optional().describe('Latest commit SHA in branch (omit if repo empty)'),
-            baseTreeSha: z.string().optional().describe('Tree SHA of that commit (omit if repo empty)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            branch: z.string().describe(toolConfig.parameters.find(p => p.name === 'branch')?.techDescription || ''),
+            filePath: z.string().describe(toolConfig.parameters.find(p => p.name === 'filePath')?.techDescription || ''),
+            fileContent: z.string().describe(toolConfig.parameters.find(p => p.name === 'fileContent')?.techDescription || ''),
+            commitMessage: z.string().describe(toolConfig.parameters.find(p => p.name === 'commitMessage')?.techDescription || ''),
+            parentCommitSha: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'parentCommitSha')?.techDescription || ''),
+            baseTreeSha: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'baseTreeSha')?.techDescription || ''),
         },
         async ({owner, repository, branch, parentCommitSha, baseTreeSha, filePath, fileContent, commitMessage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -97,7 +96,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to commit remote file: ${error}`), tools.commitRemoteFile);
+                sendError(transport, new Error(`Failed to commit remote file: ${error}`), tools.commitRemoteFile.name);
                 return {
                     content: [
                         {
