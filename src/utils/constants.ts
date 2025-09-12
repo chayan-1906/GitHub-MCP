@@ -794,19 +794,491 @@ const tools = {
     },
 
     /** pull requests */
-    listAllPRs: 'list-all-pull-requests',
-    getPRDetails: 'get-pull-request-details',
-    createPR: 'create-pull-request',
-    updatePR: 'update-pull-request',
-    listPRCommits: 'list-pull-request-commits',
-    listPRFiles: 'list-pull-request-files',
-    updatePRState: 'update-pull-request-state',
-    mergePR: 'merge-pull-request',  // not yet working, 404
-    getPRReviews: 'get-pull-request-reviews',
-    createPRReview: 'create-pull-request-review',
-    requestPRReview: 'request-pull-request-review', // need a third github account
-    dismissPRReview: 'dismiss-pull-request-review',
-    markPRForPRReview: 'mark-pull-request-review',
+    listAllPRs: {
+        name: 'list-all-pull-requests',
+        category: 'Pull Requests',
+        techDescription: 'Fetches all pull requests from a GitHub repository, page by page. Filter by state and sort options available',
+        userFriendlyDescription: 'List all pull requests with filtering and pagination',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'state',
+                techDescription: 'PR state to filter by (open, closed, all). Default: open',
+                userFriendlyDescription: 'PR state filter (open/closed/all)',
+                optional: true,
+            },
+            {
+                name: 'sort',
+                techDescription: 'Sort PRs by created, updated, popularity, or long-running. Default: created',
+                userFriendlyDescription: 'Sort by (created/updated/popularity/long-running)',
+                optional: true,
+            },
+            {
+                name: 'direction',
+                techDescription: 'Sort direction: asc (oldest first) or desc (newest first). Default: desc',
+                userFriendlyDescription: 'Sort direction (asc/desc)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number of the results to fetch. Start with 1 and increment until the returned list is empty',
+                userFriendlyDescription: 'Page number for pagination',
+                optional: true,
+            },
+            {
+                name: 'perPage',
+                techDescription: 'Maximum number of PRs to return per page (max: 100)',
+                userFriendlyDescription: 'PRs per page (max: 100)',
+                optional: true,
+            },
+        ],
+    },
+    getPRDetails: {
+        name: 'get-pull-request-details',
+        category: 'Pull Requests',
+        techDescription: 'Fetches detailed information about a specific GitHub pull request by PR number',
+        userFriendlyDescription: 'Get detailed information about a specific pull request',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'The pull request number to get details for',
+                userFriendlyDescription: 'Pull request number',
+            },
+        ],
+    },
+    createPR: {
+        name: 'create-pull-request',
+        category: 'Pull Requests',
+        techDescription: 'Creates a new pull request in a GitHub repository. Compares changes between two branches and creates a PR for review',
+        userFriendlyDescription: 'Create a new pull request between branches',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'title',
+                techDescription: 'Title of the pull request',
+                userFriendlyDescription: 'Pull request title',
+            },
+            {
+                name: 'head',
+                techDescription: 'The name of the branch where your changes are implemented (source branch)',
+                userFriendlyDescription: 'Source branch (with changes)',
+            },
+            {
+                name: 'base',
+                techDescription: 'The name of the branch you want the changes pulled into (target branch)',
+                userFriendlyDescription: 'Target branch (destination)',
+            },
+            {
+                name: 'body',
+                techDescription: 'Body/description of the pull request. Can include markdown formatting',
+                userFriendlyDescription: 'Pull request description (optional)',
+                optional: true,
+            },
+            {
+                name: 'draft',
+                techDescription: 'True to create a draft pull request (default: false). Draft PRs cannot be merged until marked as ready for review',
+                userFriendlyDescription: 'Create as draft PR',
+                optional: true,
+            },
+        ],
+    },
+    updatePR: {
+        name: 'update-pull-request',
+        category: 'Pull Requests',
+        techDescription: 'Updates title, body, state, and base branch of an existing pull request',
+        userFriendlyDescription: 'Update an existing pull request\'s details',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number to update',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'title',
+                techDescription: 'New title for the pull request',
+                userFriendlyDescription: 'New pull request title',
+                optional: true,
+            },
+            {
+                name: 'body',
+                techDescription: 'New body/description for the pull request',
+                userFriendlyDescription: 'New pull request description',
+                optional: true,
+            },
+            {
+                name: 'state',
+                techDescription: 'New state for the pull request (open or closed)',
+                userFriendlyDescription: 'New state (open/closed)',
+                optional: true,
+            },
+            {
+                name: 'base',
+                techDescription: 'New base branch for the pull request',
+                userFriendlyDescription: 'New base branch',
+                optional: true,
+            },
+        ],
+    },
+    listPRCommits: {
+        name: 'list-pull-request-commits',
+        category: 'Pull Requests',
+        techDescription: 'Lists all commits in a specific pull request with pagination support',
+        userFriendlyDescription: 'List all commits in a pull request',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number to get commits for',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'perPage',
+                techDescription: 'Number of commits per page (max: 100)',
+                userFriendlyDescription: 'Commits per page (max: 100)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number to fetch',
+                userFriendlyDescription: 'Page number for pagination',
+                optional: true,
+            },
+        ],
+    },
+    listPRFiles: {
+        name: 'list-pull-request-files',
+        category: 'Pull Requests',
+        techDescription: 'Lists all files changed in a specific pull request with diff information',
+        userFriendlyDescription: 'List all changed files in a pull request with diff details',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number to get files for',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'perPage',
+                techDescription: 'Maximum number of files to return per page (max: 100)',
+                userFriendlyDescription: 'Results per page (max 100)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number of the results to fetch. Start with 1 and increment until the returned list is empty',
+                userFriendlyDescription: 'Page number',
+                optional: true,
+            },
+        ],
+    },
+    updatePRState: {
+        name: 'update-pull-request-state',
+        category: 'Pull Requests',
+        techDescription: 'Updates the state of a pull request (open or closed)',
+        userFriendlyDescription: 'Open or close a pull request',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number to update',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'state',
+                techDescription: 'New state for the pull request (open or closed)',
+                userFriendlyDescription: 'New state (open/closed)',
+            },
+        ],
+    },
+    mergePR: {
+        name: 'merge-pull-request',
+        category: 'Pull Requests',
+        techDescription: 'Merges a GitHub pull request only if PR is open, not draft, and has no conflicts',
+        userFriendlyDescription: 'Merge a pull request (checks for conflicts)',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number to merge',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'mergeMethod',
+                techDescription: 'How to merge: "merge" (merge commit), "squash" (squash and merge), "rebase" (rebase and merge)',
+                userFriendlyDescription: 'Merge method (merge/squash/rebase)',
+                optional: true,
+            },
+            {
+                name: 'commitTitle',
+                techDescription: 'Custom title for the merge commit (optional)',
+                userFriendlyDescription: 'Custom merge commit title (optional)',
+                optional: true,
+            },
+            {
+                name: 'commitMessage',
+                techDescription: 'Custom message for the merge commit (optional)',
+                userFriendlyDescription: 'Custom merge commit message (optional)',
+                optional: true,
+            },
+        ],
+    },
+    getPRReviews: {
+        name: 'get-pull-request-reviews',
+        category: 'Pull Requests',
+        techDescription: 'Lists all reviews for a specific GitHub pull request, page by page',
+        userFriendlyDescription: 'Get all reviews for a pull request',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number to get reviews for',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'perPage',
+                techDescription: 'Maximum number of reviews to return per page (max: 100)',
+                userFriendlyDescription: 'Results per page (max 100)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number of the results to fetch. Start with 1 and increment until the returned list is empty',
+                userFriendlyDescription: 'Page number',
+                optional: true,
+            },
+        ],
+    },
+    createPRReview: {
+        name: 'create-pull-request-review',
+        category: 'Pull Requests',
+        techDescription: 'Creates a review for a GitHub pull request. Can approve, request changes, or add comments',
+        userFriendlyDescription: 'Create a pull request review (approve/request changes/comment)',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number to review',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'event',
+                techDescription: 'Review action: APPROVE (approve PR), REQUEST_CHANGES (request changes), COMMENT (general comment), PENDING (create pending review) or omit for pending',
+                userFriendlyDescription: 'Review action (APPROVE/REQUEST_CHANGES/COMMENT/PENDING)',
+                optional: true,
+            },
+            {
+                name: 'body',
+                techDescription: 'Review comment text. Required for REQUEST_CHANGES and COMMENT events',
+                userFriendlyDescription: 'Review comment text',
+                optional: true,
+            },
+            {
+                name: 'commitId',
+                techDescription: 'Specific commit SHA to review (optional, defaults to latest commit)',
+                userFriendlyDescription: 'Specific commit to review (optional)',
+                optional: true,
+            },
+        ],
+    },
+    requestPRReview: {
+        name: 'request-pull-request-review',
+        category: 'Pull Requests',
+        techDescription: 'Requests reviews from users and/or teams for a GitHub pull request',
+        userFriendlyDescription: 'Request reviews from users or teams',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number to request reviews for',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'reviewers',
+                techDescription: 'Array of GitHub usernames to request reviews from',
+                userFriendlyDescription: 'Usernames to request reviews from',
+                optional: true,
+            },
+            {
+                name: 'teamReviewers',
+                techDescription: 'Array of team slugs to request reviews from (for organization repos)',
+                userFriendlyDescription: 'Team slugs to request reviews from',
+                optional: true,
+            },
+        ],
+    }, // need a third github account
+    dismissPRReview: {
+        name: 'dismiss-pull-request-review',
+        category: 'Pull Requests',
+        techDescription: 'Dismisses a pull request review with a message explaining why it was dismissed',
+        userFriendlyDescription: 'Dismiss a pull request review',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number containing the review to dismiss',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'reviewId',
+                techDescription: 'Review ID to dismiss (get this from get-pull-request-reviews)',
+                userFriendlyDescription: 'Review ID to dismiss',
+            },
+            {
+                name: 'message',
+                techDescription: 'Message explaining why the review is being dismissed',
+                userFriendlyDescription: 'Dismissal reason message',
+            },
+        ],
+    },
+    markPRForPRReview: {
+        name: 'mark-pull-request-review',
+        category: 'Pull Requests',
+        techDescription: 'Submits a pending pull request review by marking it with APPROVE, REQUEST_CHANGES, or COMMENT',
+        userFriendlyDescription: 'Submit a pending pull request review',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'prNumber',
+                techDescription: 'Pull request number containing the pending review',
+                userFriendlyDescription: 'Pull request number',
+            },
+            {
+                name: 'reviewId',
+                techDescription: 'Pending review ID to submit (get this from get-pull-request-reviews)',
+                userFriendlyDescription: 'Pending review ID',
+            },
+            {
+                name: 'event',
+                techDescription: 'Review action to submit: APPROVE (approve PR), REQUEST_CHANGES (request changes), COMMENT (general comment)',
+                userFriendlyDescription: 'Review action (APPROVE/REQUEST_CHANGES/COMMENT)',
+            },
+            {
+                name: 'body',
+                techDescription: 'Additional review comment text (optional for APPROVE, recommended for REQUEST_CHANGES and COMMENT)',
+                userFriendlyDescription: 'Additional review comment (optional)',
+                optional: true,
+            },
+        ],
+    },
 
     /** releases */
     listReleases: {

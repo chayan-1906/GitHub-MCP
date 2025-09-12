@@ -22,15 +22,16 @@ const dismissPullRequestReview = async (accessToken: string, owner: string, repo
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.dismissPRReview;
     server.tool(
-        tools.dismissPRReview,
-        'Dismisses a pull request review with a message explaining why it was dismissed',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('Pull request number containing the review to dismiss'),
-            reviewId: z.number().min(1).describe('Review ID to dismiss (get this from get-pull-request-reviews)'),
-            message: z.string().describe('Message explaining why the review is being dismissed'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
+            reviewId: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'reviewId')?.techDescription || ''),
+            message: z.string().describe(toolConfig.parameters.find(p => p.name === 'message')?.techDescription || ''),
         },
         async ({owner, repository, prNumber, reviewId, message}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -51,7 +52,7 @@ export const registerTool = (server: McpServer) => {
                 const errorDetails = error.response?.data ? JSON.stringify(error.response.data, null, 2) : 'No additional error details';
                 const fullError = `Failed to dismiss pull request review: ${error.message}\nAPI Response: ${errorDetails}`;
 
-                sendError(transport, new Error(fullError), tools.dismissPRReview);
+                sendError(transport, new Error(fullError), tools.dismissPRReview.name);
                 return {
                     content: [
                         {

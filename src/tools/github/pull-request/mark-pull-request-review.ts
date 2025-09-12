@@ -39,16 +39,17 @@ const markPullRequestReview = async (accessToken: string, owner: string, reposit
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.markPRForPRReview;
     server.tool(
-        tools.markPRForPRReview,
-        'Submits a pending pull request review by marking it with APPROVE, REQUEST_CHANGES, or COMMENT',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('Pull request number containing the pending review'),
-            reviewId: z.number().min(1).describe('Pending review ID to submit (get this from get-pull-request-reviews)'),
-            event: z.enum(['APPROVE', 'REQUEST_CHANGES', 'COMMENT']).describe('Review action to submit: APPROVE (approve PR), REQUEST_CHANGES (request changes), COMMENT (general comment)'),
-            body: z.string().optional().describe('Additional review comment text (optional for APPROVE, recommended for REQUEST_CHANGES and COMMENT)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
+            reviewId: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'reviewId')?.techDescription || ''),
+            event: z.enum(['APPROVE', 'REQUEST_CHANGES', 'COMMENT']).describe(toolConfig.parameters.find(p => p.name === 'event')?.techDescription || ''),
+            body: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'body')?.techDescription || ''),
         },
         async ({owner, repository, prNumber, reviewId, event, body}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -69,7 +70,7 @@ export const registerTool = (server: McpServer) => {
                 const errorDetails = error.response?.data ? JSON.stringify(error.response.data, null, 2) : 'No additional error details';
                 const fullError = `Failed to mark pull request review: ${error.message}\nAPI Response: ${errorDetails}`;
 
-                sendError(transport, new Error(fullError), tools.markPRForPRReview);
+                sendError(transport, new Error(fullError), tools.markPRForPRReview.name);
                 return {
                     content: [
                         {

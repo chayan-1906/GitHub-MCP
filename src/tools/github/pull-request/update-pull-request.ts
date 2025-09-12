@@ -77,17 +77,18 @@ const updatePullRequest = async (accessToken: string, owner: string, repository:
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.updatePR;
     server.tool(
-        tools.updatePR,
-        'Updates an existing pull request. Can modify title, body, state, base branch, and labels',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('Pull request number to update'),
-            title: z.string().optional().describe('New title for the pull request'),
-            body: z.string().optional().describe('New body/description for the pull request. Can include markdown formatting'),
-            state: z.enum(['open', 'closed']).optional().describe('Change the state of the pull request (open or closed)'),
-            base: z.string().optional().describe('Change the base branch that the PR targets (use with caution)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
+            title: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'title')?.techDescription || ''),
+            body: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'body')?.techDescription || ''),
+            state: z.enum(['open', 'closed']).optional().describe(toolConfig.parameters.find(p => p.name === 'state')?.techDescription || ''),
+            base: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'base')?.techDescription || ''),
         },
         async ({owner, repository, prNumber, title, body, state, base}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -105,7 +106,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to update pull request: ${error}`), tools.updatePR);
+                sendError(transport, new Error(`Failed to update pull request: ${error}`), tools.updatePR.name);
                 return {
                     content: [
                         {

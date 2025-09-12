@@ -70,16 +70,17 @@ const mergePullRequest = async (accessToken: string, owner: string, repository: 
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.mergePR;
     server.tool(
-        tools.mergePR,
-        'Merges a GitHub pull request only if PR is open, not draft, and has no conflicts',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('Pull request number to merge'),
-            mergeMethod: z.enum(['merge', 'squash', 'rebase']).default('merge').describe('How to merge: "merge" (merge commit), "squash" (squash and merge), "rebase" (rebase and merge)'),
-            commitTitle: z.string().optional().describe('Custom title for the merge commit (optional)'),
-            commitMessage: z.string().optional().describe('Custom message for the merge commit (optional)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
+            mergeMethod: z.enum(['merge', 'squash', 'rebase']).default('merge').describe(toolConfig.parameters.find(p => p.name === 'mergeMethod')?.techDescription || ''),
+            commitTitle: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'commitTitle')?.techDescription || ''),
+            commitMessage: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'commitMessage')?.techDescription || ''),
         },
         async ({owner, repository, prNumber, mergeMethod, commitTitle, commitMessage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -100,7 +101,7 @@ export const registerTool = (server: McpServer) => {
                 const errorDetails = error.response?.data ? JSON.stringify(error.response.data, null, 2) : 'No additional error details';
                 const fullError = `Failed to merge pull request: ${error.message}\nAPI Response: ${errorDetails}\nEndpoint: ${apis.mergePullRequestApi(owner, repository, prNumber)}`;
 
-                sendError(transport, new Error(fullError), tools.mergePR);
+                sendError(transport, new Error(fullError), tools.mergePR.name);
                 return {
                     content: [
                         {

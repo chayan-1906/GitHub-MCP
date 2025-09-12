@@ -40,15 +40,16 @@ const getPullRequestReviews = async (accessToken: string, owner: string, reposit
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.getPRReviews;
     server.tool(
-        tools.getPRReviews,
-        'Lists all reviews for a specific GitHub pull request, page by page',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('Pull request number to get reviews for'),
-            perPage: z.number().min(1).max(100).default(30).describe('Maximum number of reviews to return per page (max: 100)'),
-            currentPage: z.number().min(1).default(1).describe('Page number of the results to fetch. Start with 1 and increment until the returned list is empty'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
+            perPage: z.number().min(1).max(100).default(30).describe(toolConfig.parameters.find(p => p.name === 'perPage')?.techDescription || ''),
+            currentPage: z.number().min(1).default(1).describe(toolConfig.parameters.find(p => p.name === 'currentPage')?.techDescription || ''),
         },
         async ({owner, repository, prNumber, perPage, currentPage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -69,7 +70,7 @@ export const registerTool = (server: McpServer) => {
                 const errorDetails = error.response?.data ? JSON.stringify(error.response.data, null, 2) : 'No additional error details';
                 const fullError = `Failed to get pull request reviews: ${error.message}\nAPI Response: ${errorDetails}`;
 
-                sendError(transport, new Error(fullError), tools.getPRReviews);
+                sendError(transport, new Error(fullError), tools.getPRReviews.name);
                 return {
                     content: [
                         {
