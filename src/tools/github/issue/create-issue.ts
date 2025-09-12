@@ -29,15 +29,16 @@ const createIssue = async (accessToken: string, owner: string, repository: strin
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.createIssue;
     server.tool(
-        tools.createIssue,
-        'Creates a new issue in a GitHub repository. Including body and labels is optional',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            issueTitle: z.string().describe('Title of the issue'),
-            body: z.string().optional().describe('Body/description of the issue'),
-            labels: z.array(z.string()).optional().describe('Labels to associate with the issue'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            issueTitle: z.string().describe(toolConfig.parameters.find(p => p.name === 'issueTitle')?.techDescription || ''),
+            body: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'body')?.techDescription || ''),
+            labels: z.array(z.string()).optional().describe(toolConfig.parameters.find(p => p.name === 'labels')?.techDescription || ''),
         },
         async ({owner, repository, issueTitle, body, labels}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -55,7 +56,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to create issue: ${error}`), tools.createIssue);
+                sendError(transport, new Error(`Failed to create issue: ${error}`), tools.createIssue.name);
                 return {
                     content: [
                         {

@@ -30,16 +30,17 @@ const updateIssue = async (accessToken: string, owner: string, repository: strin
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.updateIssue;
     server.tool(
-        tools.updateIssue,
-        'Updates the title, body, and/or labels of an existing GitHub issue. Also works for pull requests since PRs are treated as issues for label management.',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            issueNumber: z.number().describe('Issue number or pull request number to update'),
-            issueTitle: z.string().describe('Title of the issue'),
-            body: z.string().optional().describe('Body/description of the issue'),
-            labels: z.array(z.string()).optional().describe('Labels to associate with the issue or pull request. This replaces all existing labels'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            issueNumber: z.number().describe(toolConfig.parameters.find(p => p.name === 'issueNumber')?.techDescription || ''),
+            issueTitle: z.string().describe(toolConfig.parameters.find(p => p.name === 'issueTitle')?.techDescription || ''),
+            body: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'body')?.techDescription || ''),
+            labels: z.array(z.string()).optional().describe(toolConfig.parameters.find(p => p.name === 'labels')?.techDescription || ''),
         },
         async ({owner, repository, issueNumber, issueTitle, body, labels}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -57,7 +58,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to update issue: ${error}`), tools.updateIssue);
+                sendError(transport, new Error(`Failed to update issue: ${error}`), tools.updateIssue.name);
                 return {
                     content: [
                         {

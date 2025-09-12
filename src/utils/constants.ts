@@ -561,13 +561,237 @@ const tools = {
     },
 
     /** issues */
-    listIssues: 'list-issues',
-    getIssueDetails: 'get-issue-details',
-    getIssueComments: 'get-issue-comments',
-    createIssue: 'create-issue',
-    updateIssue: 'update-issue',
-    updateIssueState: 'update-issue-state',
-    assignIssue: 'assign-issue',
+    listIssues: {
+        name: 'list-issues',
+        category: 'Issues',
+        techDescription: 'Fetches issues from a GitHub repository, page by page. Calls repeatedly with increasing currentPage until result is empty',
+        userFriendlyDescription: 'List repository issues with filtering and pagination',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'state',
+                techDescription: 'Issue state to filter by (open, closed, all). Default: open',
+                userFriendlyDescription: 'Issue state filter (open/closed/all)',
+                optional: true,
+            },
+            {
+                name: 'includePRs',
+                techDescription: 'Include pull requests in results. Default: false (excludes PRs)',
+                userFriendlyDescription: 'Include pull requests in results',
+                optional: true,
+            },
+            {
+                name: 'sort',
+                techDescription: 'Sort issues by created, updated, or comments. Default: created',
+                userFriendlyDescription: 'Sort by (created/updated/comments)',
+                optional: true,
+            },
+            {
+                name: 'direction',
+                techDescription: 'Sort direction: asc (oldest first) or desc (newest first). Default: desc',
+                userFriendlyDescription: 'Sort direction (asc/desc)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number of the results to fetch. Start with 1 and increment until the returned list is empty',
+                userFriendlyDescription: 'Page number for pagination',
+                optional: true,
+            },
+            {
+                name: 'perPage',
+                techDescription: 'Maximum number of issues to return per page (max: 100)',
+                userFriendlyDescription: 'Issues per page (max: 100)',
+                optional: true,
+            },
+        ],
+    },
+    getIssueDetails: {
+        name: 'get-issue-details',
+        category: 'Issues',
+        techDescription: 'Fetches detailed information about a specific GitHub issue by issue number',
+        userFriendlyDescription: 'Get detailed information about a specific issue',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'issueNumber',
+                techDescription: 'The issue number to get details for',
+                userFriendlyDescription: 'Issue number',
+            },
+        ],
+    },
+    getIssueComments: {
+        name: 'get-issue-comments',
+        category: 'Issues',
+        techDescription: 'Fetches all comments for a GitHub issue, including the original issue, all comments, and participant details. Automatically fetches all pages of comments',
+        userFriendlyDescription: 'Get all comments and participant details for an issue',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'issueNumber',
+                techDescription: 'The issue number to get the comments for',
+                userFriendlyDescription: 'Issue number',
+            },
+        ],
+    },
+    createIssue: {
+        name: 'create-issue',
+        category: 'Issues',
+        techDescription: 'Creates a new issue in a GitHub repository. Including body and labels is optional',
+        userFriendlyDescription: 'Create a new issue with optional description and labels',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'issueTitle',
+                techDescription: 'Title of the issue',
+                userFriendlyDescription: 'Issue title',
+            },
+            {
+                name: 'body',
+                techDescription: 'Body/description of the issue',
+                userFriendlyDescription: 'Issue description (optional)',
+                optional: true,
+            },
+            {
+                name: 'labels',
+                techDescription: 'Labels to associate with the issue',
+                userFriendlyDescription: 'Issue labels (optional)',
+                optional: true,
+            },
+        ],
+    },
+    updateIssue: {
+        name: 'update-issue',
+        category: 'Issues',
+        techDescription: 'Updates the title, body, and/or labels of an existing GitHub issue. Also works for pull requests since PRs are treated as issues for label management.',
+        userFriendlyDescription: 'Update an existing issue\'s title, description, or labels',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'issueNumber',
+                techDescription: 'Issue number or pull request number to update',
+                userFriendlyDescription: 'Issue number',
+            },
+            {
+                name: 'issueTitle',
+                techDescription: 'Title of the issue',
+                userFriendlyDescription: 'New issue title',
+            },
+            {
+                name: 'body',
+                techDescription: 'Body/description of the issue',
+                userFriendlyDescription: 'New issue description (optional)',
+                optional: true,
+            },
+            {
+                name: 'labels',
+                techDescription: 'Labels to associate with the issue or pull request. This replaces all existing labels',
+                userFriendlyDescription: 'Issue labels (replaces existing)',
+                optional: true,
+            },
+        ],
+    },
+    updateIssueState: {
+        name: 'update-issue-state',
+        category: 'Issues',
+        techDescription: 'Updates the state of a GitHub issue (open or closed) by issue number',
+        userFriendlyDescription: 'Open or close an issue',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'issueNumber',
+                techDescription: 'Issue number to close',
+                userFriendlyDescription: 'Issue number',
+            },
+            {
+                name: 'state',
+                techDescription: 'Set to \'open\' to reopen or \'closed\' to close the issue',
+                userFriendlyDescription: 'New state (open/closed)',
+            },
+        ],
+    },
+    assignIssue: {
+        name: 'assign-issue',
+        category: 'Issues',
+        techDescription: 'Assigns one or more GitHub users to a GitHub issue',
+        userFriendlyDescription: 'Assign users to an issue',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+            },
+            {
+                name: 'issueNumber',
+                techDescription: 'The issue number to assign users to',
+                userFriendlyDescription: 'Issue number',
+            },
+            {
+                name: 'assignees',
+                techDescription: 'List of GitHub usernames to assign to the issue',
+                userFriendlyDescription: 'Usernames to assign',
+            },
+        ],
+    },
 
     /** pull requests */
     listAllPRs: 'list-all-pull-requests',
