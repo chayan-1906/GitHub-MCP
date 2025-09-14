@@ -207,6 +207,30 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 
 ## 📋 Changelog
 
+### v1.2.0 (2025-09-14)
+
+#### ✨ New Features
+
+- **Interactive Homepage**: Complete tool browser at `http://localhost:20253/` showcasing all 44+ GitHub MCP tools
+- **Tool Categorization**: Organized tools by categories (Profile, Repositories, Branches, Issues, PRs, etc.) with
+  modern glassmorphism UI
+- **Statistics Dashboard**: Real-time stats showing tool counts, categories, and flexibility metrics
+- **Enhanced Authentication Flow**: Redesigned success page with improved GitHub branding and mobile responsiveness
+
+#### 🔄 Changes
+
+- **Tool Architecture**: Refactored tool constants to include structured metadata and categorization
+- **Parameter Descriptions**: Enhanced user-friendly descriptions for better tool understanding
+- **Code Organization**: Added dedicated tool helpers (`toolHelpers.ts`) for improved maintainability
+- **Renamed tools**: Renamed get-all-collaborators → list-collaborators, list-files-in-repository → repository-tree,
+  get-all-releases → list-releases for consistency
+
+#### 📊 Statistics
+
+- **Total Tools**: 44+ (organized across 9 categories)
+- **New Routes**: Homepage (`/`) with comprehensive tool browser
+- **UI/UX**: Modern responsive design with glassmorphism styling
+
 ### v1.1.0 (2025-07-29)
 
 #### ✨ New Features
