@@ -39,18 +39,19 @@ const listIssues = async (accessToken: string, owner: string, repository: string
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.listIssues;
     server.tool(
-        tools.listIssues,
-        'Fetches issues from a GitHub repository, page by page. Calls repeatedly with increasing currentPage until result is empty',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            state: z.enum(['open', 'closed', 'all']).default('open').describe('Issue state to filter by (open, closed, all). Default: open'),
-            includePRs: z.boolean().default(false).describe('Include pull requests in results. Default: false (excludes PRs)'),
-            sort: z.enum(['created', 'updated', 'comments']).default('created').describe('Sort issues by created, updated, or comments. Default: created'),
-            direction: z.enum(['asc', 'desc']).default('desc').describe('Sort direction: asc (oldest first) or desc (newest first). Default: desc'),
-            currentPage: z.number().min(1).default(1).describe('Page number of the results to fetch. Start with 1 and increment until the returned list is empty'),
-            perPage: z.number().min(1).max(100).default(30).describe('Maximum number of issues to return per page (max: 100)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            state: z.enum(['open', 'closed', 'all']).default('open').describe(toolConfig.parameters.find(p => p.name === 'state')?.techDescription || ''),
+            includePRs: z.boolean().default(false).describe(toolConfig.parameters.find(p => p.name === 'includePRs')?.techDescription || ''),
+            sort: z.enum(['created', 'updated', 'comments']).default('created').describe(toolConfig.parameters.find(p => p.name === 'sort')?.techDescription || ''),
+            direction: z.enum(['asc', 'desc']).default('desc').describe(toolConfig.parameters.find(p => p.name === 'direction')?.techDescription || ''),
+            currentPage: z.number().min(1).default(1).describe(toolConfig.parameters.find(p => p.name === 'currentPage')?.techDescription || ''),
+            perPage: z.number().min(1).max(100).default(30).describe(toolConfig.parameters.find(p => p.name === 'perPage')?.techDescription || ''),
         },
         async ({owner, repository, state, includePRs, sort, direction, currentPage, perPage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -68,7 +69,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch issues: ${error}`), tools.listIssues);
+                sendError(transport, new Error(`Failed to fetch issues: ${error}`), tools.listIssues.name);
                 return {
                     content: [
                         {

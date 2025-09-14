@@ -74,17 +74,18 @@ const createPullRequest = async (accessToken: string, owner: string, repository:
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.createPR;
     server.tool(
-        tools.createPR,
-        'Creates a new pull request in a GitHub repository. Compares changes between two branches and creates a PR for review',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            title: z.string().describe('Title of the pull request'),
-            head: z.string().describe('The name of the branch where your changes are implemented (source branch)'),
-            base: z.string().describe('The name of the branch you want the changes pulled into (target branch)'),
-            body: z.string().optional().describe('Body/description of the pull request. Can include markdown formatting'),
-            draft: z.boolean().optional().describe('True to create a draft pull request (default: false). Draft PRs cannot be merged until marked as ready for review'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            title: z.string().describe(toolConfig.parameters.find(p => p.name === 'title')?.techDescription || ''),
+            head: z.string().describe(toolConfig.parameters.find(p => p.name === 'head')?.techDescription || ''),
+            base: z.string().describe(toolConfig.parameters.find(p => p.name === 'base')?.techDescription || ''),
+            body: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'body')?.techDescription || ''),
+            draft: z.boolean().optional().describe(toolConfig.parameters.find(p => p.name === 'draft')?.techDescription || ''),
         },
         async ({owner, repository, title, head, base, body, draft}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -102,7 +103,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to create pull request: ${error}`), tools.createPR);
+                sendError(transport, new Error(`Failed to create pull request: ${error}`), tools.createPR.name);
                 return {
                     content: [
                         {

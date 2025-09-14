@@ -17,13 +17,14 @@ const getCommitModifications = async (accessToken: string, owner: string, reposi
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.getCommitModifications;
     server.tool(
-        tools.getCommitModifications,
-        'Returns the list of files modified in a specific GitHub commit',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            commitSha: z.string().describe('Commit SHA to inspect'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            commitSha: z.string().describe(toolConfig.parameters.find(p => p.name === 'commitSha')?.techDescription || ''),
         },
         async ({owner, repository, commitSha}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -41,7 +42,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to get commit modifications: ${error}`), tools.getCommitModifications);
+                sendError(transport, new Error(`Failed to get commit modifications: ${error}`), tools.getCommitModifications.name);
                 return {
                     content: [
                         {

@@ -163,13 +163,14 @@ const getIssueComments = async (accessToken: string, owner: string, repository: 
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.getIssueComments;
     server.tool(
-        tools.getIssueComments,
-        'Fetches all comments for a GitHub issue, including the original issue, all comments, and participant details. Automatically fetches all pages of comments',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            issueNumber: z.number().min(1).describe('The issue number to get the comments for'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            issueNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'issueNumber')?.techDescription || ''),
         },
         async ({owner, repository, issueNumber}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -187,7 +188,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch issue comments: ${error}`), tools.getIssueComments);
+                sendError(transport, new Error(`Failed to fetch issue comments: ${error}`), tools.getIssueComments.name);
                 return {
                     content: [
                         {

@@ -35,7 +35,7 @@ import { registerTool as updateIssue } from '../tools/github/issue/update-issue'
 import { registerTool as updateIssueState } from '../tools/github/issue/update-issue-state';
 import { registerTool as assignIssue } from '../tools/github/issue/assign-issue';
 
-import { registerTool as listAllPRs } from '../tools/github/pull-request/list-all-prs';
+import { registerTool as listPRs } from '../tools/github/pull-request/list-prs';
 import { registerTool as getPRDetails } from '../tools/github/pull-request/get-pull-request-details';
 import { registerTool as createPR } from '../tools/github/pull-request/create-pull-request';
 import { registerTool as updatePR } from '../tools/github/pull-request/update-pull-request';
@@ -90,7 +90,7 @@ async function setupMcpTools(server: McpServer) {
     updateIssueState(server);
     assignIssue(server);
 
-    listAllPRs(server);
+    listPRs(server);
     getPRDetails(server);
     createPR(server);
     updatePR(server);

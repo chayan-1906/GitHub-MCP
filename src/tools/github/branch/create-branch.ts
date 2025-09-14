@@ -22,15 +22,16 @@ const createBranch = async (accessToken: string, owner: string, repository: stri
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.createBranch;
     server.tool(
-        tools.createBranch,
-        'Creates a new branch from a given commit SHA (usually the latest commit of an existing branch)',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            newBranch: z.string().describe('Name of the branch to create'),
-            sha: z.string().describe('Commit SHA that the new branch should point to (base commit)'),
-            fromBranch: z.string().optional().describe('Source branch name (optional, informational only)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            newBranch: z.string().describe(toolConfig.parameters.find(p => p.name === 'newBranch')?.techDescription || ''),
+            sha: z.string().describe(toolConfig.parameters.find(p => p.name === 'sha')?.techDescription || ''),
+            fromBranch: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'fromBranch')?.techDescription || ''),
         },
         async ({owner, repository, newBranch, sha, fromBranch}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -48,7 +49,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to create branch: ${error}`), tools.createBranch);
+                sendError(transport, new Error(`Failed to create branch: ${error}`), tools.createBranch.name);
                 return {
                     content: [
                         {

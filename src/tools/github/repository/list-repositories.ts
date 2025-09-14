@@ -22,12 +22,13 @@ const listRepositories = async (accessToken: string, perPage: number, currentPag
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.listRepositories;
     server.tool(
-        tools.listRepositories,
-        'Fetches repositories user has access to. Calls repeatedly with increasing currentPage until result is empty',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            perPage: z.number().min(1).max(60).default(30).describe('Repositories per page (max: 60)'),
-            currentPage: z.number().min(1).default(1).describe('Page number'),
+            perPage: z.number().min(1).max(60).default(30).describe(toolConfig.parameters.find(p => p.name === 'perPage')?.techDescription || ''),
+            currentPage: z.number().min(1).default(1).describe(toolConfig.parameters.find(p => p.name === 'currentPage')?.techDescription || ''),
         },
         async ({perPage, currentPage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -45,7 +46,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to list repositories: ${error}`), tools.listRepositories);
+                sendError(transport, new Error(`Failed to list repositories: ${error}`), tools.listRepositories.name);
                 return {
                     content: [
                         {

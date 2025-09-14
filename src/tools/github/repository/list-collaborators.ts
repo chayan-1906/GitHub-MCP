@@ -33,12 +33,13 @@ const listCollaborators = async (accessToken: string, owner: string, repository:
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.listCollaborators;
     server.tool(
-        tools.listCollaborators,
-        'Returns a combined list of accepted collaborators and pending invitations for a GitHub Repository, each marked with their status',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
         },
         async ({owner, repository}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -56,7 +57,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch collaborators: ${error}`), tools.listCollaborators);
+                sendError(transport, new Error(`Failed to fetch collaborators: ${error}`), tools.listCollaborators.name);
                 return {
                     content: [
                         {

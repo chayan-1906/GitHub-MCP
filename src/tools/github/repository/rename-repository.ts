@@ -16,13 +16,14 @@ const renameRepository = async (accessToken: string, owner: string, oldName: str
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.renameRepository;
     server.tool(
-        tools.renameRepository,
-        'Renames a GitHub repository owned by the authenticated user',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            oldName: z.string().describe('Current name of the repository'),
-            newName: z.string().describe('New name to give to the repository'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            oldName: z.string().describe(toolConfig.parameters.find(p => p.name === 'oldName')?.techDescription || ''),
+            newName: z.string().describe(toolConfig.parameters.find(p => p.name === 'newName')?.techDescription || ''),
         },
         async ({owner, oldName, newName}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -40,7 +41,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to rename repository: ${error}`), tools.renameRepository);
+                sendError(transport, new Error(`Failed to rename repository: ${error}`), tools.renameRepository.name);
                 return {
                     content: [
                         {

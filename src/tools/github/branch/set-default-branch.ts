@@ -16,13 +16,14 @@ const setDefaultBranch = async (accessToken: string, owner: string, repository: 
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.setDefaultBranch;
     server.tool(
-        tools.setDefaultBranch,
-        'Sets the default branch in a GitHub repository',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            branch: z.string().describe('The branch name to set as default for the repository'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            branch: z.string().describe(toolConfig.parameters.find(p => p.name === 'branch')?.techDescription || ''),
         },
         async ({owner, repository, branch}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -40,7 +41,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to set default branch: ${error}`), tools.setDefaultBranch);
+                sendError(transport, new Error(`Failed to set default branch: ${error}`), tools.setDefaultBranch.name);
                 return {
                     content: [
                         {

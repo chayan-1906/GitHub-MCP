@@ -21,3 +21,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# AI
+.claude

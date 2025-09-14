@@ -21,14 +21,15 @@ const updatePullRequestState = async (accessToken: string, owner: string, reposi
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.updatePRState;
     server.tool(
-        tools.updatePRState,
-        'Updates the state of a GitHub pull request - can close or reopen PRs by PR number',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('Pull request number to update'),
-            state: z.enum(['open', 'closed']).describe("Set to 'open' to reopen or 'closed' to close the pull request"),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
+            state: z.enum(['open', 'closed']).describe(toolConfig.parameters.find(p => p.name === 'state')?.techDescription || ''),
         },
         async ({owner, repository, prNumber, state}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -46,7 +47,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to update the pull request state: ${error}`), tools.updatePRState);
+                sendError(transport, new Error(`Failed to update the pull request state: ${error}`), tools.updatePRState.name);
                 return {
                     content: [
                         {

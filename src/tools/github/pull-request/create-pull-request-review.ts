@@ -39,16 +39,17 @@ const createPullRequestReview = async (accessToken: string, owner: string, repos
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.createPRReview;
     server.tool(
-        tools.createPRReview,
-        'Creates a review for a GitHub pull request. Can approve, request changes, or add comments',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('Pull request number to review'),
-            event: z.enum(['APPROVE', 'REQUEST_CHANGES', 'COMMENT', 'PENDING']).optional().describe('Review action: APPROVE (approve PR), REQUEST_CHANGES (request changes), COMMENT (general comment), PENDING (create pending review) or omit for pending'),
-            body: z.string().optional().describe('Review comment text. Required for REQUEST_CHANGES and COMMENT events'),
-            commitId: z.string().optional().describe('Specific commit SHA to review (optional, defaults to latest commit)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
+            event: z.enum(['APPROVE', 'REQUEST_CHANGES', 'COMMENT', 'PENDING']).optional().describe(toolConfig.parameters.find(p => p.name === 'event')?.techDescription || ''),
+            body: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'body')?.techDescription || ''),
+            commitId: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'commitId')?.techDescription || ''),
         },
         async ({owner, repository, prNumber, event, body, commitId}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -80,7 +81,7 @@ export const registerTool = (server: McpServer) => {
                 const errorDetails = error.response?.data ? JSON.stringify(error.response.data, null, 2) : 'No additional error details';
                 const fullError = `Failed to create pull request review: ${error.message}\nAPI Response: ${errorDetails}`;
 
-                sendError(transport, new Error(fullError), tools.createPRReview);
+                sendError(transport, new Error(fullError), tools.createPRReview.name);
                 return {
                     content: [
                         {

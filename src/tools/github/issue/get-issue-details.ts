@@ -62,13 +62,14 @@ const getIssueDetails = async (accessToken: string, owner: string, repository: s
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.getIssueDetails;
     server.tool(
-        tools.getIssueDetails,
-        'Fetches detailed information about a specific GitHub issue by issue number',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            issueNumber: z.number().min(1).describe('The issue number to get details for'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            issueNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'issueNumber')?.techDescription || ''),
         },
         async ({owner, repository, issueNumber}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -86,7 +87,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch issue details: ${error}`), tools.getIssueDetails);
+                sendError(transport, new Error(`Failed to fetch issue details: ${error}`), tools.getIssueDetails.name);
                 return {
                     content: [
                         {

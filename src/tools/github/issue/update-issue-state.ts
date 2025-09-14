@@ -21,14 +21,15 @@ const updateIssueState = async (accessToken: string, owner: string, repository: 
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.updateIssueState;
     server.tool(
-        tools.updateIssueState,
-        'Updates the state of a GitHub issue (open or closed) by issue number',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            issueNumber: z.number().describe('Issue number to close'),
-            state: z.enum(['open', 'closed']).describe("Set to 'open' to reopen or 'closed' to close the issue"),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            issueNumber: z.number().describe(toolConfig.parameters.find(p => p.name === 'issueNumber')?.techDescription || ''),
+            state: z.enum(['open', 'closed']).describe(toolConfig.parameters.find(p => p.name === 'state')?.techDescription || ''),
         },
         async ({owner, repository, issueNumber, state}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -46,7 +47,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to update the issue state: ${error}`), tools.updateIssueState);
+                sendError(transport, new Error(`Failed to update the issue state: ${error}`), tools.updateIssueState.name);
                 return {
                     content: [
                         {

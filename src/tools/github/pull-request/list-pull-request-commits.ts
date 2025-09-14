@@ -18,15 +18,16 @@ const listPullRequestCommits = async (accessToken: string, owner: string, reposi
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.listPRCommits;
     server.tool(
-        tools.listPRCommits,
-        'Fetches commits in a specific GitHub pull request, page by page',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('The pull request number to list commits from'),
-            perPage: z.number().min(1).max(100).default(30).describe('Maximum number of commits to return per page (max: 100)'),
-            currentPage: z.number().min(1).default(1).describe('Page number of the results to fetch. Start with 1 and increment until the returned list is empty'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
+            perPage: z.number().min(1).max(100).default(30).describe(toolConfig.parameters.find(p => p.name === 'perPage')?.techDescription || ''),
+            currentPage: z.number().min(1).default(1).describe(toolConfig.parameters.find(p => p.name === 'currentPage')?.techDescription || ''),
         },
         async ({owner, repository, prNumber, perPage, currentPage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -44,7 +45,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to list pull request commits: ${error}`), tools.listPRCommits);
+                sendError(transport, new Error(`Failed to list pull request commits: ${error}`), tools.listPRCommits.name);
                 return {
                     content: [
                         {

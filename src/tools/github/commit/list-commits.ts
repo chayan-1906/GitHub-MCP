@@ -21,15 +21,16 @@ const listCommits = async (accessToken: string, owner: string, repository: strin
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.listCommits;
     server.tool(
-        tools.listCommits,
-        'Fetches commits in a branch of a GitHub repository, page by page',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            branch: z.string().describe('The name of the branch to list commits from'),
-            perPage: z.number().min(1).max(100).default(30).describe('Maximum number of repositories to return per page (max: 100)'),
-            currentPage: z.number().min(1).default(1).describe('Page number of the results to fetch. Start with 1 and increment until the returned list is empty'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            branch: z.string().describe(toolConfig.parameters.find(p => p.name === 'branch')?.techDescription || ''),
+            perPage: z.number().min(1).max(100).default(30).describe(toolConfig.parameters.find(p => p.name === 'perPage')?.techDescription || ''),
+            currentPage: z.number().min(1).default(1).describe(toolConfig.parameters.find(p => p.name === 'currentPage')?.techDescription || ''),
         },
         async ({owner, repository, branch, perPage, currentPage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -47,7 +48,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to list commits: ${error}`), tools.listCommits);
+                sendError(transport, new Error(`Failed to list commits: ${error}`), tools.listCommits.name);
                 return {
                     content: [
                         {

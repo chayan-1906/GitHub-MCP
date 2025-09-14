@@ -66,13 +66,14 @@ const getPullRequestDetails = async (accessToken: string, owner: string, reposit
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.getPRDetails;
     server.tool(
-        tools.getPRDetails,
-        'Fetches detailed information about a specific GitHub pull request by PR number',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('The pull request number to get details for'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
         },
         async ({owner, repository, prNumber}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -90,7 +91,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch pull request details: ${error}`), tools.getPRDetails);
+                sendError(transport, new Error(`Failed to fetch pull request details: ${error}`), tools.getPRDetails.name);
                 return {
                     content: [
                         {

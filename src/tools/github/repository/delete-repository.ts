@@ -12,12 +12,13 @@ const deleteRepository = async (accessToken: string, owner: string, repository: 
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.deleteRepository;
     server.tool(
-        tools.deleteRepository,
-        'Deletes a GitHub repository owned by the authenticated user. This action is irreversible',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
         },
         async ({owner, repository}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -35,7 +36,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to delete repository: ${error}`), tools.deleteRepository);
+                sendError(transport, new Error(`Failed to delete repository: ${error}`), tools.deleteRepository.name);
                 return {
                     content: [
                         {

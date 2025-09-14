@@ -8,7 +8,7 @@ import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
-const listAllPRs = async (accessToken: string, owner: string, repository: string, state: string, perPage: number, currentPage: number, sort: string, direction: string) => {
+const listPrs = async (accessToken: string, owner: string, repository: string, state: string, perPage: number, currentPage: number, sort: string, direction: string) => {
     const response = await axios.get<Partial<PullRequest>[]>(apis.listPullRequestsApi(owner, repository, state, perPage, currentPage, sort, direction), buildHeader(accessToken));
 
     return response.data.map(({
@@ -62,24 +62,25 @@ const listAllPRs = async (accessToken: string, owner: string, repository: string
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.listAllPRs;
     server.tool(
-        tools.listAllPRs,
-        'Fetches all pull requests from a GitHub repository, page by page. Filter by state and sort options available',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            state: z.enum(['open', 'closed', 'all']).default('open').describe('PR state to filter by (open, closed, all). Default: open'),
-            sort: z.enum(['created', 'updated', 'popularity', 'long-running']).default('created').describe('Sort PRs by created, updated, popularity, or long-running. Default: created'),
-            direction: z.enum(['asc', 'desc']).default('desc').describe('Sort direction: asc (oldest first) or desc (newest first). Default: desc'),
-            currentPage: z.number().min(1).default(1).describe('Page number of the results to fetch. Start with 1 and increment until the returned list is empty'),
-            perPage: z.number().min(1).max(100).default(30).describe('Maximum number of PRs to return per page (max: 100)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            state: z.enum(['open', 'closed', 'all']).default('open').describe(toolConfig.parameters.find(p => p.name === 'state')?.techDescription || ''),
+            sort: z.enum(['created', 'updated', 'popularity', 'long-running']).default('created').describe(toolConfig.parameters.find(p => p.name === 'sort')?.techDescription || ''),
+            direction: z.enum(['asc', 'desc']).default('desc').describe(toolConfig.parameters.find(p => p.name === 'direction')?.techDescription || ''),
+            currentPage: z.number().min(1).default(1).describe(toolConfig.parameters.find(p => p.name === 'currentPage')?.techDescription || ''),
+            perPage: z.number().min(1).max(100).default(30).describe(toolConfig.parameters.find(p => p.name === 'perPage')?.techDescription || ''),
         },
         async ({owner, repository, state, sort, direction, currentPage, perPage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
             if (!accessToken) return {content};
 
             try {
-                const pullRequests = await listAllPRs(accessToken, owner, repository, state, perPage, currentPage, sort, direction);
+                const pullRequests = await listPrs(accessToken, owner, repository, state, perPage, currentPage, sort, direction);
 
                 return {
                     content: [
@@ -90,7 +91,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to fetch pull requests: ${error}`), tools.listAllPRs);
+                sendError(transport, new Error(`Failed to fetch pull requests: ${error}`), tools.listAllPRs.name);
                 return {
                     content: [
                         {

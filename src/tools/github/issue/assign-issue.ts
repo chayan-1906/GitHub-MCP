@@ -21,14 +21,15 @@ const assignIssue = async (accessToken: string, owner: string, repository: strin
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.assignIssue;
     server.tool(
-        tools.assignIssue,
-        'Assigns one or more GitHub users to a GitHub issue',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            issueNumber: z.number().describe('The issue number to assign users to'),
-            assignees: z.array(z.string()).nonempty().describe('List of GitHub usernames to assign to the issue'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            issueNumber: z.number().describe(toolConfig.parameters.find(p => p.name === 'issueNumber')?.techDescription || ''),
+            assignees: z.array(z.string()).nonempty().describe(toolConfig.parameters.find(p => p.name === 'assignees')?.techDescription || ''),
         },
         async ({owner, repository, issueNumber, assignees}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -46,7 +47,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to assign issue: ${error}`), tools.assignIssue);
+                sendError(transport, new Error(`Failed to assign issue: ${error}`), tools.assignIssue.name);
                 return {
                     content: [
                         {

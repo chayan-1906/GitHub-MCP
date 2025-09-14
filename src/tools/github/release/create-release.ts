@@ -46,18 +46,19 @@ const createRelease = async (accessToken: string, owner: string, repository: str
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.createRelease;
     server.tool(
-        tools.createRelease,
-        'Creates a GitHub release from an existing tag or creates a new tag and release',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            tagName: z.string().describe('The name of the tag (e.g., "v1.0.0")'),
-            name: z.string().optional().describe('The name of the release (defaults to tag name)'),
-            body: z.string().optional().describe('Text describing the contents of the tag (release notes)'),
-            draft: z.boolean().optional().describe('True to create a draft (unpublished) release, false to create a published one (default: false)'),
-            prerelease: z.boolean().optional().describe('True to identify the release as a prerelease, false to identify as full release (default: false)'),
-            targetCommitish: z.string().optional().describe('Specifies the commitish value that determines where the Git tag is created from (default: repository default branch)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            tagName: z.string().describe(toolConfig.parameters.find(p => p.name === 'tagName')?.techDescription || ''),
+            name: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'name')?.techDescription || ''),
+            body: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'body')?.techDescription || ''),
+            draft: z.boolean().optional().describe(toolConfig.parameters.find(p => p.name === 'draft')?.techDescription || ''),
+            prerelease: z.boolean().optional().describe(toolConfig.parameters.find(p => p.name === 'prerelease')?.techDescription || ''),
+            targetCommitish: z.string().optional().describe(toolConfig.parameters.find(p => p.name === 'targetCommitish')?.techDescription || ''),
         },
         async ({owner, repository, tagName, name, body, draft, prerelease, targetCommitish}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -75,7 +76,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to create release: ${error}`), tools.createRelease);
+                sendError(transport, new Error(`Failed to create release: ${error}`), tools.createRelease.name);
                 return {
                     content: [
                         {

@@ -41,14 +41,15 @@ const listReleases = async (accessToken: string, owner: string, repository: stri
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.listReleases;
     server.tool(
-        tools.listReleases,
-        'Fetches all releases in a GitHub repository, page by page',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            perPage: z.number().min(1).max(100).default(30).describe('Maximum number of releases to return per page (max: 100)'),
-            currentPage: z.number().min(1).default(1).describe('Page number of the results to fetch. Start with 1 and increment until the returned list is empty'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            perPage: z.number().min(1).max(100).default(30).describe(toolConfig.parameters.find(p => p.name === 'perPage')?.techDescription || ''),
+            currentPage: z.number().min(1).default(1).describe(toolConfig.parameters.find(p => p.name === 'currentPage')?.techDescription || ''),
         },
         async ({owner, repository, perPage, currentPage}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -66,7 +67,7 @@ export const registerTool = (server: McpServer) => {
                     ],
                 };
             } catch (error: any) {
-                sendError(transport, new Error(`Failed to get all releases: ${error}`), tools.listReleases);
+                sendError(transport, new Error(`Failed to get all releases: ${error}`), tools.listReleases.name);
                 return {
                     content: [
                         {

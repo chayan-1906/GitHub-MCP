@@ -33,15 +33,16 @@ const requestPullRequestReview = async (accessToken: string, owner: string, repo
 }
 
 export const registerTool = (server: McpServer) => {
+    const toolConfig = tools.requestPRReview;
     server.tool(
-        tools.requestPRReview,
-        'Requests reviews from users and/or teams for a GitHub pull request',
+        toolConfig.name,
+        toolConfig.techDescription,
         {
-            owner: z.string().describe('GitHub username or organization that owns the repository'),
-            repository: z.string().describe('The name of the GitHub Repository'),
-            prNumber: z.number().min(1).describe('Pull request number to request reviews for'),
-            reviewers: z.array(z.string()).optional().describe('Array of GitHub usernames to request reviews from'),
-            teamReviewers: z.array(z.string()).optional().describe('Array of team slugs to request reviews from (for organization repos)'),
+            owner: z.string().describe(toolConfig.parameters.find(p => p.name === 'owner')?.techDescription || ''),
+            repository: z.string().describe(toolConfig.parameters.find(p => p.name === 'repository')?.techDescription || ''),
+            prNumber: z.number().min(1).describe(toolConfig.parameters.find(p => p.name === 'prNumber')?.techDescription || ''),
+            reviewers: z.array(z.string()).optional().describe(toolConfig.parameters.find(p => p.name === 'reviewers')?.techDescription || ''),
+            teamReviewers: z.array(z.string()).optional().describe(toolConfig.parameters.find(p => p.name === 'teamReviewers')?.techDescription || ''),
         },
         async ({owner, repository, prNumber, reviewers, teamReviewers}) => {
             const {accessToken, response: {content}} = await getGitHubAccessToken();
@@ -73,7 +74,7 @@ export const registerTool = (server: McpServer) => {
                 const errorDetails = error.response?.data ? JSON.stringify(error.response.data, null, 2) : 'No additional error details';
                 const fullError = `Failed to request pull request review: ${error.message}\nAPI Response: ${errorDetails}`;
 
-                sendError(transport, new Error(fullError), tools.requestPRReview);
+                sendError(transport, new Error(fullError), tools.requestPRReview.name);
                 return {
                     content: [
                         {
