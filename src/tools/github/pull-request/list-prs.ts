@@ -8,7 +8,7 @@ import { tools } from "../../../utils/constants";
 import { apis, buildHeader } from "../../../utils/apis";
 import { getGitHubAccessToken } from "../../../services/OAuth";
 
-const listAllPRs = async (accessToken: string, owner: string, repository: string, state: string, perPage: number, currentPage: number, sort: string, direction: string) => {
+const listPrs = async (accessToken: string, owner: string, repository: string, state: string, perPage: number, currentPage: number, sort: string, direction: string) => {
     const response = await axios.get<Partial<PullRequest>[]>(apis.listPullRequestsApi(owner, repository, state, perPage, currentPage, sort, direction), buildHeader(accessToken));
 
     return response.data.map(({
@@ -80,7 +80,7 @@ export const registerTool = (server: McpServer) => {
             if (!accessToken) return {content};
 
             try {
-                const pullRequests = await listAllPRs(accessToken, owner, repository, state, perPage, currentPage, sort, direction);
+                const pullRequests = await listPrs(accessToken, owner, repository, state, perPage, currentPage, sort, direction);
 
                 return {
                     content: [

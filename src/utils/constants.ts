@@ -135,7 +135,7 @@ const tools = {
         name: 'delete-repository',
         category: 'Repositories',
         techDescription: 'Deletes a GitHub repository owned by the authenticated user. This action is irreversible',
-        userFriendlyDescription: 'Permanently delete one of your repositories',
+        userFriendlyDescription: 'Permanently deletes repository',
         parameters: [
             {
                 name: 'owner',
@@ -795,7 +795,7 @@ const tools = {
 
     /** pull requests */
     listAllPRs: {
-        name: 'list-all-pull-requests',
+        name: 'list-pull-requests',
         category: 'Pull Requests',
         techDescription: 'Fetches all pull requests from a GitHub repository, page by page. Filter by state and sort options available',
         userFriendlyDescription: 'List all pull requests with filtering and pagination',
