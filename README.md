@@ -50,15 +50,23 @@ Download from [https://claude.ai/download](https://claude.ai/download)
 2. Do NOT delete the executable after running
 3. If you rename, move, or modify the executable, you must run it again (Step 3) to restart it properly
 
-#### 4. (Optional) Stop the Server:
+#### 4. 🌐 Explore Available Tools (Optional)
+
+Visit the homepage to browse all available tools:
+
+- **Homepage**: **http://localhost:20253/**
+- See all 44+ GitHub tools with user-friendly descriptions
+- Great for understanding what the server can do
+
+#### 5. (Optional) Stop the Server:
 
 You can stop the server if needed (launching Claude will automatically stop the currently running instance/port)
 
-#### 5. Launch Claude Desktop
+#### 6. Launch Claude Desktop
 
 Start Claude Desktop application
 
-#### 6. Start Asking Tasks:
+#### 7. Start Asking Tasks:
 
 Claude will now recognize the available tools with descriptions
 
@@ -102,14 +110,23 @@ Replace placeholder values with your actual GitHub OAuth app credentials and Mon
 openssl rand -hex 32
 ```
 
-#### 4. 🔧 Switch GitHub Accounts
+#### 4. 🌐 Explore Available Tools
+
+Visit the homepage to see all available tools with user-friendly descriptions:
+
+- **Homepage**: **http://localhost:20253/**
+- Browse all 44+ GitHub tools organized by category
+- View user-friendly descriptions and use cases
+- Perfect for understanding the server's capabilities
+
+#### 5. 🔧 Switch GitHub Accounts
 
 To authenticate with a different GitHub account or refresh your session:
 
 - Visit: **http://localhost:20253/auth**
 - Complete OAuth flow with desired GitHub account
 
-#### 5. 🧪 Run the MCP Server
+#### 6. 🧪 Run the MCP Server
 
 ```bash
 npm run dev
