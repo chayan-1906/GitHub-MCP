@@ -6,13 +6,15 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { addOrUpdateMCPServer, freezePortOnQuit, killPortOnLaunch, printInConsole, setEntry } from "mcp-utils/utils";
 import { PORT } from "./config/config";
 import AuthRoutes from "./routes/AuthRoutes";
+import SystemRoutes from "./routes/SystemRoutes";
 import { setupMcpTools } from "./controllers/ToolsController";
 
 const app = express();
 export const transport = new StdioServerTransport();
 
 app.use(express.json());
-app.use('/', AuthRoutes);
+app.use('/', SystemRoutes);
+app.use('/auth', AuthRoutes);
 
 // Create an MCP server
 const server = new McpServer({

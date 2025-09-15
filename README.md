@@ -221,7 +221,6 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 
 - **Tool Architecture**: Refactored tool constants to include structured metadata and categorization
 - **Parameter Descriptions**: Enhanced user-friendly descriptions for better tool understanding
-- **Code Organization**: Added dedicated tool helpers (`toolHelpers.ts`) for improved maintainability
 - **Renamed tools**: Renamed get-all-collaborators → list-collaborators, list-files-in-repository → repository-tree,
   get-all-releases → list-releases for consistency
 
