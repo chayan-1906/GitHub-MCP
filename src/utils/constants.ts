@@ -253,6 +253,184 @@ const tools: ToolsMap = {
         ],
     },
 
+    /** rulesets */
+    listRepositoryRulesets: {
+        name: 'list-repository-rulesets',
+        category: 'Rulesets',
+        techDescription: 'Fetches all repository rulesets with pagination support',
+        userFriendlyDescription: 'List all repository rulesets with filtering',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+                optional: false,
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+                optional: false,
+            },
+            {
+                name: 'targets',
+                techDescription: 'Filter by target type: branch, tag, or push',
+                userFriendlyDescription: 'Filter by target type (optional)',
+                optional: true,
+            },
+            {
+                name: 'currentPage',
+                techDescription: 'Page number of the results to fetch. Start with 1 and increment until the returned list is empty',
+                userFriendlyDescription: 'Page number for pagination',
+                optional: true,
+            },
+            {
+                name: 'perPage',
+                techDescription: 'Maximum number of rulesets to return per page (max: 100)',
+                userFriendlyDescription: 'Results per page (max: 100)',
+                optional: true,
+            },
+        ],
+    },
+    getRepositoryRuleset: {
+        name: 'get-repository-ruleset',
+        category: 'Rulesets',
+        techDescription: 'Fetches details of a specific repository ruleset by ID',
+        userFriendlyDescription: 'Get detailed information about a specific ruleset',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+                optional: false,
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+                optional: false,
+            },
+            {
+                name: 'rulesetId',
+                techDescription: 'The numeric ID of the ruleset to retrieve',
+                userFriendlyDescription: 'Ruleset ID',
+                optional: false,
+            },
+        ],
+    },
+    createRepositoryRuleset: {
+        name: 'create-repository-ruleset',
+        category: 'Rulesets',
+        techDescription: 'Creates a new repository ruleset for managing branch protection and other repository rules',
+        userFriendlyDescription: 'Create a new repository ruleset with branch protection rules',
+        parameters: [
+            {
+                name: 'owner',
+                techDescription: 'GitHub username or organization that owns the repository',
+                userFriendlyDescription: 'Repository owner (username or organization)',
+                optional: false,
+            },
+            {
+                name: 'repository',
+                techDescription: 'The name of the GitHub Repository',
+                userFriendlyDescription: 'Repository name',
+                optional: false,
+            },
+            {
+                name: 'name',
+                techDescription: 'Name of the ruleset',
+                userFriendlyDescription: 'Ruleset name',
+                optional: false,
+            },
+            {
+                name: 'target',
+                techDescription: 'Target type for the ruleset: branch, tag, or push',
+                userFriendlyDescription: 'Target type (branch/tag/push)',
+                optional: false,
+            },
+            {
+                name: 'enforcement',
+                techDescription: 'Enforcement level: active, disabled, or evaluate',
+                userFriendlyDescription: 'Enforcement level (active/disabled/evaluate)',
+                optional: false,
+            },
+            {
+                name: 'conditions',
+                techDescription: 'Conditions for when the ruleset applies. Object with ref_name containing include/exclude arrays of branch patterns',
+                userFriendlyDescription: 'Ruleset conditions (optional)',
+                optional: true,
+                parameters: [
+                    {
+                        name: 'ref_name',
+                        techDescription: 'Reference name patterns to include/exclude',
+                        userFriendlyDescription: 'Branch/tag patterns',
+                        optional: true,
+                        parameters: [
+                            {
+                                name: 'include',
+                                techDescription: 'Array of patterns to include (e.g., ["main", "develop"])',
+                                userFriendlyDescription: 'Patterns to include',
+                                optional: true,
+                            },
+                            {
+                                name: 'exclude',
+                                techDescription: 'Array of patterns to exclude (e.g., ["feature/*"])',
+                                userFriendlyDescription: 'Patterns to exclude',
+                                optional: true,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: 'rules',
+                techDescription: 'Array of rule configurations. Each rule has type and optional parameters',
+                userFriendlyDescription: 'Rules to apply',
+                optional: false,
+                parameters: [
+                    {
+                        name: 'type',
+                        techDescription: 'Rule type (e.g., "pull_request", "required_status_checks", "required_signatures")',
+                        userFriendlyDescription: 'Rule type',
+                        optional: false,
+                    },
+                    {
+                        name: 'parameters',
+                        techDescription: 'Rule-specific parameters object (varies by rule type)',
+                        userFriendlyDescription: 'Rule parameters (optional)',
+                        optional: true,
+                    },
+                ],
+            },
+            {
+                name: 'bypass_actors',
+                techDescription: 'Array of actors who can bypass the ruleset',
+                userFriendlyDescription: 'Bypass actors (optional)',
+                optional: true,
+                parameters: [
+                    {
+                        name: 'actor_id',
+                        techDescription: 'Numeric ID of the actor (user, team, or integration)',
+                        userFriendlyDescription: 'Actor ID',
+                        optional: false,
+                    },
+                    {
+                        name: 'actor_type',
+                        techDescription: 'Type of actor: OrganizationAdmin, RepositoryRole, Team, or Integration',
+                        userFriendlyDescription: 'Actor type',
+                        optional: false,
+                    },
+                    {
+                        name: 'bypass_mode',
+                        techDescription: 'When bypass is allowed: always or pull_request',
+                        userFriendlyDescription: 'Bypass mode',
+                        optional: false,
+                    },
+                ],
+            },
+        ],
+    },
+
     /** branches */
     listBranches: {
         name: 'list-branches',

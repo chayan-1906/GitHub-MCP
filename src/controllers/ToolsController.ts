@@ -13,7 +13,10 @@ import { registerTool as deleteRepository } from '../tools/github/repository/del
 import { registerTool as modifyRepositoryVisibility } from '../tools/github/repository/modify-repository-visibility';
 import { registerTool as listCollaborators } from '../tools/github/repository/list-collaborators';
 import { registerTool as addRemoveCollaborators } from '../tools/github/repository/add-remove-collaborators';
-import { registerTool as repositoryTree } from '../tools/github/repository/repository-tree';
+
+import { registerTool as listRepositoryRulesets } from '../tools/github/repository/list-repository-rulesets';
+import { registerTool as getRepositoryRuleset } from '../tools/github/repository/get-repository-ruleset';
+import { registerTool as createRepositoryRuleset } from '../tools/github/repository/create-repository-ruleset';
 
 import { registerTool as listBranches } from '../tools/github/branch/list-branches';
 import { registerTool as getBranchDetails } from '../tools/github/branch/get-branch-details';
@@ -24,6 +27,7 @@ import { registerTool as deleteBranch } from '../tools/github/branch/delete-bran
 import { registerTool as listCommits } from '../tools/github/commit/list-commits';
 import { registerTool as getCommitModifications } from '../tools/github/commit/get-commit-modifications';
 
+import { registerTool as repositoryTree } from '../tools/github/repository/repository-tree';
 import { registerTool as getFileContent } from '../tools/github/get-file-content';
 import { registerTool as commitRemoteFile } from '../tools/github/commit-remote-file';
 
@@ -68,7 +72,10 @@ async function setupMcpTools(server: McpServer) {
     modifyRepositoryVisibility(server);
     listCollaborators(server);
     addRemoveCollaborators(server);
-    repositoryTree(server);
+
+    listRepositoryRulesets(server);
+    getRepositoryRuleset(server);
+    createRepositoryRuleset(server);
 
     listBranches(server);
     getBranchDetails(server);
@@ -79,6 +86,7 @@ async function setupMcpTools(server: McpServer) {
     listCommits(server);
     getCommitModifications(server);
 
+    repositoryTree(server);
     getFileContent(server);
     commitRemoteFile(server);
 

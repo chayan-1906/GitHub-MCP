@@ -1,4 +1,4 @@
-import { Tool } from "../types";
+import { Tool } from "mcp-utils/dist/types/tool";
 
 export const generateHomepageHTML = (toolsByCategory: Record<string, Tool[]>, port: number): string => {
     const categories = Object.keys(toolsByCategory);

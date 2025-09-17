@@ -1,19 +1,3 @@
-// home page
-export interface ToolParameter {
-    name: string;
-    techDescription: string;
-    userFriendlyDescription: string;
-    optional?: boolean;
-}
-
-export interface Tool {
-    name: string;
-    category: string;
-    techDescription: string;
-    userFriendlyDescription: string;
-    parameters: ToolParameter[];
-}
-
 // repositoryDetailsApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native
 interface Owner {
     login: string;
@@ -148,6 +132,56 @@ export interface Invitation {
         html_url: string;
     };
     permissions: string;
+}
+
+// Repository Rulesets API types
+// listRepositoryRulesetsApi:: https://api.github.com/repos/{owner}/{repo}/rulesets
+// createRepositoryRulesetApi:: https://api.github.com/repos/{owner}/{repo}/rulesets
+// getRepositoryRulesetApi:: https://api.github.com/repos/{owner}/{repo}/rulesets/{ruleset_id}
+export interface RepositoryRuleset {
+    id: number;
+    name: string;
+    target: 'branch' | 'tag' | 'push';
+    source_type: 'Repository' | 'Organization';
+    source: string;
+    enforcement: 'active' | 'disabled' | 'evaluate';
+    conditions?: RulesetConditions;
+    rules: RulesetRule[];
+    bypass_actors?: RulesetBypassActor[];
+    node_id: string;
+    _links?: {
+        self: {
+            href: string;
+        };
+        html: {
+            href: string;
+        };
+    };
+    created_at: string;
+    updated_at: string;
+}
+
+export interface RulesetConditions {
+    ref_name?: {
+        include?: string[];
+        exclude?: string[];
+    };
+}
+
+export interface RulesetRule {
+    type: string;
+    parameters?: Record<string, any>;
+}
+
+export interface RulesetBypassActor {
+    actor_id: number;
+    actor_type: 'OrganizationAdmin' | 'RepositoryRole' | 'Team' | 'Integration';
+    bypass_mode: 'always' | 'pull_request';
+}
+
+export interface RepositoryRulesetList {
+    total_count?: number;
+    rulesets: RepositoryRuleset[];
 }
 
 // listAllBranchesApi:: https://api.github.com/repos/chayan-1906/Busgo-React-Native/branches

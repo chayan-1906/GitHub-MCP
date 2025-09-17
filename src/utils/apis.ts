@@ -36,6 +36,22 @@ const apis = {
     // remove invitation
     cancelInvitationApi: (owner: string, repository: string, invitationId: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/invitations/${invitationId}`,
 
+    /** rulesets */
+    // list repository rulesets
+    listRepositoryRulesetsApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/rulesets`,
+
+    // get repository ruleset
+    getRepositoryRulesetApi: (owner: string, repository: string, rulesetId: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/rulesets/${rulesetId}`,
+
+    // create repository ruleset
+    createRepositoryRulesetApi: (owner: string, repository: string) => `${gitHubBaseUrl}/repos/${owner}/${repository}/rulesets`,
+
+    // update repository ruleset
+    updateRepositoryRulesetApi: (owner: string, repository: string, rulesetId: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/rulesets/${rulesetId}`,
+
+    // delete repository ruleset
+    deleteRepositoryRulesetApi: (owner: string, repository: string, rulesetId: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/rulesets/${rulesetId}`,
+    
     /** branches */
     // list branches in a repository
     listAllBranchesApi: (owner: string, repository: string, perPage: number, currentPage: number) => `${gitHubBaseUrl}/repos/${owner}/${repository}/branches?per_page=${perPage}&page=${currentPage}`,
