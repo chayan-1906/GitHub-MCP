@@ -1,6 +1,6 @@
 # 🐙 GitHub MCP Server
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/chayan-1906/GitHub-MCP)
+[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/chayan-1906/GitHub-MCP)
 [![Node.js](https://img.shields.io/badge/node.js-16.x+-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/typescript-5.8.3-blue.svg)](https://www.typescriptlang.org/)
 [![Express](https://img.shields.io/badge/express-5.1.0-black.svg)](https://expressjs.com/)
@@ -29,10 +29,10 @@ Download from [https://claude.ai/download](https://claude.ai/download)
 #### 2. Download the Executable:
 
 **macOS:**
-📦 [Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.2.0/github)
+📦 [Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.3.0/github)
 
 **Windows:**
-📦 [Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.2.0/github.exe)
+📦 [Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.3.0/github.exe)
 
 #### 3. Run the Executable:
 
