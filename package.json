@@ -1,6 +1,6 @@
 {
   "name": "github-mcp",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "main": "src/server.js",
   "description": "Production-ready Model Context Protocol server providing Claude with complete GitHub integration - comprehensive tools for repository management, branch operations, file handling, issue tracking, and collaboration features with OAuth 2.0 authentication and MongoDB persistence. Ready-to-use executables available for download (macOS/Windows) for easy end-user installation without Node.js setup required.",
   "keywords": [
@@ -45,6 +45,6 @@
     "@vercel/ncc": "^0.38.3",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   }
 }

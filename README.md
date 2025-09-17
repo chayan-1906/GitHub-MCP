@@ -1,10 +1,10 @@
 # 🐙 GitHub MCP Server
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/chayan-1906/GitHub-MCP)
+[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/chayan-1906/GitHub-MCP)
 [![Node.js](https://img.shields.io/badge/node.js-16.x+-green.svg)](https://nodejs.org/)
-[![TypeScript](https://img.shields.io/badge/typescript-5.8.3-blue.svg)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/typescript-5.9.2-blue.svg)](https://www.typescriptlang.org/)
 [![Express](https://img.shields.io/badge/express-5.1.0-black.svg)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/mongodb-6.18.0-green.svg)](https://www.mongodb.com/)
+[![MongoDB](https://img.shields.io/badge/mongodb-6.19.0-green.svg)](https://www.mongodb.com/)
 [![License](https://img.shields.io/badge/license-ISC-yellow.svg)](https://opensource.org/licenses/ISC)
 [![MCP](https://img.shields.io/badge/model_context_protocol-compliant-purple.svg)](https://modelcontextprotocol.io/)
 [![GitHub OAuth](https://img.shields.io/badge/github-oauth-black.svg)](https://docs.github.com/en/developers/apps/building-oauth-apps)
@@ -29,10 +29,10 @@ Download from [https://claude.ai/download](https://claude.ai/download)
 #### 2. Download the Executable:
 
 **macOS:**
-📦 [Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.2.0/github)
+📦 [Download macOS Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.3.0/github)
 
 **Windows:**
-📦 [Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.2.0/github.exe)
+📦 [Download Windows Executable](https://github.com/chayan-1906/GitHub-MCP/releases/download/v1.3.0/github.exe)
 
 #### 3. Run the Executable:
 
@@ -206,6 +206,30 @@ documentation: [GitHub MCP User Guide](https://versed-blinker-33e.notion.site/Gi
 ---
 
 ## 📋 Changelog
+
+### v1.3.0 (2025-09-17)
+
+#### 🔄 Changes
+
+- **Routing System**: Separated system and authentication routes for better code organization
+    - Created dedicated `SystemRoutes.ts` for homepage functionality
+    - Moved authentication endpoints to `/auth` prefix for cleaner URL structure
+- **Error Handling**: Improved error reporting across all GitHub tool integrations
+- **Type Safety**: Added `ToolsMap` interface for better TypeScript type definitions
+
+#### 📦 Dependencies
+
+- **axios**: Updated from `^1.11.0` to `^1.12.2`
+- **mongodb**: Updated from `^6.18.0` to `^6.19.0`
+- **uuid**: Updated from `^11.1.0` to `^13.0.0`
+- **@modelcontextprotocol/sdk**: Updated from `^1.17.4` to `^1.18.0`
+- **typescript**: Updated from `^5.8.3` to `^5.9.2`
+
+#### 🧹 Code Quality
+
+- **Removed Legacy Code**: Eliminated `toolHelpers.ts` in favor of `mcp-utils` package integration
+- **Centralized Configuration**: All tool definitions now use dynamic parameter descriptions
+- **Improved Maintainability**: Better separation of concerns between system and authentication logic
 
 ### v1.2.0 (2025-09-14)
 
